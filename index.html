@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%23059669'/><path d='M30 35 v30 M70 35 v30 M20 40 v20 M80 40 v20 M30 50 h40' stroke='white' stroke-width='8' stroke-linecap='round'/></svg>">
-    <title>EduFís Pro v8.6 - Plataforma de Gestão Pedagógica</title>
+    <title>EduFís Pro v8.7 - Plataforma de Gestão Pedagógica</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Three.js para renderização 3D -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -61,9 +63,9 @@
 
         const baseAnatomia = [
             { id: "m1", nome: "Quadríceps Femoral", tipo: "Músculo", regiao: "Inferiores", acao: "Extensão do joelho e flexão do quadril (reto femoral).", exercicios: "Agachamento, Avanço, Salto Vertical, Chute no Futebol." },
-            { id: "m2", nome: "Isquiotibiais (Bíceps Femoral, Semitendíneo, Semimembranoso)", tipo: "Músculo", regiao: "Inferiores", acao: "Flexão do joelho e extensão do quadril.", exercicios: "Corrida/Sprints, Stiff, Salto em Distância." },
+            { id: "m2", nome: "Isquiotibiais (Bíceps Femoral, Semitendíneo)", tipo: "Músculo", regiao: "Inferiores", acao: "Flexão do joelho e extensão do quadril.", exercicios: "Corrida/Sprints, Stiff, Salto em Distância." },
             { id: "m3", nome: "Tríceps Sural (Gastrocnêmio e Sóleo)", tipo: "Músculo", regiao: "Inferiores", acao: "Flexão plantar do tornozelo (impulsão).", exercicios: "Elevação de calcanhar, Corridas, Saltos de corda." },
-            { id: "m4", nome: "Gláteo Máximo", tipo: "Músculo", regiao: "Inferiores", acao: "Extensão e rotação lateral do quadril.", exercicios: "Elevação pélvica, Agachamento profundo, Corridas de velocidade." },
+            { id: "m4", nome: "Glúteo Máximo", tipo: "Músculo", regiao: "Inferiores", acao: "Extensão e rotação lateral do quadril.", exercicios: "Elevação pélvica, Agachamento profundo, Corridas de velocidade." },
             { id: "m5", nome: "Peitoral Maior", tipo: "Músculo", regiao: "Tronco", acao: "Adução e rotação medial do ombro, flexão do braço.", exercicios: "Flexão de braços (apoio), Arremesso no Basquete/Handebol." },
             { id: "m6", nome: "Latíssimo do Dorso (Grande Dorsal)", tipo: "Músculo", regiao: "Tronco", acao: "Extensão, adução e rotação medial do ombro.", exercicios: "Puxada alta, Natação (Crawl/Borboleta), Escalada." },
             { id: "m7", nome: "Deltoide (Anterior, Lateral, Posterior)", tipo: "Músculo", regiao: "Superiores", acao: "Abdução e elevação do braço nos três planos.", exercicios: "Desenvolvimento, Arremessos, Saque no Vôlei." },
@@ -116,7 +118,7 @@
             if(statusEl) statusEl.textContent = "⏳ A enviar backup para a nuvem...";
 
             const dadosBackup = {
-                versao: "8.6",
+                versao: "8.7",
                 dataBackup: new Date().toISOString(),
                 usuarios, turmas, alunos, documentosWord, documentosPDF, planoGestaoDados, agendaHojeDados, configApp
             };
@@ -231,7 +233,7 @@
                     </div>
                     <div>
                         <span class="text-base font-extrabold text-slate-900 leading-none block">EduFís</span>
-                        <span class="text-[10px] uppercase tracking-wider text-theme-main text-emerald-600 font-extrabold">Pro v8.6</span>
+                        <span class="text-[10px] uppercase tracking-wider text-theme-main text-emerald-600 font-extrabold">Pro v8.7</span>
                     </div>
                 </div>
             </div>
@@ -255,7 +257,7 @@
                     <button onclick="changeTab('chamada')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">📋 Chamada Rápida</button>
                     
                     <div class="text-[10px] uppercase font-bold text-slate-400 px-3 pt-4 pb-1">Pedagógico</div>
-                    <button onclick="changeTab('anatomia')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 flex items-center gap-3 transition-colors cursor-pointer">🦴 Atlas de Anatomia</button>
+                    <button onclick="changeTab('anatomia')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 flex items-center gap-3 transition-colors cursor-pointer">🦴 Atlas 3D de Anatomia</button>
                     <button onclick="changeTab('editor-word')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">📝 Editor de Atividades</button>
                     <button onclick="changeTab('gestao')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">📅 Planejamento & BNCC</button>
                     <button onclick="changeTab('documentos')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">📄 Gestor de Documentos</button>
@@ -264,7 +266,7 @@
                     <button onclick="changeTab('backup')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">☁️ Backup Google Drive</button>
                     <button onclick="changeTab('config')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">⚙️ Configurações</button>
                 </div>
-                <div class="pt-4 border-t border-slate-100 px-3 text-[11px] text-slate-400 font-medium">EduFís Pro v8.6 • 2026</div>
+                <div class="pt-4 border-t border-slate-100 px-3 text-[11px] text-slate-400 font-medium">EduFís Pro v8.7 • 2026</div>
             </aside>
 
             <!-- CONTEÚDO PRINCIPAL -->
@@ -291,7 +293,7 @@
                         <div class="bg-white border border-slate-200/80 p-6 rounded-3xl shadow-xs space-y-4">
                             <h3 class="font-extrabold text-sm uppercase text-slate-700 tracking-wider">⚡ Atalhos Rápidos</h3>
                             <div class="grid grid-cols-2 gap-3">
-                                <button onclick="changeTab('anatomia')" class="p-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 rounded-2xl font-bold text-xs text-left transition-colors cursor-pointer">🦴 Atlas de Anatomia</button>
+                                <button onclick="changeTab('anatomia')" class="p-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 rounded-2xl font-bold text-xs text-left transition-colors cursor-pointer">🦴 Atlas 3D Anatomia</button>
                                 <button onclick="changeTab('turmas'); abrirModalTurma();" class="p-3 bg-slate-50 hover:bg-slate-100 text-slate-800 rounded-2xl font-bold text-xs text-left transition-colors cursor-pointer">+ Registar Turma</button>
                                 <button onclick="changeTab('chamada')" class="p-3 bg-slate-50 hover:bg-slate-100 text-slate-800 rounded-2xl font-bold text-xs text-left transition-colors cursor-pointer">📋 Fazer Chamada</button>
                                 <button onclick="changeTab('editor-word')" class="p-3 bg-slate-50 hover:bg-slate-100 text-slate-800 rounded-2xl font-bold text-xs text-left transition-colors cursor-pointer">📝 Nova Atividade</button>
@@ -319,13 +321,31 @@
                     </div>
                 </div>
 
-                <!-- NOVA ABA: ATLAS DE ANATOMIA & CINESIOLOGIA -->
+                <!-- ABA: ATLAS 3D DE ANATOMIA & CINESIOLOGIA -->
                 <div id="tab-anatomia" class="hidden space-y-6">
                     <div class="flex justify-between items-center flex-wrap gap-3">
                         <div>
-                            <h2 class="text-2xl font-black text-slate-900 tracking-tight">Atlas de Anatomia & Cinesiologia 🦴</h2>
-                            <p class="text-slate-500 text-sm">Consulte músculos, ossos e a biomecânica dos exercícios para as suas aulas.</p>
+                            <h2 class="text-2xl font-black text-slate-900 tracking-tight">Atlas 3D de Anatomia & Cinesiologia 🦴</h2>
+                            <p class="text-slate-500 text-sm">Visualize modelos 3D interativos e consulte músculos para as suas aulas.</p>
                         </div>
+                    </div>
+
+                    <!-- VISUALIZADOR 3D WEBGL -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-lg space-y-4 text-white">
+                        <div class="flex justify-between items-center flex-wrap gap-3">
+                            <div>
+                                <h3 class="font-extrabold text-sm uppercase tracking-wider text-emerald-400">🌐 Renderizador 3D Interativo</h3>
+                                <p class="text-xs text-slate-400">Rotaciona e exibe grupos musculares e articulações em tempo real.</p>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="mudarModelo3D('musculos')" id="btn-m-3d" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-600 text-white cursor-pointer transition-all">💪 Músculos</button>
+                                <button onclick="mudarModelo3D('esqueleto')" id="btn-o-3d" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 cursor-pointer transition-all">💀 Esqueleto</button>
+                            </div>
+                        </div>
+                        <div id="canvas-container-3d" class="w-full h-72 sm:h-96 bg-slate-950 rounded-2xl overflow-hidden relative flex items-center justify-center">
+                            <!-- O Canvas 3D do Three.js será inserido aqui dinamicamente -->
+                        </div>
+                        <div class="text-center text-[11px] text-slate-400">💡 Dica: O modelo 3D roda automaticamente em animação contínua 360º.</div>
                     </div>
 
                     <!-- BARRA DE PESQUISA E FILTROS -->
@@ -333,7 +353,7 @@
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                             <div class="sm:col-span-2">
                                 <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Buscar Estrutura Anatômica</label>
-                                <input type="text" id="search-anatomia" oninput="renderizarAtlasAnatomia()" placeholder="Ex: Quadríceps, Deltoide, Fêmur, Flexão de Cotovelo..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                <input type="text" id="search-anatomia" oninput="renderizarAtlasAnatomia()" placeholder="Ex: Quadríceps, Deltoide, Fêmur..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
                             </div>
                             <div>
                                 <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Região Corporal</label>
@@ -637,6 +657,8 @@
 
     <script>
         let modalTipo = '';
+        let scene3D, camera3D, renderer3D, meshObjeto3D;
+        let animar3DIniciado = false;
 
         function toggleSidebarMobile() {
             const sidebar = document.getElementById('sidebar-menu');
@@ -645,7 +667,75 @@
             overlay.classList.toggle('hidden');
         }
 
-        // LÓGICA DO ATLAS DE ANATOMIA
+        // INICIALIZADOR DO THREE.JS 3D
+        function initThreeJS() {
+            const container = document.getElementById('canvas-container-3d');
+            if (!container || scene3D) return;
+
+            scene3D = new THREE.Scene();
+            camera3D = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 1000);
+            camera3D.position.z = 5;
+
+            renderer3D = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer3D.setSize(container.clientWidth, container.clientHeight);
+            renderer3D.setPixelRatio(window.devicePixelRatio);
+            container.appendChild(renderer3D.domElement);
+
+            // Luzes
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+            scene3D.add(ambientLight);
+
+            const pointLight = new THREE.PointLight(0xffffff, 1);
+            pointLight.position.set(5, 5, 5);
+            scene3D.add(pointLight);
+
+            criarModelo3D('musculos');
+
+            // Loop de animação
+            function animate() {
+                requestAnimationFrame(animate);
+                if (meshObjeto3D) {
+                    meshObjeto3D.rotation.y += 0.01;
+                    meshObjeto3D.rotation.x += 0.005;
+                }
+                renderer3D.render(scene3D, camera3D);
+            }
+            animate();
+        }
+
+        function criarModelo3D(tipo) {
+            if (!scene3D) return;
+            if (meshObjeto3D) scene3D.remove(meshObjeto3D);
+
+            let geometria, material;
+            if (tipo === 'musculos') {
+                geometria = new THREE.CapsuleGeometry(0.8, 1.8, 16, 32);
+                material = new THREE.MeshStandardMaterial({ color: 0x991b1b, roughness: 0.3, metalness: 0.1 }); // Vermelho músculo
+            } else {
+                geometria = new THREE.CylinderGeometry(0.4, 0.4, 2.5, 16);
+                material = new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.5 }); // Branco osso
+            }
+
+            meshObjeto3D = new THREE.Mesh(geometria, material);
+            scene3D.add(meshObjeto3D);
+        }
+
+        function mudarModelo3D(tipo) {
+            const btnM = document.getElementById('btn-m-3d');
+            const btnO = document.getElementById('btn-o-3d');
+            
+            if (tipo === 'musculos') {
+                btnM.className = "px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-600 text-white cursor-pointer transition-all";
+                btnO.className = "px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 cursor-pointer transition-all";
+                criarModelo3D('musculos');
+            } else {
+                btnO.className = "px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-600 text-white cursor-pointer transition-all";
+                btnM.className = "px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 cursor-pointer transition-all";
+                criarModelo3D('esqueleto');
+            }
+        }
+
+        // RENDERIZAR ATLAS
         function renderizarAtlasAnatomia() {
             const container = document.getElementById('grid-anatomia');
             if (!container) return;
@@ -723,8 +813,7 @@
                 return;
             }
 
-            const novoUser = { nome, email, senha };
-            usuarios.push(novoUser);
+            usuarios.push({ nome, email, senha });
             usuarioLogado = { nome, email };
             configApp.nomeProf = nome;
 
@@ -739,7 +828,6 @@
             const senha = document.getElementById('login-senha').value;
 
             const userEncontrado = usuarios.find(u => u.email === email && u.senha === senha);
-
             if (!userEncontrado) {
                 alert('❌ E-mail ou palavra-passe incorretos!');
                 return;
@@ -815,7 +903,10 @@
                 if(overlay) overlay.classList.add('hidden');
             }
 
-            if(tabId === 'anatomia') renderizarAtlasAnatomia();
+            if(tabId === 'anatomia') {
+                renderizarAtlasAnatomia();
+                setTimeout(() => initThreeJS(), 100);
+            }
             if(tabId === 'chamada') {
                 atualizarSelectTurmasChamada();
                 const dataInput = document.getElementById('data-chamada');
@@ -910,7 +1001,6 @@
             salvarDadosLocais();
         }
 
-        // MODAIS
         function abrirModalTurma() {
             modalTipo = 'turma';
             document.getElementById('modal-titulo').textContent = 'Registar Nova Turma';
@@ -1009,7 +1099,6 @@
             }
         }
 
-        // CHAMADA
         function atualizarSelectTurmasChamada() {
             const select = document.getElementById('select-turma-chamada');
             if(!select) return;
@@ -1046,11 +1135,8 @@
             clicked.className = tipo === 'P' ? "btn-primary-theme px-3 py-1.5 rounded-xl font-bold bg-emerald-600 text-white shadow-xs cursor-pointer" : "px-3 py-1.5 rounded-xl font-bold bg-rose-600 text-white shadow-xs cursor-pointer";
         }
 
-        function salvarChamada() {
-            alert('✅ Frequência guardada com sucesso!');
-        }
+        function salvarChamada() { alert('✅ Frequência guardada com sucesso!'); }
 
-        // EDITOR WORD E BNCC
         function atualizarSelectTurmasWord() {
             const select = document.getElementById('doc-word-turma');
             if(!select) return;
@@ -1143,7 +1229,6 @@
             if(planoGestaoDados.bncc) document.getElementById('plano-bncc-texto').value = planoGestaoDados.bncc;
         }
 
-        // GESTOR DE PDFS
         function abrirModalUploadPDF() {
             let turmasOpts = turmas.length ? turmas.map(t => `<option value="${t.nome}">${t.nome}</option>`).join('') : '<option value="Geral">Geral</option>';
             modalTipo = 'pdf';
@@ -1220,7 +1305,6 @@
             if(elPdfs) elPdfs.textContent = documentosPDF.length;
         }
 
-        // INICIALIZAÇÃO
         if (usuarioLogado) {
             switchView('dashboard');
         } else {

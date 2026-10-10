@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%23059669'/><path d='M30 35 v30 M70 35 v30 M20 40 v20 M80 40 v20 M30 50 h40' stroke='white' stroke-width='8' stroke-linecap='round'/></svg>">
-    <title>EduFís Pro v8.1 - Plataforma de Gestão Pedagógica</title>
+    <title>EduFís Pro v8.2 - Plataforma de Gestão Pedagógica</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
 
-        /* REGRAS DE IMPRESSÃO LIMPA (APENAS O PLANO) */
+        /* REGRAS DE IMPRESSÃO LIMPA */
         @media print {
             header, aside, button, .no-print, #view-login { 
                 display: none !important; 
@@ -64,7 +64,7 @@
             if(statusEl) statusEl.textContent = "⏳ A enviar backup para a nuvem...";
 
             const dadosBackup = {
-                versao: "8.1",
+                versao: "8.2",
                 dataBackup: new Date().toISOString(),
                 turmas, alunos, documentosWord, documentosPDF, planoGestaoDados
             };
@@ -164,7 +164,7 @@
                     </div>
                     <div>
                         <span class="text-base font-extrabold text-slate-900 leading-none block">EduFís</span>
-                        <span class="text-[10px] uppercase tracking-wider text-emerald-600 font-extrabold">Pro v8.1</span>
+                        <span class="text-[10px] uppercase tracking-wider text-emerald-600 font-extrabold">Pro v8.2</span>
                     </div>
                 </div>
             </div>
@@ -195,7 +195,7 @@
                     <div class="text-[10px] uppercase font-bold text-slate-400 px-3 pt-4 pb-1">Sistema</div>
                     <button onclick="changeTab('backup')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 flex items-center gap-3 transition-colors cursor-pointer">☁️ Backup Google Drive</button>
                 </div>
-                <div class="pt-4 border-t border-slate-100 px-3 text-[11px] text-slate-400 font-medium">EduFís Pro v8.1 • 2026</div>
+                <div class="pt-4 border-t border-slate-100 px-3 text-[11px] text-slate-400 font-medium">EduFís Pro v8.2 • 2026</div>
             </aside>
 
             <!-- CONTEÚDO PRINCIPAL -->
@@ -356,7 +356,7 @@
                     </div>
                 </div>
 
-                <!-- ABA PLANEJAMENTO & BNCC (COM BOTÕES PROTEGIDOS CONTRA IMPRESSÃO) -->
+                <!-- ABA PLANEJAMENTO & BNCC (COM CABEÇALHO EDITÁVEL) -->
                 <div id="tab-gestao" class="hidden space-y-6">
                     <div class="flex justify-between items-center flex-wrap gap-3 no-print">
                         <div>
@@ -378,15 +378,48 @@
                         <div id="resultado-busca-bncc" class="space-y-2 max-h-48 overflow-y-auto pr-1"></div>
                     </div>
 
-                    <div class="bg-white border border-slate-200/80 p-8 rounded-3xl shadow-xs space-y-5 max-w-4xl">
-                        <div>
-                            <label class="block text-xs uppercase font-bold text-slate-700 mb-1">1. Objetivos Estratégicos & Geral da Disciplina</label>
-                            <textarea id="plano-objetivos" rows="3" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Desenvolver competências motoras e socioemocionais..."></textarea>
+                    <!-- FORMULÁRIO DO PLANO DE GESTÃO -->
+                    <div class="bg-white border border-slate-200/80 p-8 rounded-3xl shadow-xs space-y-6 max-w-4xl">
+                        
+                        <!-- CABEÇALHO EDITÁVEL DO PLANO -->
+                        <div class="border-b border-slate-200 pb-5 space-y-4">
+                            <h3 class="text-xs font-black uppercase text-slate-400 tracking-widest no-print">🏫 Cabeçalho da Escola</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="sm:col-span-2">
+                                    <label class="block text-xs uppercase font-bold text-slate-700 mb-1">Nome da Escola / Instituição</label>
+                                    <input type="text" id="plano-escola" placeholder="Ex: Escola Municipal Professor Silva" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2 text-sm font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs uppercase font-bold text-slate-700 mb-1">Professor(a)</label>
+                                    <input type="text" id="plano-professor" placeholder="Ex: Prof. Carlos Eduardo" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs uppercase font-bold text-slate-700 mb-1">Componente Curricular</label>
+                                    <input type="text" id="plano-disciplina" value="Educação Física" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs uppercase font-bold text-slate-700 mb-1">Turma / Ano Alvo</label>
+                                    <select id="plano-turma-select" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs uppercase font-bold text-slate-700 mb-1">Ano Letivo / Período</label>
+                                    <input type="text" id="plano-periodo" placeholder="Ex: 2026 - 1º Bimestre" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            <label class="block text-xs uppercase font-bold text-slate-700 mb-1">2. Habilidades da BNCC Selecionadas</label>
-                            <textarea id="plano-bncc-texto" rows="4" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3.5 text-sm font-mono text-emerald-800 focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="As habilidades BNCC selecionadas aparecerão aqui..."></textarea>
+
+                        <!-- CONTEÚDO PEDAGÓGICO -->
+                        <div class="space-y-5">
+                            <div>
+                                <label class="block text-xs uppercase font-bold text-slate-700 mb-1">1. Objetivos Estratégicos & Geral da Disciplina</label>
+                                <textarea id="plano-objetivos" rows="3" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Desenvolver competências motoras e socioemocionais..."></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-xs uppercase font-bold text-slate-700 mb-1">2. Habilidades da BNCC Selecionadas</label>
+                                <textarea id="plano-bncc-texto" rows="4" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3.5 text-sm font-mono text-emerald-800 focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="As habilidades BNCC selecionadas aparecerão aqui..."></textarea>
+                            </div>
                         </div>
+
                     </div>
                 </div>
 
@@ -491,7 +524,10 @@
                 if(dataInput && !dataInput.value) dataInput.value = new Date().toISOString().split('T')[0];
             }
             if(tabId === 'editor-word') atualizarSelectTurmasWord();
-            if(tabId === 'gestao') filtrarBNCC('');
+            if(tabId === 'gestao') {
+                filtrarBNCC('');
+                atualizarSelectTurmasPlano();
+            }
             if(tabId === 'documentos') atualizarTabelaPDFs();
         }
 
@@ -501,6 +537,7 @@
             atualizarEstatisticas();
             atualizarSelectTurmasChamada();
             atualizarSelectTurmasWord();
+            atualizarSelectTurmasPlano();
             carregarPlanoGestao();
             atualizarListaDocsWord();
             atualizarAgendaHoje();
@@ -551,6 +588,7 @@
                 atualizarTabelaTurmas();
                 atualizarSelectTurmasChamada();
                 atualizarSelectTurmasWord();
+                atualizarSelectTurmasPlano();
             } else if(modalTipo === 'aluno') {
                 const nome = document.getElementById('m-a-nome').value.trim();
                 const email = document.getElementById('m-a-email').value.trim();
@@ -599,6 +637,7 @@
                 atualizarTabelaTurmas();
                 atualizarEstatisticas();
                 atualizarSelectTurmasChamada();
+                atualizarSelectTurmasPlano();
                 atualizarAgendaHoje();
             }
         }
@@ -660,6 +699,12 @@
             select.innerHTML = turmas.length === 0 ? '<option value="Geral">Geral</option>' : turmas.map(t => `<option value="${t.nome}">${t.nome}</option>`).join('');
         }
 
+        function atualizarSelectTurmasPlano() {
+            const select = document.getElementById('plano-turma-select');
+            if(!select) return;
+            select.innerHTML = turmas.length === 0 ? '<option value="Geral">Todas as Turmas</option>' : turmas.map(t => `<option value="${t.nome}">${t.nome} (${t.ano})</option>`).join('');
+        }
+
         function execCmd(command, value = null) { document.execCommand(command, false, value); }
         function novoDocumentoWord() { document.getElementById('doc-word-titulo').value = ''; document.getElementById('editor-word-area').innerHTML = '<p>Descreva os objetivos, materiais e etapas da atividade aqui...</p>'; }
 
@@ -714,6 +759,11 @@
 
         function salvarPlanoGestao() {
             planoGestaoDados = {
+                escola: document.getElementById('plano-escola').value,
+                professor: document.getElementById('plano-professor').value,
+                disciplina: document.getElementById('plano-disciplina').value,
+                turma: document.getElementById('plano-turma-select').value,
+                periodo: document.getElementById('plano-periodo').value,
                 objetivos: document.getElementById('plano-objetivos').value,
                 bncc: document.getElementById('plano-bncc-texto').value
             };
@@ -722,6 +772,11 @@
         }
 
         function carregarPlanoGestao() {
+            if(planoGestaoDados.escola) document.getElementById('plano-escola').value = planoGestaoDados.escola;
+            if(planoGestaoDados.professor) document.getElementById('plano-professor').value = planoGestaoDados.professor;
+            if(planoGestaoDados.disciplina) document.getElementById('plano-disciplina').value = planoGestaoDados.disciplina;
+            if(planoGestaoDados.periodo) document.getElementById('plano-periodo').value = planoGestaoDados.periodo;
+            if(planoGestaoDados.turma) document.getElementById('plano-turma-select').value = planoGestaoDados.turma;
             if(planoGestaoDados.objetivos) document.getElementById('plano-objetivos').value = planoGestaoDados.objetivos;
             if(planoGestaoDados.bncc) document.getElementById('plano-bncc-texto').value = planoGestaoDados.bncc;
         }

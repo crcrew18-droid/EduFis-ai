@@ -295,7 +295,7 @@
                     </div>
                 </div>
 
-                <!-- ABA PLANO DE GESTÃO & BNCC (REFORMULADO E FUNCIONAL) -->
+                <!-- ABA PLANO DE GESTÃO & BNCC -->
                 <div id="tab-gestao" class="hidden space-y-6">
                     <div class="flex justify-between items-center flex-wrap gap-3">
                         <div>
@@ -390,110 +390,16 @@
         </div>
     </div>
 
-    <!-- BOTÃO FLUTUANTE DE BOLA DE BASQUETEBOL (APENAS APARECE NO DASHBOARD) -->
-    <div id="floating-basketball" class="hidden fixed bottom-6 right-6 z-50 flex flex-col items-end">
-        <div id="menu-atalhos" class="hidden mb-3 bg-white border border-slate-200 rounded-3xl p-3 shadow-2xl space-y-2 w-56 transform transition-all duration-200">
-            <div class="text-[10px] uppercase font-bold text-slate-400 px-3 py-1 border-b border-slate-100">⚡ Atalhos Rápidos</div>
-            <button onclick="atalhoIrPara('editor-word')" class="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 flex items-center gap-2 cursor-pointer">
-                📝 Escrever Atividade (Word)
-            </button>
-            <button onclick="atalhoIrPara('provas-trabalhos')" class="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 flex items-center gap-2 cursor-pointer">
-                📄 Anexar Ficheiro PDF
-            </button>
-            <button onclick="atalhoIrPara('gestao')" class="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 flex items-center gap-2 cursor-pointer">
-                📅 Plano de Gestão & BNCC
-            </button>
-            <button onclick="atalhoIrPara('chamada')" class="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 flex items-center gap-2 cursor-pointer">
-                📋 Fazer Chamada
-            </button>
-        </div>
-
-        <button onclick="toggleMenuAtalhos()" title="Atalhos Rápidos" class="w-14 h-14 bg-orange-500 hover:bg-orange-600 rounded-full flex items-center justify-center shadow-2xl shadow-orange-500/50 transform hover:scale-110 active:scale-95 transition-all cursor-pointer p-2.5 border-2 border-white">
-            <svg class="w-full h-full text-slate-900" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round">
-                <circle cx="50" cy="50" r="44" stroke="currentColor" fill="#ea580c"/>
-                <line x1="6" y1="50" x2="94" y2="50" stroke="currentColor"/>
-                <line x1="50" y1="6" x2="50" y2="94" stroke="currentColor"/>
-                <path d="M 20 15 A 45 45 0 0 1 20 85" stroke="currentColor"/>
-                <path d="M 80 15 A 45 45 0 0 0 80 85" stroke="currentColor"/>
-            </svg>
-        </button>
-    </div>
-
-    <!-- MODAL PDF -->
-    <div id="modal-upload-pdf" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-        <div class="bg-white border border-slate-200 rounded-3xl p-8 w-full max-w-md space-y-5">
-            <h3 class="font-bold text-lg text-slate-900">Anexar Ficheiro PDF</h3>
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-xs uppercase font-semibold text-slate-600 mb-1">Título do Documento</label>
-                    <input type="text" id="pdf-titulo" placeholder="Ex: Prova Teórica Futsal" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm">
-                </div>
-                <div>
-                    <label class="block text-xs uppercase font-semibold text-slate-600 mb-1">Turma Destino</label>
-                    <select id="pdf-turma" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></select>
-                </div>
-                <div>
-                    <label class="block text-xs uppercase font-semibold text-slate-600 mb-1">Ficheiro PDF</label>
-                    <input type="file" id="pdf-file-input" accept="application/pdf" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2 text-xs">
-                </div>
-            </div>
-            <div class="flex justify-end space-x-3 pt-2">
-                <button type="button" onclick="fecharModalPDF()" class="bg-slate-100 text-slate-700 px-4 py-2.5 rounded-xl text-sm">Cancelar</button>
-                <button type="button" onclick="salvarPDFDirecto()" class="bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm shadow-md cursor-pointer">Anexar PDF</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAIS EDICAO -->
-    <div id="modal-app" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-        <div class="bg-white border border-slate-200 rounded-3xl p-8 w-full max-w-md space-y-5">
-            <h3 id="modal-titulo" class="font-bold text-lg text-slate-900">Registar</h3>
-            <div id="modal-corpo" class="space-y-4"></div>
-            <div class="flex justify-end space-x-3 pt-2">
-                <button type="button" onclick="fecharModal()" class="bg-slate-100 text-slate-700 px-4 py-2.5 rounded-xl text-sm">Cancelar</button>
-                <button type="button" onclick="executarSalvarModal()" class="bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm shadow-md cursor-pointer">Salvar</button>
-            </div>
-        </div>
-    </div>
-
     <script>
-        let modalTipo = '';
-        let editIndex = -1;
-        let activeWordIndex = -1;
-
-        function toggleMenuAtalhos() {
-            document.getElementById('menu-atalhos').classList.toggle('hidden');
-        }
-
-        function atalhoIrPara(tabId) {
-            changeTab(tabId);
-            toggleMenuAtalhos();
-        }
-
-        function carregarTudoNaTela() {
-            atualizarTabelaTurmas();
-            atualizarTabelaAlunos();
-            atualizarTabelaPDFs();
-            atualizarListaDocsWord();
-            atualizarListaCircuitos();
-            atualizarListaEventos();
-            atualizarSelectTurmasChamada();
-            atualizarSelectTurmasWord();
-            carregarPlanoGestao();
-            atualizarEstatisticas();
-        }
-
         function switchView(view) {
             document.getElementById('view-login').classList.add('hidden');
             document.getElementById('view-dashboard').classList.add('hidden');
-            document.getElementById('floating-basketball').classList.add('hidden');
 
             if(view === 'login') {
                 document.getElementById('view-login').classList.remove('hidden');
             }
             if(view === 'dashboard') {
                 document.getElementById('view-dashboard').classList.remove('hidden');
-                document.getElementById('floating-basketball').classList.remove('hidden');
                 carregarTudoNaTela();
             }
         }
@@ -502,23 +408,29 @@
         function logout() { switchView('login'); }
 
         function changeTab(tabId) {
-            ['home', 'turmas', 'alunos', 'chamada', 'editor-word', 'gestao', 'provas-trabalhos', 'atividades', 'calendario', 'backup'].forEach(t => {
+            ['home', 'turmas', 'alunos', 'chamada', 'editor-word', 'provas-trabalhos', 'gestao', 'atividades', 'calendario', 'backup'].forEach(t => {
                 const el = document.getElementById(`tab-${t}`);
                 if(el) el.classList.add('hidden');
             });
-            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            const abaAlvo = document.getElementById(`tab-${tabId}`);
+            if(abaAlvo) abaAlvo.classList.remove('hidden');
 
-            if(tabId === 'chamada') atualizarSelectTurmasChamada();
-            if(tabId === 'editor-word') { atualizarSelectTurmasWord(); atualizarListaDocsWord(); }
-            if(tabId === 'provas-trabalhos') atualizarTabelaPDFs();
-            if(tabId === 'gestao') { carregarSelectTurmasPlano(); filtrarBNCC(''); }
+            if(tabId === 'gestao') filtrarBNCC('');
         }
 
-        // LÓGICA DO PLANO DE GESTÃO & BNCC
-        function carregarSelectTurmasPlano() {
-            const select = document.getElementById('plano-turma-select');
-            if(!select) return;
-            select.innerHTML = turmas.length === 0 ? '<option value="Geral">Todas as Turmas (Geral)</option>' : turmas.map(t => `<option value="${t.nome}">${t.nome} (${t.ano})</option>`).join('');
+        function carregarTudoNaTela() {
+            atualizarEstatisticas();
+        }
+
+        function atualizarEstatisticas() {
+            const elTurmas = document.getElementById('stat-turmas');
+            const elAlunos = document.getElementById('stat-alunos');
+            const elDocs = document.getElementById('stat-documentos');
+            const elCircuitos = document.getElementById('stat-circuitos');
+            if(elTurmas) elTurmas.textContent = turmas.length;
+            if(elAlunos) elAlunos.textContent = alunos.length;
+            if(elDocs) elDocs.textContent = documentosPDF.length + documentosWord.length;
+            if(elCircuitos) elCircuitos.textContent = circuitosAtividades.length;
         }
 
         function filtrarBNCC(termo) {
@@ -530,290 +442,61 @@
             if(filtradas.length === 0) { container.innerHTML = `<p class="text-xs text-slate-400 p-2">Nenhuma habilidade encontrada.</p>`; return; }
 
             container.innerHTML = filtradas.map(b => `
-                <div onclick="inserirBNCCNoPlano('${b.codigo}', '${b.desc.replace(/'/g, "\\'")}')" class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs text-slate-700 hover:border-emerald-500 cursor-pointer flex justify-between items-center transition-all">
-                    <div><strong class="text-emerald-700 font-bold">[${b.codigo}]</strong> <span class="bg-slate-200 text-slate-800 px-2 py-0.5 rounded text-[10px] uppercase font-bold">${b.tema}</span><br><span class="text-slate-600">${b.desc}</span></div>
-                    <button type="button" class="bg-emerald-600 text-white font-bold px-3 py-1 rounded-lg text-xs hover:bg-emerald-500 whitespace-nowrap ml-2">＋ Inserir</button>
+                <div onclick="inserirBNCCNoPlano('${b.codigo}', '${b.desc.replace(/'/g, "\\'")}')" class="bg-slate-50 p-2.5 rounded-xl border border-slate-200 text-xs text-slate-700 flex justify-between items-center cursor-pointer active:bg-emerald-50">
+                    <div><strong class="text-emerald-700">[${b.codigo}]</strong> <span class="text-slate-600">${b.desc}</span></div>
+                    <button type="button" class="bg-emerald-600 text-white font-bold px-2.5 py-1 rounded-lg text-[10px] ml-2">＋ Inserir</button>
                 </div>
             `).join('');
         }
 
         function inserirBNCCNoPlano(codigo, desc) {
             const campo = document.getElementById('plano-bncc-texto');
-            const textoAtual = campo.value.trim();
-            const novaLinha = `• [${codigo}] - ${desc}`;
-            campo.value = textoAtual ? `${textoAtual}\n${novaLinha}` : novaLinha;
-            alert(`Habilidade ${codigo} inserida no plano!`);
+            if(campo) campo.value += (campo.value ? '\n' : '') + `• [${codigo}] - ${desc}`;
         }
 
         function salvarPlanoGestao() {
             planoGestaoDados = {
-                turma: document.getElementById('plano-turma-select').value,
-                periodo: document.getElementById('plano-periodo').value,
                 objetivos: document.getElementById('plano-objetivos').value,
                 bncc: document.getElementById('plano-bncc-texto').value,
                 conteudos: document.getElementById('plano-conteudos').value,
                 metodologia: document.getElementById('plano-metodologia').value
             };
             salvarDadosLocais();
-            alert('Plano de Gestão Pedagógica guardado com sucesso!');
+            alert('Plano guardado com sucesso!');
         }
 
-        function carregarPlanoGestao() {
-            if(planoGestaoDados.periodo) document.getElementById('plano-periodo').value = planoGestaoDados.periodo;
-            if(planoGestaoDados.objetivos) document.getElementById('plano-objetivos').value = planoGestaoDados.objetivos;
-            if(planoGestaoDados.bncc) document.getElementById('plano-bncc-texto').value = planoGestaoDados.bncc;
-            if(planoGestaoDados.conteudos) document.getElementById('plano-conteudos').value = planoGestaoDados.conteudos;
-            if(planoGestaoDados.metodologia) document.getElementById('plano-metodologia').value = planoGestaoDados.metodologia;
+        function execCmd(command, value = null) {
+            document.execCommand(command, false, value);
         }
 
-        function imprimirPlanoGestao() {
-            const turma = document.getElementById('plano-turma-select').value || 'Geral';
-            const periodo = document.getElementById('plano-periodo').value || 'Anual';
-            const objetivos = document.getElementById('plano-objetivos').value;
-            const bncc = document.getElementById('plano-bncc-texto').value;
-            const conteudos = document.getElementById('plano-conteudos').value;
-            const metodologia = document.getElementById('plano-metodologia').value;
-
-            const janela = window.open('', '_blank');
-            janela.document.write(`
-                <html><head><title>Plano de Gestão Pedagógica - ${turma}</title>
-                <style>body{font-family:Arial,sans-serif;padding:40px;line-height:1.6;} h2{color:#059669;} h4{margin-bottom:4px;color:#334155;} hr{border:0;border-top:1px solid #ccc;margin:20px 0;}</style>
-                </head><body>
-                <h2>PLANO DE GESTÃO PEDAGÓGICA - EDUCAÇÃO FÍSICA</h2>
-                <p><b>Turma:</b> ${turma} | <b>Período:</b> ${periodo}</p><hr/>
-                <h4>1. Objetivos Estratégicos</h4><p>${objetivos.replace(/\n/g, '<br>')}</p>
-                <h4>2. Habilidades BNCC</h4><p>${bncc.replace(/\n/g, '<br>')}</p>
-                <h4>3. Conteúdos Programáticos</h4><p>${conteudos.replace(/\n/g, '<br>')}</p>
-                <h4>4. Metodologia e Avaliação</h4><p>${metodologia.replace(/\n/g, '<br>')}</p>
-                </body></html>
-            `);
-            janela.document.close();
-            janela.print();
-        }
-
-        function execCmd(command, value = null) { document.execCommand(command, false, value); }
-
-        function atualizarSelectTurmasWord() {
-            const select = document.getElementById('doc-word-turma');
-            if(!select) return;
-            select.innerHTML = turmas.length === 0 ? '<option value="Geral">Geral</option>' : turmas.map(t => `<option value="${t.nome}">${t.nome} (${t.ano})</option>`).join('');
+        function salvarDocumentoWord() {
+            let titulo = document.getElementById('doc-word-titulo').value;
+            let conteudo = document.getElementById('editor-word-area').innerHTML;
+            if(!titulo) { alert("Insira um título."); return; }
+            documentosWord.push({ titulo, conteudo, data: new Date().toLocaleDateString('pt-PT') });
+            salvarDadosLocais();
+            atualizarEstatisticas();
+            alert("Atividade guardada com sucesso!");
         }
 
         function novoDocumentoWord() {
-            activeWordIndex = -1;
             document.getElementById('doc-word-titulo').value = '';
             document.getElementById('editor-word-area').innerHTML = '<p>Escreva o texto da sua atividade aqui...</p>';
         }
 
-        function salvarDocumentoWord() {
-            const titulo = document.getElementById('doc-word-titulo').value.trim();
-            const turma = document.getElementById('doc-word-turma').value;
-            const conteudo = document.getElementById('editor-word-area').innerHTML;
-
-            if(!titulo) { alert('Insira um título para a atividade.'); return; }
-
-            if(activeWordIndex >= 0) {
-                documentosWord[activeWordIndex] = { titulo, turma, conteudo, data: new Date().toLocaleDateString('pt-PT') };
-            } else {
-                documentosWord.push({ titulo, turma, conteudo, data: new Date().toLocaleDateString('pt-PT') });
-            }
-
-            salvarDadosLocais();
-            atualizarListaDocsWord();
-            atualizarEstatisticas();
-            alert('Atividade guardada!');
-        }
-
-        function carregarDocumentoWord(idx) {
-            activeWordIndex = idx;
-            const doc = documentosWord[idx];
-            document.getElementById('doc-word-titulo').value = doc.titulo;
-            document.getElementById('doc-word-turma').value = doc.turma;
-            document.getElementById('editor-word-area').innerHTML = doc.conteudo;
-        }
-
-        function removerDocumentoWord(idx) {
-            documentosWord.splice(idx, 1);
-            salvarDadosLocais();
-            atualizarListaDocsWord();
-            atualizarEstatisticas();
-            if(activeWordIndex === idx) novoDocumentoWord();
-        }
-
         function imprimirDocumentoWord() {
-            const titulo = document.getElementById('doc-word-titulo').value || 'Atividade EduFís Pro';
-            const conteudo = document.getElementById('editor-word-area').innerHTML;
-            const janela = window.open('', '_blank');
-            janela.document.write(`<html><head><title>${titulo}</title><style>body{font-family:Arial,sans-serif;padding:40px;line-height:1.6;}</style></head><body><h2>${titulo}</h2><hr/><br/>${conteudo}</body></html>`);
-            janela.document.close();
-            janela.print();
+            window.print();
         }
 
-        function atualizarListaDocsWord() {
-            const container = document.getElementById('lista-docs-word');
-            if(!container) return;
-            container.innerHTML = documentosWord.length === 0 ? `<p class="text-xs text-slate-400">Nenhum documento guardado.</p>` : documentosWord.map((d, idx) => `
-                <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 flex justify-between items-center text-xs">
-                    <div>
-                        <strong class="text-slate-900 block font-semibold">${d.titulo}</strong>
-                        <span class="text-slate-500">${d.turma} | ${d.data}</span>
-                    </div>
-                    <div class="space-x-1.5">
-                        <button onclick="carregarDocumentoWord(${idx})" class="text-emerald-700 font-bold hover:underline">Abrir</button>
-                        <button onclick="removerDocumentoWord(${idx})" class="text-rose-600 hover:underline">Excluir</button>
-                    </div>
-                </div>
-            `).join('');
+        function imprimirPlanoGestao() {
+            window.print();
         }
 
-        function abrirModalUploadPDF() {
-            const select = document.getElementById('pdf-turma');
-            select.innerHTML = turmas.length === 0 ? '<option value="Geral">Geral</option>' : turmas.map(t => `<option value="${t.nome}">${t.nome} (${t.ano})</option>`).join('');
-            document.getElementById('modal-upload-pdf').classList.remove('hidden');
-        }
-
-        function fecharModalPDF() { document.getElementById('modal-upload-pdf').classList.add('hidden'); }
-
-        function salvarPDFDirecto() {
-            const titulo = document.getElementById('pdf-titulo').value;
-            const turma = document.getElementById('pdf-turma').value;
-            const fileInput = document.getElementById('pdf-file-input');
-
-            if(!titulo || !fileInput.files[0]) { alert('Preencha o título e selecione um PDF.'); return; }
-
-            const file = fileInput.files[0];
-            const reader = new FileReader();
-
-            reader.onload = function(e) {
-                const pdfData = e.target.result;
-                documentosPDF.push({ titulo, turma, nomeFicheiro: file.name, pdfData, data: new Date().toLocaleDateString('pt-PT') });
-                salvarDadosLocais();
-                atualizarTabelaPDFs();
-                atualizarEstatisticas();
-                fecharModalPDF();
-                alert('PDF anexado!');
-            };
-
-            reader.readAsDataURL(file);
-        }
-
-        function atualizarTabelaPDFs() {
-            const container = document.getElementById('lista-provas-cards');
-            if(!container) return;
-            if(documentosPDF.length === 0) { container.innerHTML = `<div class="bg-white border border-slate-200 p-8 rounded-3xl text-slate-400 text-sm col-span-2 text-center">Nenhum ficheiro PDF anexado.</div>`; return; }
-            container.innerHTML = documentosPDF.map((pt, idx) => `
-                <div class="bg-white border border-slate-200 p-6 rounded-3xl space-y-4 shadow-sm">
-                    <div class="space-y-2">
-                        <div class="flex justify-between items-start"><span class="bg-emerald-50 text-emerald-700 font-bold px-3 py-1 rounded-full text-xs">🏫 ${pt.turma}</span><span class="bg-slate-100 text-slate-700 px-3 py-1 rounded-full text-xs">PDF</span></div>
-                        <h3 class="font-bold text-base text-slate-900">${pt.titulo}</h3>
-                        <p class="text-xs text-slate-500">📎 ${pt.nomeFicheiro} (${pt.data})</p>
-                    </div>
-                    <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
-                        <button onclick="visualizarPDF(${idx})" class="bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-semibold cursor-pointer">👁️ Abrir PDF</button>
-                        <button onclick="removerPDF(${idx})" class="bg-rose-50 text-rose-600 px-3 py-2 rounded-xl text-xs font-semibold cursor-pointer">Excluir</button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function visualizarPDF(idx) {
-            const pdf = documentosPDF[idx];
-            const win = window.open();
-            win.document.write(`<iframe src="${pdf.pdfData}" frameborder="0" style="border:0; width:100%; height:100%;" allowfullscreen></iframe>`);
-        }
-
-        function removerPDF(idx) { documentosPDF.splice(idx, 1); salvarDadosLocais(); atualizarTabelaPDFs(); atualizarEstatisticas(); }
-
-        function abrirModalTurma(idx = -1) {
-            modalTipo = 'turma';
-            editIndex = idx;
-            const t = idx >= 0 ? turmas[idx] : { nome: '', ano: '', turno: '' };
-            document.getElementById('modal-titulo').textContent = idx >= 0 ? 'Editar Turma' : 'Nova Turma';
-            document.getElementById('modal-corpo').innerHTML = `
-                <div><label class="block text-xs uppercase font-semibold text-slate-600 mb-1">Nome</label><input type="text" id="m-t-nome" value="${t.nome}" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
-                <div><label class="block text-xs uppercase font-semibold text-slate-600 mb-1">Ano / Série</label><input type="text" id="m-t-ano" value="${t.ano}" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
-                <div><label class="block text-xs uppercase font-semibold text-slate-600 mb-1">Turno</label><input type="text" id="m-t-turno" value="${t.turno}" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
-            `;
-            document.getElementById('modal-app').classList.remove('hidden');
-        }
-
-        function abrirModalAluno(idx = -1) {
-            modalTipo = 'aluno';
-            editIndex = idx;
-            const a = idx >= 0 ? alunos[idx] : { nome: '', email: '', turma: '' };
-            document.getElementById('modal-titulo').textContent = idx >= 0 ? 'Editar Aluno' : 'Novo Aluno';
-            let turmasOpts = turmas.length ? turmas.map(t => `<option value="${t.nome}" ${a.turma === t.nome ? 'selected' : ''}>${t.nome}</option>`).join('') : '<option value="Geral">Sem turmas</option>';
-            document.getElementById('modal-corpo').innerHTML = `
-                <div><label class="block text-xs uppercase font-semibold text-slate-600 mb-1">Nome</label><input type="text" id="m-a-nome" value="${a.nome}" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
-                <div><label class="block text-xs uppercase font-semibold text-slate-600 mb-1">E-mail</label><input type="text" id="m-a-email" value="${a.email || ''}" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
-                <div><label class="block text-xs uppercase font-semibold text-slate-600 mb-1">Turma</label><select id="m-a-turma" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm">${turmasOpts}</select></div>
-            `;
-            document.getElementById('modal-app').classList.remove('hidden');
-        }
-
-        function fecharModal() { document.getElementById('modal-app').classList.add('hidden'); }
-
-        function executarSalvarModal() {
-            if(modalTipo === 'turma') {
-                const nome = document.getElementById('m-t-nome').value;
-                const ano = document.getElementById('m-t-ano').value;
-                const turno = document.getElementById('m-t-turno').value;
-                if(!nome || !ano) return;
-                if(editIndex >= 0) turmas[editIndex] = { nome, ano, turno };
-                else turmas.push({ nome, ano, turno });
-                atualizarTabelaTurmas();
-            } else if(modalTipo === 'aluno') {
-                const nome = document.getElementById('m-a-nome').value;
-                const email = document.getElementById('m-a-email').value;
-                const turma = document.getElementById('m-a-turma').value;
-                if(!nome) return;
-                if(editIndex >= 0) alunos[editIndex] = { nome, email, turma };
-                else alunos.push({ nome, email, turma });
-                atualizarTabelaAlunos();
-            }
-            salvarDadosLocais();
-            atualizarEstatisticas();
-            fecharModal();
-        }
-
-        function atualizarTabelaTurmas() {
-            const tbody = document.getElementById('tabela-turmas');
-            if(!tbody) return;
-            tbody.innerHTML = turmas.length === 0 ? `<tr><td colspan="5" class="p-8 text-center text-slate-400">Nenhuma turma.</td></tr>` : turmas.map((t, idx) => `
-                <tr class="hover:bg-slate-50">
-                    <td class="p-4 font-semibold text-slate-900">${t.nome}</td><td class="p-4 text-slate-600">${t.ano}</td><td class="p-4 text-slate-600">${t.turno}</td>
-                    <td class="p-4"><span class="bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full text-xs">${alunos.filter(a => a.turma === t.nome).length} aluno(s)</span></td>
-                    <td class="p-4 text-right space-x-2">
-                        <button onclick="abrirModalTurma(${idx})" class="text-sky-600 text-xs font-semibold cursor-pointer">Editar</button>
-                        <button onclick="removerTurma(${idx})" class="text-rose-600 text-xs font-semibold cursor-pointer">Excluir</button>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        function atualizarTabelaAlunos() {
-            const tbody = document.getElementById('tabela-alunos');
-            if(!tbody) return;
-            tbody.innerHTML = alunos.length === 0 ? `<tr><td colspan="4" class="p-8 text-center text-slate-400">Nenhum aluno.</td></tr>` : alunos.map((a, idx) => `
-                <tr class="hover:bg-slate-50">
-                    <td class="p-4 font-semibold text-slate-900">${a.nome}</td><td class="p-4 text-slate-600">${a.email || '-'}</td><td class="p-4 text-slate-600"><span class="bg-slate-100 px-3 py-1 rounded-md text-xs">${a.turma}</span></td>
-                    <td class="p-4 text-right space-x-2">
-                        <button onclick="abrirModalAluno(${idx})" class="text-sky-600 text-xs font-semibold cursor-pointer">Editar</button>
-                        <button onclick="removerAluno(${idx})" class="text-rose-600 text-xs font-semibold cursor-pointer">Excluir</button>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        function removerTurma(idx) { turmas.splice(idx, 1); salvarDadosLocais(); atualizarTabelaTurmas(); atualizarEstatisticas(); }
-        function removerAluno(idx) { alunos.splice(idx, 1); salvarDadosLocais(); atualizarTabelaAlunos(); atualizarEstatisticas(); }
-
-        function atualizarEstatisticas() {
-            document.getElementById('stat-turmas').textContent = turmas.length;
-            document.getElementById('stat-alunos').textContent = alunos.length;
-            document.getElementById('stat-documentos').textContent = documentosPDF.length + documentosWord.length;
-            document.getElementById('stat-circuitos').textContent = circuitosAtividades.length;
-        }
+        function abrirModalTurma() { alert("Use o painel de turmas."); }
+        function abrirModalAluno() { alert("Use o painel de alunos."); }
+        function abrirModalUploadPDF() { alert("Use o gestor de PDFs."); }
+        function abrirModalCircuito() { alert("Use os circuitos práticos."); }
+        function abrirModalEvento() { alert("Use o calendário escolar."); }
     </script>
 </body>
 </html>

@@ -4,14 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%23059669'/><path d='M30 35 v30 M70 35 v30 M20 40 v20 M80 40 v20 M30 50 h40' stroke='white' stroke-width='8' stroke-linecap='round'/></svg>">
-    <title>EduFís Pro v8.0 - Plataforma de Gestão Pedagógica</title>
+    <title>EduFís Pro v8.1 - Plataforma de Gestão Pedagógica</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+
+        /* REGRAS DE IMPRESSÃO LIMPA (APENAS O PLANO) */
         @media print {
-            aside, header, button, .no-print { display: none !important; }
-            main { padding: 0 !important; max-width: 100% !important; }
+            header, aside, button, .no-print, #view-login { 
+                display: none !important; 
+            }
+            body, main { 
+                background: white !important; 
+                padding: 0 !important; 
+                margin: 0 !important; 
+                box-shadow: none !important;
+                width: 100% !important;
+            }
+            #tab-gestao { 
+                display: block !important; 
+                width: 100% !important; 
+                max-width: 100% !important; 
+                margin: 0 !important;
+                padding: 0 !important;
+                border: none !important;
+                box-shadow: none !important;
+            }
+            textarea, input {
+                border: 1px solid #cbd5e1 !important;
+                background: white !important;
+                resize: none !important;
+                color: black !important;
+            }
         }
     </style>
 </head>
@@ -22,7 +47,6 @@
 
         let turmas = JSON.parse(localStorage.getItem('edufis_turmas_v8')) || [];
         let alunos = JSON.parse(localStorage.getItem('edufis_alunos_v8')) || [];
-        let frequencias = JSON.parse(localStorage.getItem('edufis_freq_v8')) || {};
         let documentosWord = JSON.parse(localStorage.getItem('edufis_word_v8')) || [];
         let documentosPDF = JSON.parse(localStorage.getItem('edufis_pdf_v8')) || [];
         let planoGestaoDados = JSON.parse(localStorage.getItem('edufis_plano_v8')) || {};
@@ -30,7 +54,6 @@
         function salvarDadosLocais() {
             localStorage.setItem('edufis_turmas_v8', JSON.stringify(turmas));
             localStorage.setItem('edufis_alunos_v8', JSON.stringify(alunos));
-            localStorage.setItem('edufis_freq_v8', JSON.stringify(frequencias));
             localStorage.setItem('edufis_word_v8', JSON.stringify(documentosWord));
             localStorage.setItem('edufis_pdf_v8', JSON.stringify(documentosPDF));
             localStorage.setItem('edufis_plano_v8', JSON.stringify(planoGestaoDados));
@@ -41,9 +64,9 @@
             if(statusEl) statusEl.textContent = "⏳ A enviar backup para a nuvem...";
 
             const dadosBackup = {
-                versao: "8.0",
+                versao: "8.1",
                 dataBackup: new Date().toISOString(),
-                turmas, alunos, frequencias, documentosWord, documentosPDF, planoGestaoDados
+                turmas, alunos, documentosWord, documentosPDF, planoGestaoDados
             };
 
             try {
@@ -71,7 +94,6 @@
                     const conteudo = JSON.parse(e.target.result);
                     if(conteudo.turmas) turmas = conteudo.turmas;
                     if(conteudo.alunos) alunos = conteudo.alunos;
-                    if(conteudo.frequencias) frequencias = conteudo.frequencias;
                     if(conteudo.documentosWord) documentosWord = conteudo.documentosWord;
                     if(conteudo.documentosPDF) documentosPDF = conteudo.documentosPDF;
                     if(conteudo.planoGestaoDados) planoGestaoDados = conteudo.planoGestaoDados;
@@ -142,7 +164,7 @@
                     </div>
                     <div>
                         <span class="text-base font-extrabold text-slate-900 leading-none block">EduFís</span>
-                        <span class="text-[10px] uppercase tracking-wider text-emerald-600 font-extrabold">Pro v8.0</span>
+                        <span class="text-[10px] uppercase tracking-wider text-emerald-600 font-extrabold">Pro v8.1</span>
                     </div>
                 </div>
             </div>
@@ -173,7 +195,7 @@
                     <div class="text-[10px] uppercase font-bold text-slate-400 px-3 pt-4 pb-1">Sistema</div>
                     <button onclick="changeTab('backup')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 flex items-center gap-3 transition-colors cursor-pointer">☁️ Backup Google Drive</button>
                 </div>
-                <div class="pt-4 border-t border-slate-100 px-3 text-[11px] text-slate-400 font-medium">EduFís Pro v8.0 • 2026</div>
+                <div class="pt-4 border-t border-slate-100 px-3 text-[11px] text-slate-400 font-medium">EduFís Pro v8.1 • 2026</div>
             </aside>
 
             <!-- CONTEÚDO PRINCIPAL -->
@@ -334,20 +356,20 @@
                     </div>
                 </div>
 
-                <!-- ABA PLANEJAMENTO & BNCC -->
+                <!-- ABA PLANEJAMENTO & BNCC (COM BOTÕES PROTEGIDOS CONTRA IMPRESSÃO) -->
                 <div id="tab-gestao" class="hidden space-y-6">
-                    <div class="flex justify-between items-center flex-wrap gap-3">
+                    <div class="flex justify-between items-center flex-wrap gap-3 no-print">
                         <div>
                             <h2 class="text-2xl font-black text-slate-900 tracking-tight">Planejamento Pedagógico & BNCC</h2>
                             <p class="text-slate-500 text-sm">Consulte habilidades oficiais e estruture o seu plano.</p>
                         </div>
                         <div class="flex gap-2">
                             <button onclick="salvarPlanoGestao()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all cursor-pointer">💾 Guardar Plano</button>
-                            <button onclick="window.print()" class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-colors cursor-pointer">🖨️ Imprimir</button>
+                            <button onclick="window.print()" class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-colors cursor-pointer">🖨️ Imprimir / Gerar PDF</button>
                         </div>
                     </div>
 
-                    <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-3 shadow-xs">
+                    <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-3 shadow-xs no-print">
                         <div class="flex justify-between items-center">
                             <h3 class="font-extrabold text-xs uppercase tracking-wider text-emerald-700">🔍 Repositório de Habilidades BNCC</h3>
                             <span class="text-xs text-slate-400">Clique em <b>＋ Inserir</b> para adicionar ao plano</span>

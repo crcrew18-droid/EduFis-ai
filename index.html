@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%23059669'/><path d='M30 35 v30 M70 35 v30 M20 40 v20 M80 40 v20 M30 50 h40' stroke='white' stroke-width='8' stroke-linecap='round'/></svg>">
-    <title>EduFís Pro v6.4 - Painel de Educação Física</title>
+    <title>EduFís Pro v7.2 - Painel de Educação Física</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -39,7 +39,7 @@
             if(statusEl) statusEl.textContent = "⏳ A enviar backup para a nuvem...";
 
             const dadosBackup = {
-                versao: "6.4",
+                versao: "7.2",
                 dataBackup: new Date().toISOString(),
                 turmas, alunos, documentosPDF, documentosWord, circuitosAtividades, eventosCalendario, planoGestaoDados
             };
@@ -136,7 +136,7 @@
                 </div>
                 <div>
                     <span class="text-lg font-bold text-slate-900 leading-none block">EduFís</span>
-                    <span class="text-[10px] uppercase text-emerald-600 font-bold">Pro v6.4</span>
+                    <span class="text-[10px] uppercase text-emerald-600 font-bold">Pro v7.2</span>
                 </div>
             </div>
             <button onclick="logout()" class="text-xs bg-rose-50 text-rose-600 border border-rose-200 px-3.5 py-2 rounded-xl font-semibold cursor-pointer">Sair</button>
@@ -156,8 +156,6 @@
                     <button onclick="changeTab('editor-word')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-100 flex items-center gap-3 cursor-pointer">📝 Editor de Atividades (Word)</button>
                     <button onclick="changeTab('provas-trabalhos')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-100 flex items-center gap-3 cursor-pointer">📄 Gestor de Documentos & PDFs</button>
                     <button onclick="changeTab('gestao')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 flex items-center gap-3 cursor-pointer">📅 Plano de Gestão & BNCC</button>
-                    <button onclick="changeTab('atividades')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-100 flex items-center gap-3 cursor-pointer">🏃 Circuitos e Estações</button>
-                    <button onclick="changeTab('calendario')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-100 flex items-center gap-3 cursor-pointer">🗓️ Calendário Escolar</button>
                     <button onclick="changeTab('backup')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-100 flex items-center gap-3 cursor-pointer">☁️ Google Drive Auto-Backup</button>
                 </div>
             </aside>
@@ -186,7 +184,7 @@
                 <div id="tab-turmas" class="hidden space-y-6">
                     <div class="flex justify-between items-center">
                         <h2 class="text-2xl font-black text-slate-900">Turmas</h2>
-                        <button onclick="abrirModalTurma(-1)" class="bg-emerald-600 text-white px-4 py-2.5 rounded-xl text-sm font-bold cursor-pointer">+ Nova Turma</button>
+                        <button onclick="abrirModalTurma()" class="bg-emerald-600 text-white px-4 py-2.5 rounded-xl text-sm font-bold cursor-pointer">+ Nova Turma</button>
                     </div>
                     <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
                         <table class="w-full text-left text-sm">
@@ -200,7 +198,7 @@
                 <div id="tab-alunos" class="hidden space-y-6">
                     <div class="flex justify-between items-center">
                         <h2 class="text-2xl font-black text-slate-900">Alunos</h2>
-                        <button onclick="abrirModalAluno(-1)" class="bg-emerald-600 text-white px-4 py-2.5 rounded-xl text-sm font-bold cursor-pointer">+ Novo Aluno</button>
+                        <button onclick="abrirModalAluno()" class="bg-emerald-600 text-white px-4 py-2.5 rounded-xl text-sm font-bold cursor-pointer">+ Novo Aluno</button>
                     </div>
                     <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
                         <table class="w-full text-left text-sm">
@@ -233,7 +231,7 @@
                         <div class="flex gap-2">
                             <button onclick="novoDocumentoWord()" class="bg-slate-100 text-slate-700 px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-slate-200 cursor-pointer">+ Novo</button>
                             <button onclick="salvarDocumentoWord()" class="bg-emerald-600 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-md cursor-pointer">💾 Guardar Atividade</button>
-                            <button onclick="imprimirDocumentoWord()" class="bg-sky-600 text-white px-4 py-2.5 rounded-xl text-sm font-bold cursor-pointer">🖨️ Imprimir / PDF</button>
+                            <button onclick="window.print()" class="bg-sky-600 text-white px-4 py-2.5 rounded-xl text-sm font-bold cursor-pointer">🖨️ Imprimir / PDF</button>
                         </div>
                     </div>
 
@@ -258,13 +256,6 @@
                                 <button type="button" onclick="execCmd('formatBlock', '<h1>')" class="px-2.5 py-1.5 bg-white border rounded-lg hover:bg-slate-50">H1</button>
                                 <button type="button" onclick="execCmd('formatBlock', '<h2>')" class="px-2.5 py-1.5 bg-white border rounded-lg hover:bg-slate-50">H2</button>
                                 <button type="button" onclick="execCmd('formatBlock', '<p>')" class="px-2.5 py-1.5 bg-white border rounded-lg hover:bg-slate-50">Texto</button>
-                                <div class="h-4 w-px bg-slate-300 mx-1"></div>
-                                <button type="button" onclick="execCmd('justifyLeft')" class="px-2.5 py-1.5 bg-white border rounded-lg hover:bg-slate-50">⬅️</button>
-                                <button type="button" onclick="execCmd('justifyCenter')" class="px-2.5 py-1.5 bg-white border rounded-lg hover:bg-slate-50">↔️</button>
-                                <button type="button" onclick="execCmd('justifyRight')" class="px-2.5 py-1.5 bg-white border rounded-lg hover:bg-slate-50">➡️</button>
-                                <div class="h-4 w-px bg-slate-300 mx-1"></div>
-                                <button type="button" onclick="execCmd('insertUnorderedList')" class="px-2.5 py-1.5 bg-white border rounded-lg hover:bg-slate-50">• Lista</button>
-                                <button type="button" onclick="execCmd('insertOrderedList')" class="px-2.5 py-1.5 bg-white border rounded-lg hover:bg-slate-50">1. Lista</button>
                             </div>
 
                             <div id="editor-word-area" contenteditable="true" class="min-h-[380px] p-6 bg-white border border-slate-300 rounded-2xl focus:outline-none focus:border-emerald-500 leading-relaxed text-sm">
@@ -281,7 +272,7 @@
                     </div>
                 </div>
 
-                <!-- ABA PROVAS E PDFS POR TURMA -->
+                <!-- ABA PROVAS E PDFS -->
                 <div id="tab-provas-trabalhos" class="hidden space-y-6">
                     <div class="flex justify-between items-center">
                         <div>
@@ -300,71 +291,33 @@
                     <div class="flex justify-between items-center flex-wrap gap-3">
                         <div>
                             <h2 class="text-2xl font-black text-slate-900">📅 Plano de Gestão Pedagógica & BNCC</h2>
-                            <p class="text-slate-500 text-sm">Pesquise habilidades da BNCC e elabore o seu plano de gestão anual/trimestral.</p>
+                            <p class="text-slate-500 text-sm">Pesquise habilidades da BNCC e elabore o seu plano de gestão.</p>
                         </div>
                         <div class="flex gap-2">
                             <button onclick="salvarPlanoGestao()" class="bg-emerald-600 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-md cursor-pointer">💾 Guardar Plano</button>
-                            <button onclick="imprimirPlanoGestao()" class="bg-sky-600 text-white px-4 py-2.5 rounded-xl text-sm font-bold cursor-pointer">🖨️ Imprimir / PDF</button>
+                            <button onclick="window.print()" class="bg-sky-600 text-white px-4 py-2.5 rounded-xl text-sm font-bold cursor-pointer">🖨️ Imprimir / PDF</button>
                         </div>
                     </div>
 
-                    <!-- REPOSITÓRIO BNCC INTERATIVO -->
                     <div class="bg-white border border-slate-200 p-6 rounded-3xl space-y-3 shadow-sm">
                         <div class="flex justify-between items-center">
                             <h3 class="font-bold text-xs uppercase tracking-wider text-emerald-700">🔍 Repositório de Habilidades BNCC</h3>
-                            <span class="text-xs text-slate-400">Clique em <b>＋ Inserir</b> para adicionar ao plano</span>
+                            <span class="text-xs text-slate-400">Clique em <b>＋ Inserir</b> para adicionar</span>
                         </div>
-                        <input type="text" oninput="filtrarBNCC(this.value)" placeholder="Pesquisar por código (ex: EF67EF01), esporte, dança, lutas..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm">
+                        <input type="text" oninput="filtrarBNCC(this.value)" placeholder="Pesquisar por código (ex: EF67EF01), esporte, dança..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm">
                         <div id="resultado-busca-bncc" class="space-y-2 max-h-52 overflow-y-auto pr-1"></div>
                     </div>
 
-                    <!-- FORMULÁRIO DO PLANO DE GESTÃO -->
                     <div class="bg-white border border-slate-200 p-8 rounded-3xl shadow-sm space-y-5 max-w-4xl">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-4 border-b border-slate-100">
-                            <div>
-                                <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Turma / Ano Alvo</label>
-                                <select id="plano-turma-select" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm"></select>
-                            </div>
-                            <div>
-                                <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Período Letivo</label>
-                                <input type="text" id="plano-periodo" placeholder="Ex: 1º Trimestre / Anual" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm">
-                            </div>
+                        <div>
+                            <label class="block text-xs uppercase font-bold text-slate-700 mb-1">1. Objetivos Estratégicos & Geral</label>
+                            <textarea id="plano-objetivos" rows="3" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3.5 text-sm" placeholder="Desenvolver competências motoras..."></textarea>
                         </div>
-
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-xs uppercase font-bold text-slate-700 mb-1">1. Objetivos Estratégicos & Geral da Disciplina</label>
-                                <textarea id="plano-objetivos" rows="3" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3.5 text-sm" placeholder="Desenvolver competências motoras, cognitivas e socioemocionais..."></textarea>
-                            </div>
-
-                            <div>
-                                <label class="block text-xs uppercase font-bold text-slate-700 mb-1">2. Habilidades da BNCC Selecionadas</label>
-                                <textarea id="plano-bncc-texto" rows="4" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3.5 text-sm font-mono text-emerald-800" placeholder="As habilidades BNCC selecionadas do campo acima vão aparecer aqui..."></textarea>
-                            </div>
-
-                            <div>
-                                <label class="block text-xs uppercase font-bold text-slate-700 mb-1">3. Conteúdos Programáticos & Unidades Temáticas</label>
-                                <textarea id="plano-conteudos" rows="3" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3.5 text-sm" placeholder="Esportes de Invasão (Futsal/Basquetebol), Ginástica Geral, Jogos Cooperativos..."></textarea>
-                            </div>
-
-                            <div>
-                                <label class="block text-xs uppercase font-bold text-slate-700 mb-1">4. Metodologia & Critérios de Avaliação</label>
-                                <textarea id="plano-metodologia" rows="3" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3.5 text-sm" placeholder="Aulas práticas em circuito, autoavaliação, participação nas atividades e prova teórica..."></textarea>
-                            </div>
+                        <div>
+                            <label class="block text-xs uppercase font-bold text-slate-700 mb-1">2. Habilidades da BNCC Selecionadas</label>
+                            <textarea id="plano-bncc-texto" rows="4" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3.5 text-sm font-mono text-emerald-800" placeholder="Habilidades BNCC..."></textarea>
                         </div>
                     </div>
-                </div>
-
-                <!-- ABA CIRCUITOS -->
-                <div id="tab-atividades" class="hidden space-y-6">
-                    <div class="flex justify-between items-center"><h2 class="text-2xl font-black text-slate-900">Circuitos e Estações Práticas</h2><button onclick="abrirModalCircuito()" class="bg-emerald-600 text-white px-4 py-2.5 rounded-xl text-sm font-bold cursor-pointer">+ Novo Circuito</button></div>
-                    <div id="lista-circuitos" class="grid grid-cols-2 gap-5"><div class="bg-white border border-slate-200 p-8 rounded-3xl text-slate-400 text-sm col-span-2 text-center">Nenhum circuito.</div></div>
-                </div>
-
-                <!-- ABA CALENDÁRIO -->
-                <div id="tab-calendario" class="hidden space-y-6">
-                    <div class="flex justify-between items-center"><h2 class="text-2xl font-black text-slate-900">Calendário Escolar</h2><button onclick="abrirModalEvento()" class="bg-emerald-600 text-white px-4 py-2.5 rounded-xl text-sm font-bold cursor-pointer">+ Agendar Evento</button></div>
-                    <div class="bg-white border border-slate-200 p-6 rounded-3xl max-w-3xl space-y-4"><div id="lista-eventos-calendario" class="space-y-3"><p class="text-sm text-slate-400">Nenhum evento.</p></div></div>
                 </div>
 
                 <!-- ABA BACKUP -->
@@ -390,7 +343,21 @@
         </div>
     </div>
 
+    <!-- MODAL DE CADASTRO -->
+    <div id="modal-app" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+        <div class="bg-white border border-slate-200 rounded-3xl p-8 w-full max-w-md space-y-5 shadow-xl">
+            <h3 id="modal-titulo" class="font-bold text-lg text-slate-900">Registar</h3>
+            <div id="modal-corpo" class="space-y-4"></div>
+            <div class="flex justify-end space-x-3 pt-2">
+                <button type="button" onclick="fecharModal()" class="bg-slate-100 text-slate-700 px-4 py-2.5 rounded-xl text-sm font-semibold">Cancelar</button>
+                <button type="button" onclick="executarSalvarModal()" class="bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm shadow-md cursor-pointer">Salvar</button>
+            </div>
+        </div>
+    </div>
+
     <script>
+        let modalTipo = '';
+
         function switchView(view) {
             document.getElementById('view-login').classList.add('hidden');
             document.getElementById('view-dashboard').classList.add('hidden');
@@ -408,19 +375,239 @@
         function logout() { switchView('login'); }
 
         function changeTab(tabId) {
-            ['home', 'turmas', 'alunos', 'chamada', 'editor-word', 'provas-trabalhos', 'gestao', 'atividades', 'calendario', 'backup'].forEach(t => {
+            ['home', 'turmas', 'alunos', 'chamada', 'editor-word', 'gestao', 'provas-trabalhos', 'backup'].forEach(t => {
                 const el = document.getElementById(`tab-${t}`);
                 if(el) el.classList.add('hidden');
             });
             const abaAlvo = document.getElementById(`tab-${tabId}`);
             if(abaAlvo) abaAlvo.classList.remove('hidden');
 
+            if(tabId === 'chamada') atualizarSelectTurmasChamada();
+            if(tabId === 'editor-word') atualizarSelectTurmasWord();
             if(tabId === 'gestao') filtrarBNCC('');
+            if(tabId === 'provas-trabalhos') atualizarTabelaPDFs();
         }
 
         function carregarTudoNaTela() {
+            atualizarTabelaTurmas();
+            atualizarTabelaAlunos();
             atualizarEstatisticas();
+            atualizarSelectTurmasChamada();
+            atualizarSelectTurmasWord();
+            carregarPlanoGestao();
+            atualizarListaDocsWord();
         }
+
+        // TURMAS E ALUNOS MODAIS
+        function abrirModalTurma() {
+            modalTipo = 'turma';
+            document.getElementById('modal-titulo').textContent = 'Nova Turma';
+            document.getElementById('modal-corpo').innerHTML = `
+                <div><label class="block text-xs uppercase font-semibold text-slate-600 mb-1">Nome</label><input type="text" id="m-t-nome" placeholder="Ex: 8º Ano A" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
+                <div><label class="block text-xs uppercase font-semibold text-slate-600 mb-1">Ano / Série</label><input type="text" id="m-t-ano" placeholder="Ex: Ensino Fundamental" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
+                <div><label class="block text-xs uppercase font-semibold text-slate-600 mb-1">Turno</label><input type="text" id="m-t-turno" placeholder="Ex: Manhã" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
+            `;
+            document.getElementById('modal-app').classList.remove('hidden');
+        }
+
+        function abrirModalAluno() {
+            modalTipo = 'aluno';
+            document.getElementById('modal-titulo').textContent = 'Novo Aluno';
+            let turmasOpts = turmas.length ? turmas.map(t => `<option value="${t.nome}">${t.nome}</option>`).join('') : '<option value="Geral">Sem turmas</option>';
+            document.getElementById('modal-corpo').innerHTML = `
+                <div><label class="block text-xs uppercase font-semibold text-slate-600 mb-1">Nome</label><input type="text" id="m-a-nome" placeholder="Nome completo" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
+                <div><label class="block text-xs uppercase font-semibold text-slate-600 mb-1">E-mail</label><input type="email" id="m-a-email" placeholder="email@escola.com" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
+                <div><label class="block text-xs uppercase font-semibold text-slate-600 mb-1">Turma</label><select id="m-a-turma" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm">${turmasOpts}</select></div>
+            `;
+            document.getElementById('modal-app').classList.remove('hidden');
+        }
+
+        function fecharModal() { document.getElementById('modal-app').classList.add('hidden'); }
+
+        function executarSalvarModal() {
+            if(modalTipo === 'turma') {
+                const nome = document.getElementById('m-t-nome').value.trim();
+                const ano = document.getElementById('m-t-ano').value.trim();
+                const turno = document.getElementById('m-t-turno').value.trim();
+                if(!nome) { alert('Insira o nome da turma.'); return; }
+                turmas.push({ nome, ano: ano || 'N/A', turno: turno || 'N/A' });
+                atualizarTabelaTurmas();
+                atualizarSelectTurmasChamada();
+                atualizarSelectTurmasWord();
+            } else if(modalTipo === 'aluno') {
+                const nome = document.getElementById('m-a-nome').value.trim();
+                const email = document.getElementById('m-a-email').value.trim();
+                const turma = document.getElementById('m-a-turma').value;
+                if(!nome) { alert('Insira o nome do aluno.'); return; }
+                alunos.push({ nome, email, turma });
+                atualizarTabelaAlunos();
+            }
+            salvarDadosLocais();
+            atualizarEstatisticas();
+            fecharModal();
+        }
+
+        function atualizarTabelaTurmas() {
+            const tbody = document.getElementById('tabela-turmas');
+            if(!tbody) return;
+            tbody.innerHTML = turmas.length === 0 ? `<tr><td colspan="5" class="p-8 text-center text-slate-400">Nenhuma turma.</td></tr>` : turmas.map((t, idx) => `
+                <tr class="hover:bg-slate-50">
+                    <td class="p-4 font-semibold text-slate-900">${t.nome}</td><td class="p-4 text-slate-600">${t.ano}</td><td class="p-4 text-slate-600">${t.turno}</td>
+                    <td class="p-4"><span class="bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full text-xs">${alunos.filter(a => a.turma === t.nome).length} aluno(s)</span></td>
+                    <td class="p-4 text-right"><button onclick="removerTurma(${idx})" class="text-rose-600 text-xs font-semibold cursor-pointer">Excluir</button></td>
+                </tr>
+            `).join('');
+        }
+
+        function atualizarTabelaAlunos() {
+            const tbody = document.getElementById('tabela-alunos');
+            if(!tbody) return;
+            tbody.innerHTML = alunos.length === 0 ? `<tr><td colspan="4" class="p-8 text-center text-slate-400">Nenhum aluno.</td></tr>` : alunos.map((a, idx) => `
+                <tr class="hover:bg-slate-50">
+                    <td class="p-4 font-semibold text-slate-900">${a.nome}</td><td class="p-4 text-slate-600">${a.email || '-'}</td><td class="p-4 text-slate-600"><span class="bg-slate-100 px-3 py-1 rounded-md text-xs">${a.turma}</span></td>
+                    <td class="p-4 text-right"><button onclick="removerAluno(${idx})" class="text-rose-600 text-xs font-semibold cursor-pointer">Excluir</button></td>
+                </tr>
+            `).join('');
+        }
+
+        function removerTurma(idx) { turmas.splice(idx, 1); salvarDadosLocais(); atualizarTabelaTurmas(); atualizarEstatisticas(); atualizarSelectTurmasChamada(); }
+        function removerAluno(idx) { alunos.splice(idx, 1); salvarDadosLocais(); atualizarTabelaAlunos(); atualizarEstatisticas(); }
+
+        // CHAMADA RÁPIDA
+        function atualizarSelectTurmasChamada() {
+            const select = document.getElementById('select-turma-chamada');
+            if(!select) return;
+            select.innerHTML = '<option value="">Escolha uma turma...</option>' + turmas.map(t => `<option value="${t.nome}">${t.nome} (${t.ano})</option>`).join('');
+        }
+
+        function carregarChamadaTurma() {
+            const turmaNome = document.getElementById('select-turma-chamada').value;
+            const container = document.getElementById('container-lista-chamada');
+            const listaDiv = document.getElementById('lista-alunos-chamada');
+            if(!turmaNome) { container.classList.add('hidden'); return; }
+            const alunosTurma = alunos.filter(a => a.turma === turmaNome);
+            container.classList.remove('hidden');
+            if(alunosTurma.length === 0) { listaDiv.innerHTML = `<p class="text-xs text-slate-400">Nenhum aluno nesta turma.</p>`; return; }
+            listaDiv.innerHTML = alunosTurma.map(a => `
+                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 flex justify-between items-center text-xs">
+                    <span class="font-semibold text-slate-900">${a.nome}</span>
+                    <div class="flex gap-2">
+                        <button type="button" onclick="marcarPresenca(this, 'P')" class="px-3 py-1.5 rounded-lg font-bold bg-emerald-100 text-emerald-700 border border-emerald-300">Presente</button>
+                        <button type="button" onclick="marcarPresenca(this, 'F')" class="px-3 py-1.5 rounded-lg font-bold bg-slate-200 text-slate-600 border border-slate-300">Falta</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function marcarPresenca(btn, tipo) {
+            const parent = btn.parentElement;
+            parent.querySelectorAll('button').forEach(b => { b.className = "px-3 py-1.5 rounded-lg font-bold bg-slate-200 text-slate-600 border border-slate-300"; });
+            btn.className = tipo === 'P' ? "px-3 py-1.5 rounded-lg font-bold bg-emerald-600 text-white shadow-sm" : "px-3 py-1.5 rounded-lg font-bold bg-rose-600 text-white shadow-sm";
+        }
+
+        // EDITOR WORD E BNCC
+        function atualizarSelectTurmasWord() {
+            const select = document.getElementById('doc-word-turma');
+            if(!select) return;
+            select.innerHTML = turmas.length === 0 ? '<option value="Geral">Geral</option>' : turmas.map(t => `<option value="${t.nome}">${t.nome}</option>`).join('');
+        }
+
+        function execCmd(command, value = null) { document.execCommand(command, false, value); }
+        function novoDocumentoWord() { document.getElementById('doc-word-titulo').value = ''; document.getElementById('editor-word-area').innerHTML = '<p>Escreva aqui...</p>'; }
+
+        function salvarDocumentoWord() {
+            const titulo = document.getElementById('doc-word-titulo').value.trim();
+            const turma = document.getElementById('doc-word-turma').value;
+            const conteudo = document.getElementById('editor-word-area').innerHTML;
+            if(!titulo) { alert('Insira um título.'); return; }
+            documentosWord.push({ titulo, turma, conteudo, data: new Date().toLocaleDateString('pt-PT') });
+            salvarDadosLocais();
+            atualizarListaDocsWord();
+            atualizarEstatisticas();
+            alert('Atividade guardada!');
+        }
+
+        function atualizarListaDocsWord() {
+            const container = document.getElementById('lista-docs-word');
+            if(!container) return;
+            container.innerHTML = documentosWord.length === 0 ? `<p class="text-xs text-slate-400">Nenhum documento.</p>` : documentosWord.map((d, idx) => `
+                <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 flex justify-between items-center text-xs">
+                    <div><strong class="text-slate-900 block font-semibold">${d.titulo}</strong><span class="text-slate-500">${d.turma}</span></div>
+                    <button onclick="removerDocWord(${idx})" class="text-rose-600 hover:underline">Excluir</button>
+                </div>
+            `).join('');
+        }
+
+        function removerDocWord(idx) { documentosWord.splice(idx, 1); salvarDadosLocais(); atualizarListaDocsWord(); atualizarEstatisticas(); }
+
+        function filtrarBNCC(termo) {
+            const container = document.getElementById('resultado-busca-bncc');
+            if(!container) return;
+            const termoLimpo = termo.trim().toLowerCase();
+            const filtradas = baseBNCC.filter(b => b.codigo.toLowerCase().includes(termoLimpo) || b.tema.toLowerCase().includes(termoLimpo) || b.desc.toLowerCase().includes(termoLimpo));
+            container.innerHTML = filtradas.map(b => `
+                <div onclick="inserirBNCCNoPlano('${b.codigo}', '${b.desc.replace(/'/g, "\\'")}')" class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs text-slate-700 hover:border-emerald-500 cursor-pointer flex justify-between items-center">
+                    <div><strong class="text-emerald-700 font-bold">[${b.codigo}]</strong> <span class="text-slate-600">${b.desc}</span></div>
+                    <button type="button" class="bg-emerald-600 text-white font-bold px-3 py-1 rounded-lg text-xs">＋ Inserir</button>
+                </div>
+            `).join('');
+        }
+
+        function inserirBNCCNoPlano(codigo, desc) {
+            const campo = document.getElementById('plano-bncc-texto');
+            campo.value += (campo.value ? '\n' : '') + `• [${codigo}] - ${desc}`;
+            alert(`Habilidade ${codigo} inserida!`);
+        }
+
+        function salvarPlanoGestao() {
+            planoGestaoDados = {
+                objetivos: document.getElementById('plano-objetivos').value,
+                bncc: document.getElementById('plano-bncc-texto').value
+            };
+            salvarDadosLocais();
+            alert('Plano guardado com sucesso!');
+        }
+
+        function carregarPlanoGestao() {
+            if(planoGestaoDados.objetivos) document.getElementById('plano-objetivos').value = planoGestaoDados.objetivos;
+            if(planoGestaoDados.bncc) document.getElementById('plano-bncc-texto').value = planoGestaoDados.bncc;
+        }
+
+        // GESTOR DE PDFS
+        function abrirModalUploadPDF() {
+            let turmasOpts = turmas.length ? turmas.map(t => `<option value="${t.nome}">${t.nome}</option>`).join('') : '<option value="Geral">Geral</option>';
+            modalTipo = 'pdf';
+            document.getElementById('modal-titulo').textContent = 'Anexar Ficheiro PDF';
+            document.getElementById('modal-corpo').innerHTML = `
+                <div><label class="block text-xs uppercase font-semibold text-slate-600 mb-1">Título</label><input type="text" id="pdf-titulo" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
+                <div><label class="block text-xs uppercase font-semibold text-slate-600 mb-1">Turma</label><select id="pdf-turma" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm">${turmasOpts}</select></div>
+                <div><label class="block text-xs uppercase font-semibold text-slate-600 mb-1">PDF</label><input type="file" id="pdf-file-input" accept="application/pdf" class="w-full text-xs"></div>
+            `;
+            document.getElementById('modal-app').classList.remove('hidden');
+        }
+
+        function atualizarTabelaPDFs() {
+            const container = document.getElementById('lista-provas-cards');
+            if(!container) return;
+            if(documentosPDF.length === 0) { container.innerHTML = `<div class="bg-white border border-slate-200 p-8 rounded-3xl text-slate-400 text-sm col-span-2 text-center">Nenhum ficheiro PDF anexado.</div>`; return; }
+            container.innerHTML = documentosPDF.map((pt, idx) => `
+                <div class="bg-white border border-slate-200 p-6 rounded-3xl space-y-4 shadow-sm">
+                    <h3 class="font-bold text-base text-slate-900">${pt.titulo} (${pt.turma})</h3>
+                    <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
+                        <button onclick="visualizarPDF(${idx})" class="bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-semibold">Abrir</button>
+                        <button onclick="removerPDF(${idx})" class="bg-rose-50 text-rose-600 px-3 py-2 rounded-xl text-xs font-semibold">Excluir</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function visualizarPDF(idx) {
+            const pdf = documentosPDF[idx];
+            const win = window.open();
+            win.document.write(`<iframe src="${pdf.pdfData}" frameborder="0" style="border:0; width:100%; height:100%;" allowfullscreen></iframe>`);
+        }
+
+        function removerPDF(idx) { documentosPDF.splice(idx, 1); salvarDadosLocais(); atualizarTabelaPDFs(); atualizarEstatisticas(); }
 
         function atualizarEstatisticas() {
             const elTurmas = document.getElementById('stat-turmas');
@@ -432,71 +619,6 @@
             if(elDocs) elDocs.textContent = documentosPDF.length + documentosWord.length;
             if(elCircuitos) elCircuitos.textContent = circuitosAtividades.length;
         }
-
-        function filtrarBNCC(termo) {
-            const container = document.getElementById('resultado-busca-bncc');
-            if(!container) return;
-            const termoLimpo = termo.trim().toLowerCase();
-            const filtradas = baseBNCC.filter(b => b.codigo.toLowerCase().includes(termoLimpo) || b.tema.toLowerCase().includes(termoLimpo) || b.desc.toLowerCase().includes(termoLimpo));
-
-            if(filtradas.length === 0) { container.innerHTML = `<p class="text-xs text-slate-400 p-2">Nenhuma habilidade encontrada.</p>`; return; }
-
-            container.innerHTML = filtradas.map(b => `
-                <div onclick="inserirBNCCNoPlano('${b.codigo}', '${b.desc.replace(/'/g, "\\'")}')" class="bg-slate-50 p-2.5 rounded-xl border border-slate-200 text-xs text-slate-700 flex justify-between items-center cursor-pointer active:bg-emerald-50">
-                    <div><strong class="text-emerald-700">[${b.codigo}]</strong> <span class="text-slate-600">${b.desc}</span></div>
-                    <button type="button" class="bg-emerald-600 text-white font-bold px-2.5 py-1 rounded-lg text-[10px] ml-2">＋ Inserir</button>
-                </div>
-            `).join('');
-        }
-
-        function inserirBNCCNoPlano(codigo, desc) {
-            const campo = document.getElementById('plano-bncc-texto');
-            if(campo) campo.value += (campo.value ? '\n' : '') + `• [${codigo}] - ${desc}`;
-        }
-
-        function salvarPlanoGestao() {
-            planoGestaoDados = {
-                objetivos: document.getElementById('plano-objetivos').value,
-                bncc: document.getElementById('plano-bncc-texto').value,
-                conteudos: document.getElementById('plano-conteudos').value,
-                metodologia: document.getElementById('plano-metodologia').value
-            };
-            salvarDadosLocais();
-            alert('Plano guardado com sucesso!');
-        }
-
-        function execCmd(command, value = null) {
-            document.execCommand(command, false, value);
-        }
-
-        function salvarDocumentoWord() {
-            let titulo = document.getElementById('doc-word-titulo').value;
-            let conteudo = document.getElementById('editor-word-area').innerHTML;
-            if(!titulo) { alert("Insira um título."); return; }
-            documentosWord.push({ titulo, conteudo, data: new Date().toLocaleDateString('pt-PT') });
-            salvarDadosLocais();
-            atualizarEstatisticas();
-            alert("Atividade guardada com sucesso!");
-        }
-
-        function novoDocumentoWord() {
-            document.getElementById('doc-word-titulo').value = '';
-            document.getElementById('editor-word-area').innerHTML = '<p>Escreva o texto da sua atividade aqui...</p>';
-        }
-
-        function imprimirDocumentoWord() {
-            window.print();
-        }
-
-        function imprimirPlanoGestao() {
-            window.print();
-        }
-
-        function abrirModalTurma() { alert("Use o painel de turmas."); }
-        function abrirModalAluno() { alert("Use o painel de alunos."); }
-        function abrirModalUploadPDF() { alert("Use o gestor de PDFs."); }
-        function abrirModalCircuito() { alert("Use os circuitos práticos."); }
-        function abrirModalEvento() { alert("Use o calendário escolar."); }
     </script>
 </body>
 </html>

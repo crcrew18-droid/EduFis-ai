@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%23059669'/><path d='M30 35 v30 M70 35 v30 M20 40 v20 M80 40 v20 M30 50 h40' stroke='white' stroke-width='8' stroke-linecap='round'/></svg>">
-    <title>EduFís Pro v6.6 - Mobile</title>
+    <title>EduFís Pro v6.7 - Mobile & PC</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+        #floating-basketball { touch-action: none; user-select: none; }
     </style>
 </head>
 <body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col relative antialiased">
@@ -39,7 +40,7 @@
             if(statusEl) statusEl.textContent = "⏳ A enviar backup...";
 
             const dadosBackup = {
-                versao: "6.6",
+                versao: "6.7",
                 dataBackup: new Date().toISOString(),
                 turmas, alunos, documentosPDF, documentosWord, circuitosAtividades, eventosCalendario, planoGestaoDados
             };
@@ -135,7 +136,7 @@
                     <div class="w-8 h-8 bg-emerald-600 rounded-lg flex items-center justify-center p-1.5 text-white">
                         <svg class="w-full h-full" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round"><path d="M30 35 v30 M70 35 v30 M20 40 v20 M80 40 v20 M30 50 h40"/></svg>
                     </div>
-                    <span class="text-base font-bold text-slate-900">EduFís <span class="text-emerald-600 text-xs">v6.6</span></span>
+                    <span class="text-base font-bold text-slate-900">EduFís <span class="text-emerald-600 text-xs">v6.7</span></span>
                 </div>
             </div>
             <button onclick="logout()" class="text-xs bg-rose-50 text-rose-600 border border-rose-200 px-3 py-2 rounded-xl font-semibold">Sair</button>
@@ -171,7 +172,7 @@
                     <div class="bg-gradient-to-r from-emerald-600 to-emerald-700 text-white p-6 sm:p-8 rounded-3xl shadow-lg flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
                         <div>
                             <h2 class="text-2xl sm:text-3xl font-black">EduFís Pro 🏋️</h2>
-                            <p class="text-emerald-100 text-xs sm:text-sm mt-1">Pronto para usar no telemóvel e computador.</p>
+                            <p class="text-emerald-100 text-xs sm:text-sm mt-1">Arraste a bola flutuante para onde preferir no ecrã.</p>
                         </div>
                         <button onclick="salvarAutomaticoNoGoogleDrive()" class="w-full sm:w-auto bg-white text-emerald-700 font-bold px-4 py-3 rounded-2xl text-xs sm:text-sm shadow-md">🚀 Backup Drive</button>
                     </div>
@@ -266,16 +267,16 @@
         </div>
     </div>
 
-    <!-- BOTÃO FLUTUANTE DE BASQUETE (SÓ APARECE APÓS LOGIN) -->
-    <div id="floating-basketball" class="hidden fixed bottom-5 right-5 z-50 flex flex-col items-end">
+    <!-- BOTÃO FLUTUANTE DE BASQUETE MÓVEL (DRAG & DROP) -->
+    <div id="floating-basketball" class="hidden fixed z-50 flex flex-col items-end" style="bottom: 20px; right: 20px;">
         <div id="menu-atalhos" class="hidden mb-3 bg-white border border-slate-200 rounded-2xl p-2 shadow-2xl space-y-1.5 w-48 text-xs">
             <button onclick="atalhoIrPara('editor-word')" class="w-full text-left px-3 py-2 rounded-lg text-slate-700 hover:bg-emerald-50">📝 Editor Word</button>
             <button onclick="atalhoIrPara('gestao')" class="w-full text-left px-3 py-2 rounded-lg text-slate-700 hover:bg-emerald-50">📅 Plano BNCC</button>
             <button onclick="atalhoIrPara('provas-trabalhos')" class="w-full text-left px-3 py-2 rounded-lg text-slate-700 hover:bg-emerald-50">📄 Gestor de PDFs</button>
         </div>
 
-        <button onclick="toggleMenuAtalhos()" class="w-12 h-12 sm:w-14 sm:h-14 bg-orange-500 rounded-full flex items-center justify-center shadow-xl p-2 border-2 border-white cursor-pointer">
-            <svg class="w-full h-full text-slate-900" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round">
+        <button id="bola-arrastavel" class="w-12 h-12 sm:w-14 sm:h-14 bg-orange-500 rounded-full flex items-center justify-center shadow-xl p-2 border-2 border-white cursor-grab active:cursor-grabbing">
+            <svg class="w-full h-full text-slate-900 pointer-events-none" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round">
                 <circle cx="50" cy="50" r="44" stroke="currentColor" fill="#ea580c"/>
                 <line x1="6" y1="50" x2="94" y2="50" stroke="currentColor"/>
                 <line x1="50" y1="6" x2="50" y2="94" stroke="currentColor"/>
@@ -299,6 +300,54 @@
     </div>
 
     <script>
+        // SISTEMA DE ARRASTAR A BOLA (MOBILE E DESKTOP)
+        const bolaContainer = document.getElementById('floating-basketball');
+        const botaoBola = document.getElementById('bola-arrastavel');
+        let isDragging = false;
+        let foiMovido = false;
+        let startX, startY, initialX, initialY;
+
+        botaoBola.addEventListener('pointerdown', (e) => {
+            isDragging = true;
+            foiMovido = false;
+            startX = e.clientX;
+            startY = e.clientY;
+            
+            const rect = bolaContainer.getBoundingClientRect();
+            initialX = rect.left;
+            initialY = rect.top;
+            
+            bolaContainer.style.bottom = 'auto';
+            bolaContainer.style.right = 'auto';
+            bolaContainer.style.left = initialX + 'px';
+            bolaContainer.style.top = initialY + 'px';
+            
+            botaoBola.setPointerCapture(e.pointerId);
+        });
+
+        botaoBola.addEventListener('pointermove', (e) => {
+            if (!isDragging) return;
+            const dx = e.clientX - startX;
+            const dy = e.clientY - startY;
+            
+            if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
+                foiMovido = true;
+            }
+            
+            bolaContainer.style.left = (initialX + dx) + 'px';
+            bolaContainer.style.top = (initialY + dy) + 'px';
+        });
+
+        botaoBola.addEventListener('pointerup', (e) => {
+            if (!isDragging) return;
+            isDragging = false;
+            botaoBola.releasePointerCapture(e.pointerId);
+            
+            if (!foiMovido) {
+                toggleMenuAtalhos();
+            }
+        });
+
         function toggleSidebarMobile() {
             const sidebar = document.getElementById('sidebar-menu');
             const overlay = document.getElementById('sidebar-overlay');
@@ -341,7 +390,6 @@
             const abaAlvo = document.getElementById(`tab-${tabId}`);
             if(abaAlvo) abaAlvo.classList.remove('hidden');
 
-            // Fecha o menu lateral no telemóvel ao trocar de aba
             const sidebar = document.getElementById('sidebar-menu');
             const overlay = document.getElementById('sidebar-overlay');
             if(sidebar && !sidebar.classList.contains('-translate-x-full')) {

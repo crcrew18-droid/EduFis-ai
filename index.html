@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%23059669'/><path d='M30 35 v30 M70 35 v30 M20 40 v20 M80 40 v20 M30 50 h40' stroke='white' stroke-width='8' stroke-linecap='round'/></svg>">
-    <title>EduFís Pro v8.2 - Plataforma de Gestão Pedagógica</title>
+    <title>EduFís Pro v8.3 - Plataforma de Gestão Pedagógica</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
@@ -50,6 +50,11 @@
         let documentosWord = JSON.parse(localStorage.getItem('edufis_word_v8')) || [];
         let documentosPDF = JSON.parse(localStorage.getItem('edufis_pdf_v8')) || [];
         let planoGestaoDados = JSON.parse(localStorage.getItem('edufis_plano_v8')) || {};
+        let configApp = JSON.parse(localStorage.getItem('edufis_config_v8')) || {
+            temaCor: 'emerald',
+            nomeProf: '',
+            nomeEscola: ''
+        };
 
         function salvarDadosLocais() {
             localStorage.setItem('edufis_turmas_v8', JSON.stringify(turmas));
@@ -57,6 +62,31 @@
             localStorage.setItem('edufis_word_v8', JSON.stringify(documentosWord));
             localStorage.setItem('edufis_pdf_v8', JSON.stringify(documentosPDF));
             localStorage.setItem('edufis_plano_v8', JSON.stringify(planoGestaoDados));
+            localStorage.setItem('edufis_config_v8', JSON.stringify(configApp));
+        }
+
+        function aplicarTemaCor(cor) {
+            configApp.temaCor = cor;
+            salvarDadosLocais();
+
+            const mapaCores = {
+                emerald: { main: 'bg-emerald-600', hover: 'hover:bg-emerald-700', text: 'text-emerald-600', light: 'bg-emerald-50', border: 'border-emerald-500' },
+                sky: { main: 'bg-sky-600', hover: 'hover:bg-sky-700', text: 'text-sky-600', light: 'bg-sky-50', border: 'border-sky-500' },
+                purple: { main: 'bg-purple-600', hover: 'hover:bg-purple-700', text: 'text-purple-600', light: 'bg-purple-50', border: 'border-purple-500' },
+                slate: { main: 'bg-slate-800', hover: 'hover:bg-slate-900', text: 'text-slate-800', light: 'bg-slate-100', border: 'border-slate-600' }
+            };
+
+            const c = mapaCores[cor] || mapaCores.emerald;
+
+            document.querySelectorAll('.btn-primary-theme').forEach(el => {
+                el.className = el.className.replace(/bg-\w+-\d+/g, c.main).replace(/hover:bg-\w+-\d+/g, c.hover);
+            });
+            document.querySelectorAll('.text-theme-main').forEach(el => {
+                el.className = el.className.replace(/text-\w+-\d+/g, c.text);
+            });
+            document.querySelectorAll('.brand-icon-bg').forEach(el => {
+                el.className = el.className.replace(/bg-\w+-\d+/g, c.main);
+            });
         }
 
         async function salvarAutomaticoNoGoogleDrive() {
@@ -64,9 +94,9 @@
             if(statusEl) statusEl.textContent = "⏳ A enviar backup para a nuvem...";
 
             const dadosBackup = {
-                versao: "8.2",
+                versao: "8.3",
                 dataBackup: new Date().toISOString(),
-                turmas, alunos, documentosWord, documentosPDF, planoGestaoDados
+                turmas, alunos, documentosWord, documentosPDF, planoGestaoDados, configApp
             };
 
             try {
@@ -97,9 +127,11 @@
                     if(conteudo.documentosWord) documentosWord = conteudo.documentosWord;
                     if(conteudo.documentosPDF) documentosPDF = conteudo.documentosPDF;
                     if(conteudo.planoGestaoDados) planoGestaoDados = conteudo.planoGestaoDados;
+                    if(conteudo.configApp) configApp = conteudo.configApp;
                     
                     salvarDadosLocais();
                     carregarTudoNaTela();
+                    aplicarTemaCor(configApp.temaCor || 'emerald');
                     alert('✅ Dados restaurados com sucesso!');
                 } catch(err) {
                     alert('❌ Erro ao ler ficheiro de backup.');
@@ -124,7 +156,7 @@
     <div id="view-login" class="flex flex-col items-center justify-center flex-1 p-4 bg-slate-100">
         <div class="w-full max-w-md bg-white border border-slate-200 rounded-3xl p-8 shadow-xl space-y-6">
             <div class="text-center space-y-2">
-                <div class="w-16 h-16 bg-emerald-600 rounded-2xl flex items-center justify-center mx-auto shadow-md p-3.5">
+                <div class="w-16 h-16 brand-icon-bg bg-emerald-600 rounded-2xl flex items-center justify-center mx-auto shadow-md p-3.5">
                     <svg class="w-full h-full text-white" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round">
                         <path d="M30 35 v30 M70 35 v30 M20 40 v20 M80 40 v20 M30 50 h40"/>
                     </svg>
@@ -142,7 +174,7 @@
                     <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Palavra-passe</label>
                     <input type="password" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-300 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
                 </div>
-                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-2xl shadow-lg shadow-emerald-600/20 transition-all cursor-pointer">Entrar na Plataforma</button>
+                <button type="submit" class="w-full btn-primary-theme bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-2xl shadow-lg transition-all cursor-pointer">Entrar na Plataforma</button>
             </form>
         </div>
     </div>
@@ -157,19 +189,19 @@
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                 </button>
                 <div class="flex items-center gap-2.5">
-                    <div class="w-9 h-9 bg-emerald-600 rounded-xl flex items-center justify-center p-2 shadow-sm">
+                    <div class="w-9 h-9 brand-icon-bg bg-emerald-600 rounded-xl flex items-center justify-center p-2 shadow-sm">
                         <svg class="w-full h-full text-white" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round">
                             <path d="M30 35 v30 M70 35 v30 M20 40 v20 M80 40 v20 M30 50 h40"/>
                         </svg>
                     </div>
                     <div>
                         <span class="text-base font-extrabold text-slate-900 leading-none block">EduFís</span>
-                        <span class="text-[10px] uppercase tracking-wider text-emerald-600 font-extrabold">Pro v8.2</span>
+                        <span class="text-[10px] uppercase tracking-wider text-theme-main text-emerald-600 font-extrabold">Pro v8.3</span>
                     </div>
                 </div>
             </div>
             <div class="flex items-center gap-3">
-                <span class="text-xs font-semibold text-slate-600 hidden sm:inline">👤 Professor(a)</span>
+                <span class="text-xs font-semibold text-slate-600 hidden sm:inline" id="header-user-nome">👤 Professor(a)</span>
                 <button onclick="logout()" class="text-xs bg-rose-50 text-rose-600 border border-rose-200 px-3.5 py-2 rounded-xl font-bold hover:bg-rose-100 transition-colors cursor-pointer">Sair</button>
             </div>
         </header>
@@ -182,20 +214,21 @@
             <aside id="sidebar-menu" class="fixed lg:static inset-y-0 left-0 w-72 bg-white border-r border-slate-200 p-4 flex flex-col justify-between z-40 transform -translate-x-full lg:translate-x-0 transition-transform duration-200 shadow-lg lg:shadow-none">
                 <div class="space-y-1 overflow-y-auto">
                     <div class="text-[10px] uppercase font-bold text-slate-400 px-3 pb-1">Navegação Principal</div>
-                    <button onclick="changeTab('home')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 flex items-center gap-3 transition-colors cursor-pointer">🏠 Visão Geral</button>
-                    <button onclick="changeTab('turmas')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 flex items-center gap-3 transition-colors cursor-pointer">🏫 Turmas</button>
-                    <button onclick="changeTab('alunos')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 flex items-center gap-3 transition-colors cursor-pointer">👤 Alunos</button>
-                    <button onclick="changeTab('chamada')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 flex items-center gap-3 transition-colors cursor-pointer">📋 Chamada Rápida</button>
+                    <button onclick="changeTab('home')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">🏠 Visão Geral</button>
+                    <button onclick="changeTab('turmas')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">🏫 Turmas</button>
+                    <button onclick="changeTab('alunos')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">👤 Alunos</button>
+                    <button onclick="changeTab('chamada')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">📋 Chamada Rápida</button>
                     
                     <div class="text-[10px] uppercase font-bold text-slate-400 px-3 pt-4 pb-1">Pedagógico</div>
-                    <button onclick="changeTab('editor-word')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 flex items-center gap-3 transition-colors cursor-pointer">📝 Editor de Atividades</button>
-                    <button onclick="changeTab('gestao')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 flex items-center gap-3 transition-colors cursor-pointer">📅 Planejamento & BNCC</button>
-                    <button onclick="changeTab('documentos')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 flex items-center gap-3 transition-colors cursor-pointer">📄 Gestor de Documentos</button>
+                    <button onclick="changeTab('editor-word')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">📝 Editor de Atividades</button>
+                    <button onclick="changeTab('gestao')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">📅 Planejamento & BNCC</button>
+                    <button onclick="changeTab('documentos')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">📄 Gestor de Documentos</button>
                     
                     <div class="text-[10px] uppercase font-bold text-slate-400 px-3 pt-4 pb-1">Sistema</div>
-                    <button onclick="changeTab('backup')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 flex items-center gap-3 transition-colors cursor-pointer">☁️ Backup Google Drive</button>
+                    <button onclick="changeTab('backup')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">☁️ Backup Google Drive</button>
+                    <button onclick="changeTab('config')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">⚙️ Configurações</button>
                 </div>
-                <div class="pt-4 border-t border-slate-100 px-3 text-[11px] text-slate-400 font-medium">EduFís Pro v8.2 • 2026</div>
+                <div class="pt-4 border-t border-slate-100 px-3 text-[11px] text-slate-400 font-medium">EduFís Pro v8.3 • 2026</div>
             </aside>
 
             <!-- CONTEÚDO PRINCIPAL -->
@@ -203,27 +236,27 @@
                 
                 <!-- ABA VISÃO GERAL -->
                 <div id="tab-home" class="space-y-6">
-                    <div class="bg-gradient-to-r from-emerald-600 to-emerald-700 text-white p-6 sm:p-8 rounded-3xl shadow-lg flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div class="bg-gradient-to-r from-slate-800 to-slate-900 text-white p-6 sm:p-8 rounded-3xl shadow-lg flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                         <div>
                             <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Bem-vindo ao EduFís Pro 🏋️</h2>
-                            <p class="text-emerald-100 text-sm mt-1">Tecnologia e organização para transformar as suas aulas de Educação Física.</p>
+                            <p class="text-slate-300 text-sm mt-1">Tecnologia e organização para transformar as suas aulas de Educação Física.</p>
                         </div>
-                        <button onclick="salvarAutomaticoNoGoogleDrive()" class="bg-white hover:bg-emerald-50 text-emerald-700 font-bold px-5 py-3 rounded-2xl text-sm shadow-md transition-all cursor-pointer w-full sm:w-auto">🚀 Backup para o Drive</button>
+                        <button onclick="salvarAutomaticoNoGoogleDrive()" class="bg-white hover:bg-slate-100 text-slate-900 font-bold px-5 py-3 rounded-2xl text-sm shadow-md transition-all cursor-pointer w-full sm:w-auto">🚀 Backup para o Drive</button>
                     </div>
                     
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                        <div class="bg-white border border-slate-200/80 p-5 rounded-3xl shadow-xs"><div class="text-3xl font-black text-emerald-600" id="stat-turmas">0</div><div class="text-xs font-bold text-slate-400 mt-1 uppercase tracking-wider">Turmas Ativas</div></div>
-                        <div class="bg-white border border-slate-200/80 p-5 rounded-3xl shadow-xs"><div class="text-3xl font-black text-emerald-600" id="stat-alunos">0</div><div class="text-xs font-bold text-slate-400 mt-1 uppercase tracking-wider">Alunos Matriculados</div></div>
-                        <div class="bg-white border border-slate-200/80 p-5 rounded-3xl shadow-xs"><div class="text-3xl font-black text-emerald-600" id="stat-documentos">0</div><div class="text-xs font-bold text-slate-400 mt-1 uppercase tracking-wider">Atividades Salvas</div></div>
-                        <div class="bg-white border border-slate-200/80 p-5 rounded-3xl shadow-xs"><div class="text-3xl font-black text-emerald-600" id="stat-pdfs">0</div><div class="text-xs font-bold text-slate-400 mt-1 uppercase tracking-wider">PDFs Anexados</div></div>
+                        <div class="bg-white border border-slate-200/80 p-5 rounded-3xl shadow-xs"><div class="text-3xl font-black text-theme-main text-emerald-600" id="stat-turmas">0</div><div class="text-xs font-bold text-slate-400 mt-1 uppercase tracking-wider">Turmas Ativas</div></div>
+                        <div class="bg-white border border-slate-200/80 p-5 rounded-3xl shadow-xs"><div class="text-3xl font-black text-theme-main text-emerald-600" id="stat-alunos">0</div><div class="text-xs font-bold text-slate-400 mt-1 uppercase tracking-wider">Alunos Matriculados</div></div>
+                        <div class="bg-white border border-slate-200/80 p-5 rounded-3xl shadow-xs"><div class="text-3xl font-black text-theme-main text-emerald-600" id="stat-documentos">0</div><div class="text-xs font-bold text-slate-400 mt-1 uppercase tracking-wider">Atividades Salvas</div></div>
+                        <div class="bg-white border border-slate-200/80 p-5 rounded-3xl shadow-xs"><div class="text-3xl font-black text-theme-main text-emerald-600" id="stat-pdfs">0</div><div class="text-xs font-bold text-slate-400 mt-1 uppercase tracking-wider">PDFs Anexados</div></div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="bg-white border border-slate-200/80 p-6 rounded-3xl shadow-xs space-y-4">
                             <h3 class="font-extrabold text-sm uppercase text-slate-700 tracking-wider">⚡ Atalhos Rápidos</h3>
                             <div class="grid grid-cols-2 gap-3">
-                                <button onclick="changeTab('turmas'); abrirModalTurma();" class="p-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 rounded-2xl font-bold text-xs text-left transition-colors cursor-pointer">+ Registar Turma</button>
-                                <button onclick="changeTab('alunos'); abrirModalAluno();" class="p-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 rounded-2xl font-bold text-xs text-left transition-colors cursor-pointer">+ Registar Aluno</button>
+                                <button onclick="changeTab('turmas'); abrirModalTurma();" class="p-3 bg-slate-50 hover:bg-slate-100 text-slate-800 rounded-2xl font-bold text-xs text-left transition-colors cursor-pointer">+ Registar Turma</button>
+                                <button onclick="changeTab('alunos'); abrirModalAluno();" class="p-3 bg-slate-50 hover:bg-slate-100 text-slate-800 rounded-2xl font-bold text-xs text-left transition-colors cursor-pointer">+ Registar Aluno</button>
                                 <button onclick="changeTab('chamada')" class="p-3 bg-slate-50 hover:bg-slate-100 text-slate-800 rounded-2xl font-bold text-xs text-left transition-colors cursor-pointer">📋 Fazer Chamada</button>
                                 <button onclick="changeTab('editor-word')" class="p-3 bg-slate-50 hover:bg-slate-100 text-slate-800 rounded-2xl font-bold text-xs text-left transition-colors cursor-pointer">📝 Nova Atividade</button>
                             </div>
@@ -232,7 +265,7 @@
                         <div class="bg-white border border-slate-200/80 p-6 rounded-3xl shadow-xs space-y-4">
                             <h3 class="font-extrabold text-sm uppercase text-slate-700 tracking-wider">📅 Agenda de Hoje</h3>
                             <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 space-y-1">
-                                <div class="text-xs font-bold text-emerald-700">Aula Prática / Teórica</div>
+                                <div class="text-xs font-bold text-theme-main text-emerald-700">Aula Prática / Teórica</div>
                                 <div class="text-sm font-extrabold text-slate-900" id="agenda-turma-atual">Sem turmas agendadas para hoje</div>
                                 <div class="text-xs text-slate-500">Utilize o módulo de Chamada Rápida para iniciar o registo diário.</div>
                             </div>
@@ -247,7 +280,7 @@
                             <h2 class="text-2xl font-black text-slate-900 tracking-tight">Gestão de Turmas</h2>
                             <p class="text-slate-500 text-sm">Crie e organize as turmas da sua escola.</p>
                         </div>
-                        <button onclick="abrirModalTurma()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all cursor-pointer">+ Nova Turma</button>
+                        <button onclick="abrirModalTurma()" class="btn-primary-theme bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all cursor-pointer">+ Nova Turma</button>
                     </div>
                     <div class="bg-white border border-slate-200/80 rounded-3xl overflow-x-auto shadow-xs">
                         <table class="w-full text-left text-sm min-w-[500px]">
@@ -268,7 +301,7 @@
                             <h2 class="text-2xl font-black text-slate-900 tracking-tight">Matícula de Alunos</h2>
                             <p class="text-slate-500 text-sm">Gerencie os estudantes matriculados em cada turma.</p>
                         </div>
-                        <button onclick="abrirModalAluno()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all cursor-pointer">+ Novo Aluno</button>
+                        <button onclick="abrirModalAluno()" class="btn-primary-theme bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all cursor-pointer">+ Novo Aluno</button>
                     </div>
                     <div class="bg-white border border-slate-200/80 rounded-3xl overflow-x-auto shadow-xs">
                         <table class="w-full text-left text-sm min-w-[500px]">
@@ -302,8 +335,8 @@
                     </div>
                     <div id="container-lista-chamada" class="hidden bg-white border border-slate-200/80 p-6 rounded-3xl max-w-2xl space-y-4 shadow-xs">
                         <div class="flex justify-between items-center">
-                            <h3 class="text-base font-extrabold text-emerald-700">Lista de Presença</h3>
-                            <button onclick="salvarChamada()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer">💾 Guardar Chamada</button>
+                            <h3 class="text-base font-extrabold text-theme-main text-emerald-700">Lista de Presença</h3>
+                            <button onclick="salvarChamada()" class="btn-primary-theme bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer">💾 Guardar Chamada</button>
                         </div>
                         <div id="lista-alunos-chamada" class="space-y-3"></div>
                     </div>
@@ -318,7 +351,7 @@
                         </div>
                         <div class="flex gap-2">
                             <button onclick="novoDocumentoWord()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2.5 rounded-xl text-sm font-bold transition-colors cursor-pointer">+ Limpar</button>
-                            <button onclick="salvarDocumentoWord()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all cursor-pointer">💾 Guardar</button>
+                            <button onclick="salvarDocumentoWord()" class="btn-primary-theme bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all cursor-pointer">💾 Guardar</button>
                         </div>
                     </div>
 
@@ -356,7 +389,7 @@
                     </div>
                 </div>
 
-                <!-- ABA PLANEJAMENTO & BNCC (COM CABEÇALHO EDITÁVEL) -->
+                <!-- ABA PLANEJAMENTO & BNCC -->
                 <div id="tab-gestao" class="hidden space-y-6">
                     <div class="flex justify-between items-center flex-wrap gap-3 no-print">
                         <div>
@@ -364,14 +397,14 @@
                             <p class="text-slate-500 text-sm">Consulte habilidades oficiais e estruture o seu plano.</p>
                         </div>
                         <div class="flex gap-2">
-                            <button onclick="salvarPlanoGestao()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all cursor-pointer">💾 Guardar Plano</button>
+                            <button onclick="salvarPlanoGestao()" class="btn-primary-theme bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all cursor-pointer">💾 Guardar Plano</button>
                             <button onclick="window.print()" class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-colors cursor-pointer">🖨️ Imprimir / Gerar PDF</button>
                         </div>
                     </div>
 
                     <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-3 shadow-xs no-print">
                         <div class="flex justify-between items-center">
-                            <h3 class="font-extrabold text-xs uppercase tracking-wider text-emerald-700">🔍 Repositório de Habilidades BNCC</h3>
+                            <h3 class="font-extrabold text-xs uppercase tracking-wider text-theme-main text-emerald-700">🔍 Repositório de Habilidades BNCC</h3>
                             <span class="text-xs text-slate-400">Clique em <b>＋ Inserir</b> para adicionar ao plano</span>
                         </div>
                         <input type="text" oninput="filtrarBNCC(this.value)" placeholder="Pesquisar por código (ex: EF67EF01), esporte, dança..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
@@ -380,8 +413,6 @@
 
                     <!-- FORMULÁRIO DO PLANO DE GESTÃO -->
                     <div class="bg-white border border-slate-200/80 p-8 rounded-3xl shadow-xs space-y-6 max-w-4xl">
-                        
-                        <!-- CABEÇALHO EDITÁVEL DO PLANO -->
                         <div class="border-b border-slate-200 pb-5 space-y-4">
                             <h3 class="text-xs font-black uppercase text-slate-400 tracking-widest no-print">🏫 Cabeçalho da Escola</h3>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -408,7 +439,6 @@
                             </div>
                         </div>
 
-                        <!-- CONTEÚDO PEDAGÓGICO -->
                         <div class="space-y-5">
                             <div>
                                 <label class="block text-xs uppercase font-bold text-slate-700 mb-1">1. Objetivos Estratégicos & Geral da Disciplina</label>
@@ -419,7 +449,6 @@
                                 <textarea id="plano-bncc-texto" rows="4" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3.5 text-sm font-mono text-emerald-800 focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="As habilidades BNCC selecionadas aparecerão aqui..."></textarea>
                             </div>
                         </div>
-
                     </div>
                 </div>
 
@@ -430,7 +459,7 @@
                             <h2 class="text-2xl font-black text-slate-900 tracking-tight">Gestor de Documentos & PDFs</h2>
                             <p class="text-slate-500 text-sm">Anexe relatórios, regras oficiais e testes em PDF.</p>
                         </div>
-                        <button onclick="abrirModalUploadPDF()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all cursor-pointer">+ Adicionar PDF</button>
+                        <button onclick="abrirModalUploadPDF()" class="btn-primary-theme bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all cursor-pointer">+ Adicionar PDF</button>
                     </div>
                     <div id="lista-provas-cards" class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                         <div class="bg-white border border-slate-200/80 p-8 rounded-3xl text-slate-400 text-sm col-span-2 text-center shadow-xs">Nenhum ficheiro PDF anexado.</div>
@@ -446,7 +475,7 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl">
                         <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
                             <h3 class="font-extrabold text-base text-slate-900">Backup na Nuvem</h3>
-                            <button onclick="salvarAutomaticoNoGoogleDrive()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-2xl cursor-pointer text-sm shadow-sm transition-all">☁️ Salvar no Drive</button>
+                            <button onclick="salvarAutomaticoNoGoogleDrive()" class="btn-primary-theme w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-2xl cursor-pointer text-sm shadow-sm transition-all">☁️ Salvar no Drive</button>
                             <span id="status-drive-txt" class="text-xs text-slate-500 block text-center font-medium">Pronto para sincronizar</span>
                         </div>
                         <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
@@ -456,6 +485,49 @@
                                 <input type="file" accept=".json" onchange="importarBackupDrive(event)" class="hidden">
                             </label>
                             <span class="text-xs text-slate-500 block text-center font-medium">Carregue um backup guardado</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NOVA ABA DE CONFIGURAÇÕES -->
+                <div id="tab-config" class="hidden space-y-6">
+                    <div>
+                        <h2 class="text-2xl font-black text-slate-900 tracking-tight">Configurações do Sistema</h2>
+                        <p class="text-slate-500 text-sm">Personalize a aparência, perfil e preferências do EduFís Pro.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl">
+                        <!-- PERFIL E ESCOLA -->
+                        <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
+                            <h3 class="font-extrabold text-sm uppercase tracking-wider text-slate-700">👤 Perfil & Escola Padrão</h3>
+                            <div>
+                                <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Nome do Professor(a)</label>
+                                <input type="text" id="cfg-nome-prof" placeholder="Ex: Prof. Carlos Eduardo" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Escola / Instituição Principal</label>
+                                <input type="text" id="cfg-nome-escola" placeholder="Ex: Escola Municipal Silva" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            </div>
+                            <button onclick="salvarConfigPerfil()" class="btn-primary-theme w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl text-xs shadow-sm transition-all cursor-pointer">Guardar Perfil</button>
+                        </div>
+
+                        <!-- TEMA DE CORES -->
+                        <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
+                            <h3 class="font-extrabold text-sm uppercase tracking-wider text-slate-700">🎨 Cor da Interface</h3>
+                            <p class="text-xs text-slate-500">Escolha a cor principal para os botões e destaques da plataforma:</p>
+                            <div class="grid grid-cols-2 gap-3 pt-1">
+                                <button onclick="aplicarTemaCor('emerald')" class="p-3 bg-emerald-600 text-white rounded-xl font-bold text-xs text-center hover:opacity-90 transition-opacity cursor-pointer">🟢 Verde-Esmeralda</button>
+                                <button onclick="aplicarTemaCor('sky')" class="p-3 bg-sky-600 text-white rounded-xl font-bold text-xs text-center hover:opacity-90 transition-opacity cursor-pointer">🔵 Azul-Marinho</button>
+                                <button onclick="aplicarTemaCor('purple')" class="p-3 bg-purple-600 text-white rounded-xl font-bold text-xs text-center hover:opacity-90 transition-opacity cursor-pointer">🟣 Violeta</button>
+                                <button onclick="aplicarTemaCor('slate')" class="p-3 bg-slate-800 text-white rounded-xl font-bold text-xs text-center hover:opacity-90 transition-opacity cursor-pointer">⚫ Neutro / Escuro</button>
+                            </div>
+                        </div>
+
+                        <!-- LIMPEZA DE DADOS -->
+                        <div class="bg-white border border-rose-200 p-6 rounded-3xl space-y-3 shadow-xs sm:col-span-2">
+                            <h3 class="font-extrabold text-sm uppercase tracking-wider text-rose-600">⚠️ Zona de Perigo</h3>
+                            <p class="text-xs text-slate-500">Ao clicar no botão abaixo, todos os seus dados locais (turmas, alunos e planos) serão apagados permanentemente deste navegador.</p>
+                            <button onclick="limparTodosDadosLocais()" class="bg-rose-50 text-rose-600 hover:bg-rose-100 border border-rose-200 font-bold px-4 py-2.5 rounded-xl text-xs transition-colors cursor-pointer">Limpar Todos os Dados Locais</button>
                         </div>
                     </div>
                 </div>
@@ -471,7 +543,7 @@
             <div id="modal-corpo" class="space-y-4"></div>
             <div class="flex justify-end gap-2.5 pt-2">
                 <button type="button" onclick="fecharModal()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2.5 rounded-xl text-xs font-bold transition-colors">Cancelar</button>
-                <button type="button" onclick="executarSalvarModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-5 py-2.5 rounded-xl text-xs shadow-sm transition-all cursor-pointer">Guardar</button>
+                <button type="button" onclick="executarSalvarModal()" class="btn-primary-theme bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-5 py-2.5 rounded-xl text-xs shadow-sm transition-all cursor-pointer">Guardar</button>
             </div>
         </div>
     </div>
@@ -497,6 +569,7 @@
             if(view === 'dashboard') {
                 document.getElementById('view-dashboard').classList.remove('hidden');
                 carregarTudoNaTela();
+                aplicarTemaCor(configApp.temaCor || 'emerald');
             }
         }
 
@@ -504,7 +577,7 @@
         function logout() { switchView('login'); }
 
         function changeTab(tabId) {
-            ['home', 'turmas', 'alunos', 'chamada', 'editor-word', 'gestao', 'documentos', 'backup'].forEach(t => {
+            ['home', 'turmas', 'alunos', 'chamada', 'editor-word', 'gestao', 'documentos', 'backup', 'config'].forEach(t => {
                 const el = document.getElementById(`tab-${t}`);
                 if(el) el.classList.add('hidden');
             });
@@ -529,6 +602,7 @@
                 atualizarSelectTurmasPlano();
             }
             if(tabId === 'documentos') atualizarTabelaPDFs();
+            if(tabId === 'config') carregarConfigNaTela();
         }
 
         function carregarTudoNaTela() {
@@ -541,6 +615,40 @@
             carregarPlanoGestao();
             atualizarListaDocsWord();
             atualizarAgendaHoje();
+        }
+
+        function carregarConfigNaTela() {
+            if(configApp.nomeProf) {
+                document.getElementById('cfg-nome-prof').value = configApp.nomeProf;
+                document.getElementById('header-user-nome').textContent = `👤 ${configApp.nomeProf}`;
+            }
+            if(configApp.nomeEscola) {
+                document.getElementById('cfg-nome-escola').value = configApp.nomeEscola;
+            }
+        }
+
+        function salvarConfigPerfil() {
+            configApp.nomeProf = document.getElementById('cfg-nome-prof').value.trim();
+            configApp.nomeEscola = document.getElementById('cfg-nome-escola').value.trim();
+            
+            if(configApp.nomeProf) {
+                document.getElementById('header-user-nome').textContent = `👤 ${configApp.nomeProf}`;
+                document.getElementById('plano-professor').value = configApp.nomeProf;
+            }
+            if(configApp.nomeEscola) {
+                document.getElementById('plano-escola').value = configApp.nomeEscola;
+            }
+
+            salvarDadosLocais();
+            alert('✅ Perfil guardado com sucesso!');
+        }
+
+        function limparTodosDadosLocais() {
+            if(confirm('🚨 Tem certeza que deseja apagar TODOS os dados salvos neste navegador?')) {
+                localStorage.clear();
+                alert('Os dados foram apagados. A página será recarregada.');
+                location.reload();
+            }
         }
 
         function atualizarAgendaHoje() {
@@ -611,7 +719,7 @@
                     <td class="p-4 font-bold text-slate-900">${t.nome}</td>
                     <td class="p-4 text-slate-600">${t.ano}</td>
                     <td class="p-4 text-slate-600">${t.turno}</td>
-                    <td class="p-4"><span class="bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full text-xs font-extrabold">${alunos.filter(a => a.turma === t.nome).length} aluno(s)</span></td>
+                    <td class="p-4"><span class="bg-slate-100 text-slate-700 px-3 py-1 rounded-full text-xs font-extrabold">${alunos.filter(a => a.turma === t.nome).length} aluno(s)</span></td>
                     <td class="p-4 text-right"><button onclick="removerTurma(${idx})" class="text-rose-600 hover:text-rose-800 text-xs font-bold cursor-pointer">Excluir</button></td>
                 </tr>
             `).join('');
@@ -671,7 +779,7 @@
                 <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200/80 flex justify-between items-center text-xs">
                     <span class="font-bold text-slate-900">${a.nome}</span>
                     <div class="flex gap-2" id="aluno-row-${idx}">
-                        <button type="button" onclick="marcarPresenca(${idx}, 'P')" class="px-3 py-1.5 rounded-xl font-bold bg-emerald-600 text-white shadow-xs cursor-pointer btn-status-${idx}">Presente</button>
+                        <button type="button" onclick="marcarPresenca(${idx}, 'P')" class="btn-primary-theme px-3 py-1.5 rounded-xl font-bold bg-emerald-600 text-white shadow-xs cursor-pointer btn-status-${idx}">Presente</button>
                         <button type="button" onclick="marcarPresenca(${idx}, 'F')" class="px-3 py-1.5 rounded-xl font-bold bg-slate-200 text-slate-700 hover:bg-slate-300 cursor-pointer btn-status-${idx}">Falta</button>
                     </div>
                 </div>
@@ -685,7 +793,7 @@
                 b.className = "px-3 py-1.5 rounded-xl font-bold bg-slate-200 text-slate-700 hover:bg-slate-300 cursor-pointer";
             });
             const clicked = row.querySelector(`button:nth-child(${tipo === 'P' ? 1 : 2})`);
-            clicked.className = tipo === 'P' ? "px-3 py-1.5 rounded-xl font-bold bg-emerald-600 text-white shadow-xs cursor-pointer" : "px-3 py-1.5 rounded-xl font-bold bg-rose-600 text-white shadow-xs cursor-pointer";
+            clicked.className = tipo === 'P' ? "btn-primary-theme px-3 py-1.5 rounded-xl font-bold bg-emerald-600 text-white shadow-xs cursor-pointer" : "px-3 py-1.5 rounded-xl font-bold bg-rose-600 text-white shadow-xs cursor-pointer";
         }
 
         function salvarChamada() {
@@ -744,9 +852,9 @@
             const termoLimpo = termo.trim().toLowerCase();
             const filtradas = baseBNCC.filter(b => b.codigo.toLowerCase().includes(termoLimpo) || b.tema.toLowerCase().includes(termoLimpo) || b.desc.toLowerCase().includes(termoLimpo));
             container.innerHTML = filtradas.map(b => `
-                <div onclick="inserirBNCCNoPlano('${b.codigo}', '${b.desc.replace(/'/g, "\\'")}')" class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs text-slate-700 hover:border-emerald-500 cursor-pointer flex justify-between items-center transition-colors">
-                    <div><strong class="text-emerald-700 font-extrabold">[${b.codigo}]</strong> <span class="text-slate-600">${b.desc}</span></div>
-                    <button type="button" class="bg-emerald-600 text-white font-bold px-3 py-1 rounded-lg text-xs">＋ Inserir</button>
+                <div onclick="inserirBNCCNoPlano('${b.codigo}', '${b.desc.replace(/'/g, "\\'")}')" class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs text-slate-700 hover:border-slate-400 cursor-pointer flex justify-between items-center transition-colors">
+                    <div><strong class="text-theme-main text-emerald-700 font-extrabold">[${b.codigo}]</strong> <span class="text-slate-600">${b.desc}</span></div>
+                    <button type="button" class="btn-primary-theme bg-emerald-600 text-white font-bold px-3 py-1 rounded-lg text-xs">＋ Inserir</button>
                 </div>
             `).join('');
         }
@@ -773,7 +881,11 @@
 
         function carregarPlanoGestao() {
             if(planoGestaoDados.escola) document.getElementById('plano-escola').value = planoGestaoDados.escola;
+            else if(configApp.nomeEscola) document.getElementById('plano-escola').value = configApp.nomeEscola;
+
             if(planoGestaoDados.professor) document.getElementById('plano-professor').value = planoGestaoDados.professor;
+            else if(configApp.nomeProf) document.getElementById('plano-professor').value = configApp.nomeProf;
+
             if(planoGestaoDados.disciplina) document.getElementById('plano-disciplina').value = planoGestaoDados.disciplina;
             if(planoGestaoDados.periodo) document.getElementById('plano-periodo').value = planoGestaoDados.periodo;
             if(planoGestaoDados.turma) document.getElementById('plano-turma-select').value = planoGestaoDados.turma;
@@ -791,7 +903,7 @@
                 <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Turma Destino</label><select id="pdf-turma" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">${turmasOpts}</select></div>
                 <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Ficheiro PDF</label><input type="file" id="pdf-file-input" accept="application/pdf" class="w-full text-xs"></div>
             `;
-            document.querySelector('#modal-app button.bg-emerald-600').setAttribute('onclick', 'salvarPDFDirecto()');
+            document.querySelector('#modal-app button.btn-primary-theme').setAttribute('onclick', 'salvarPDFDirecto()');
             document.getElementById('modal-app').classList.remove('hidden');
         }
 
@@ -808,7 +920,7 @@
                 atualizarTabelaPDFs();
                 atualizarEstatisticas();
                 fecharModal();
-                document.querySelector('#modal-app button.bg-emerald-600').setAttribute('onclick', 'executarSalvarModal()');
+                document.querySelector('#modal-app button.btn-primary-theme').setAttribute('onclick', 'executarSalvarModal()');
                 alert('✅ PDF anexado com sucesso!');
             };
             reader.readAsDataURL(file);
@@ -821,13 +933,13 @@
             container.innerHTML = documentosPDF.map((pt, idx) => `
                 <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-3 shadow-xs">
                     <div class="flex justify-between items-start">
-                        <span class="bg-emerald-50 text-emerald-700 font-bold px-2.5 py-0.5 rounded-full text-[10px]">🏫 ${pt.turma}</span>
+                        <span class="bg-slate-100 text-slate-700 font-bold px-2.5 py-0.5 rounded-full text-[10px]">🏫 ${pt.turma}</span>
                         <span class="text-[10px] text-slate-400 font-medium">${pt.data}</span>
                     </div>
                     <h3 class="font-extrabold text-sm text-slate-900">${pt.titulo}</h3>
                     <p class="text-xs text-slate-500">📎 ${pt.nomeFicheiro}</p>
                     <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
-                        <button onclick="visualizarPDF(${idx})" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl text-xs font-bold transition-colors cursor-pointer">Abrir</button>
+                        <button onclick="visualizarPDF(${idx})" class="btn-primary-theme bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl text-xs font-bold transition-colors cursor-pointer">Abrir</button>
                         <button onclick="removerPDF(${idx})" class="bg-rose-50 text-rose-600 hover:bg-rose-100 px-3 py-1.5 rounded-xl text-xs font-bold transition-colors cursor-pointer">Excluir</button>
                     </div>
                 </div>

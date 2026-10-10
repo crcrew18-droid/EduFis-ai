@@ -4,10 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%23059669'/><path d='M30 35 v30 M70 35 v30 M20 40 v20 M80 40 v20 M30 50 h40' stroke='white' stroke-width='8' stroke-linecap='round'/></svg>">
-    <title>EduFís Pro v8.7 - Plataforma de Gestão Pedagógica</title>
+    <title>EduFís Pro v8.8 - Plataforma de Gestão Pedagógica</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Three.js para renderização 3D -->
+    
+    <!-- Three.js + OrbitControls para visualização 3D real -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -118,7 +121,7 @@
             if(statusEl) statusEl.textContent = "⏳ A enviar backup para a nuvem...";
 
             const dadosBackup = {
-                versao: "8.7",
+                versao: "8.8",
                 dataBackup: new Date().toISOString(),
                 usuarios, turmas, alunos, documentosWord, documentosPDF, planoGestaoDados, agendaHojeDados, configApp
             };
@@ -233,7 +236,7 @@
                     </div>
                     <div>
                         <span class="text-base font-extrabold text-slate-900 leading-none block">EduFís</span>
-                        <span class="text-[10px] uppercase tracking-wider text-theme-main text-emerald-600 font-extrabold">Pro v8.7</span>
+                        <span class="text-[10px] uppercase tracking-wider text-theme-main text-emerald-600 font-extrabold">Pro v8.8</span>
                     </div>
                 </div>
             </div>
@@ -266,7 +269,7 @@
                     <button onclick="changeTab('backup')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">☁️ Backup Google Drive</button>
                     <button onclick="changeTab('config')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">⚙️ Configurações</button>
                 </div>
-                <div class="pt-4 border-t border-slate-100 px-3 text-[11px] text-slate-400 font-medium">EduFís Pro v8.7 • 2026</div>
+                <div class="pt-4 border-t border-slate-100 px-3 text-[11px] text-slate-400 font-medium">EduFís Pro v8.8 • 2026</div>
             </aside>
 
             <!-- CONTEÚDO PRINCIPAL -->
@@ -326,7 +329,7 @@
                     <div class="flex justify-between items-center flex-wrap gap-3">
                         <div>
                             <h2 class="text-2xl font-black text-slate-900 tracking-tight">Atlas 3D de Anatomia & Cinesiologia 🦴</h2>
-                            <p class="text-slate-500 text-sm">Visualize modelos 3D interativos e consulte músculos para as suas aulas.</p>
+                            <p class="text-slate-500 text-sm">Visualize o corpo em 3D. Arraste com o mouse para girar 360º.</p>
                         </div>
                     </div>
 
@@ -334,18 +337,15 @@
                     <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-lg space-y-4 text-white">
                         <div class="flex justify-between items-center flex-wrap gap-3">
                             <div>
-                                <h3 class="font-extrabold text-sm uppercase tracking-wider text-emerald-400">🌐 Renderizador 3D Interativo</h3>
-                                <p class="text-xs text-slate-400">Rotaciona e exibe grupos musculares e articulações em tempo real.</p>
+                                <h3 class="font-extrabold text-sm uppercase tracking-wider text-emerald-400">🌐 Modelo Humano 3D Interativo</h3>
+                                <p class="text-xs text-slate-400">Arraste para rotacionar • Scroll para dar zoom</p>
                             </div>
                             <div class="flex gap-2">
                                 <button onclick="mudarModelo3D('musculos')" id="btn-m-3d" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-600 text-white cursor-pointer transition-all">💪 Músculos</button>
                                 <button onclick="mudarModelo3D('esqueleto')" id="btn-o-3d" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 cursor-pointer transition-all">💀 Esqueleto</button>
                             </div>
                         </div>
-                        <div id="canvas-container-3d" class="w-full h-72 sm:h-96 bg-slate-950 rounded-2xl overflow-hidden relative flex items-center justify-center">
-                            <!-- O Canvas 3D do Three.js será inserido aqui dinamicamente -->
-                        </div>
-                        <div class="text-center text-[11px] text-slate-400">💡 Dica: O modelo 3D roda automaticamente em animação contínua 360º.</div>
+                        <div id="canvas-container-3d" class="w-full h-80 sm:h-96 bg-slate-950 rounded-2xl overflow-hidden relative border border-slate-800"></div>
                     </div>
 
                     <!-- BARRA DE PESQUISA E FILTROS -->
@@ -657,8 +657,7 @@
 
     <script>
         let modalTipo = '';
-        let scene3D, camera3D, renderer3D, meshObjeto3D;
-        let animar3DIniciado = false;
+        let scene3D, camera3D, renderer3D, controls3D, grupoHumano3D;
 
         function toggleSidebarMobile() {
             const sidebar = document.getElementById('sidebar-menu');
@@ -667,57 +666,112 @@
             overlay.classList.toggle('hidden');
         }
 
-        // INICIALIZADOR DO THREE.JS 3D
+        // MOTOR 3D REVISADO
         function initThreeJS() {
             const container = document.getElementById('canvas-container-3d');
-            if (!container || scene3D) return;
+            if (!container) return;
+
+            // Se o motor já tiver sido criado, recalcula tamanho e retorna
+            if (renderer3D) {
+                const width = container.clientWidth || 300;
+                const height = container.clientHeight || 300;
+                camera3D.aspect = width / height;
+                camera3D.updateProjectionMatrix();
+                renderer3D.setSize(width, height);
+                return;
+            }
+
+            const width = container.clientWidth || 300;
+            const height = container.clientHeight || 300;
 
             scene3D = new THREE.Scene();
-            camera3D = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 1000);
-            camera3D.position.z = 5;
+            camera3D = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+            camera3D.position.set(0, 1, 6);
 
             renderer3D = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-            renderer3D.setSize(container.clientWidth, container.clientHeight);
+            renderer3D.setSize(width, height);
             renderer3D.setPixelRatio(window.devicePixelRatio);
             container.appendChild(renderer3D.domElement);
 
-            // Luzes
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+            // Adiciona Controles do Mouse (OrbitControls)
+            if (typeof THREE.OrbitControls !== 'undefined') {
+                controls3D = new THREE.OrbitControls(camera3D, renderer3D.domElement);
+                controls3D.enableDamping = true;
+                controls3D.dampingFactor = 0.05;
+            }
+
+            // Iluminação
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
             scene3D.add(ambientLight);
 
-            const pointLight = new THREE.PointLight(0xffffff, 1);
-            pointLight.position.set(5, 5, 5);
-            scene3D.add(pointLight);
+            const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+            dirLight.position.set(5, 10, 7);
+            scene3D.add(dirLight);
 
-            criarModelo3D('musculos');
+            // Construção do Modelo Humano
+            grupoHumano3D = new THREE.Group();
+            scene3D.add(grupoHumano3D);
 
-            // Loop de animação
+            criarModeloAnatomico('musculos');
+
+            // Loop de Animação
             function animate() {
                 requestAnimationFrame(animate);
-                if (meshObjeto3D) {
-                    meshObjeto3D.rotation.y += 0.01;
-                    meshObjeto3D.rotation.x += 0.005;
-                }
+                if (controls3D) controls3D.update();
+                else if (grupoHumano3D) grupoHumano3D.rotation.y += 0.005;
                 renderer3D.render(scene3D, camera3D);
             }
             animate();
         }
 
-        function criarModelo3D(tipo) {
-            if (!scene3D) return;
-            if (meshObjeto3D) scene3D.remove(meshObjeto3D);
-
-            let geometria, material;
-            if (tipo === 'musculos') {
-                geometria = new THREE.CapsuleGeometry(0.8, 1.8, 16, 32);
-                material = new THREE.MeshStandardMaterial({ color: 0x991b1b, roughness: 0.3, metalness: 0.1 }); // Vermelho músculo
-            } else {
-                geometria = new THREE.CylinderGeometry(0.4, 0.4, 2.5, 16);
-                material = new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.5 }); // Branco osso
+        function criarModeloAnatomico(tipo) {
+            if (!grupoHumano3D) return;
+            
+            // Limpa partes antigas
+            while(grupoHumano3D.children.length > 0){ 
+                grupoHumano3D.remove(grupoHumano3D.children[0]); 
             }
 
-            meshObjeto3D = new THREE.Mesh(geometria, material);
-            scene3D.add(meshObjeto3D);
+            const corPrincipal = (tipo === 'musculos') ? 0xef4444 : 0xf8fafc; // Vermelho ou Branco
+            const material = new THREE.MeshStandardMaterial({ color: corPrincipal, roughness: 0.4, metalness: 0.1 });
+
+            // Cabeça
+            const cabecaGeo = new THREE.SphereGeometry(0.35, 16, 16);
+            const cabeca = new THREE.Mesh(cabecaGeo, material);
+            cabeca.position.y = 1.6;
+            grupoHumano3D.add(cabeca);
+
+            // Tronco
+            const troncoGeo = new THREE.CylinderGeometry(0.4, 0.3, 1.2, 16);
+            const tronco = new THREE.Mesh(troncoGeo, material);
+            tronco.position.y = 0.7;
+            grupoHumano3D.add(tronco);
+
+            // Braço Esquerdo
+            const bracoEGeo = new THREE.CylinderGeometry(0.12, 0.1, 0.9, 16);
+            const bracoE = new THREE.Mesh(bracoEGeo, material);
+            bracoE.position.set(-0.6, 0.7, 0);
+            bracoE.rotation.z = 0.2;
+            grupoHumano3D.add(bracoE);
+
+            // Braço Direito
+            const bracoDGeo = new THREE.CylinderGeometry(0.12, 0.1, 0.9, 16);
+            const bracoD = new THREE.Mesh(bracoDGeo, material);
+            bracoD.position.set(0.6, 0.7, 0);
+            bracoD.rotation.z = -0.2;
+            grupoHumano3D.add(bracoD);
+
+            // Perna Esquerda
+            const pernaEGeo = new THREE.CylinderGeometry(0.15, 0.12, 1.2, 16);
+            const pernaE = new THREE.Mesh(pernaEGeo, material);
+            pernaE.position.set(-0.25, -0.5, 0);
+            grupoHumano3D.add(pernaE);
+
+            // Perna Direita
+            const pernaDGeo = new THREE.CylinderGeometry(0.15, 0.12, 1.2, 16);
+            const pernaD = new THREE.Mesh(pernaDGeo, material);
+            pernaD.position.set(0.25, -0.5, 0);
+            grupoHumano3D.add(pernaD);
         }
 
         function mudarModelo3D(tipo) {
@@ -727,15 +781,14 @@
             if (tipo === 'musculos') {
                 btnM.className = "px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-600 text-white cursor-pointer transition-all";
                 btnO.className = "px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 cursor-pointer transition-all";
-                criarModelo3D('musculos');
+                criarModeloAnatomico('musculos');
             } else {
                 btnO.className = "px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-600 text-white cursor-pointer transition-all";
                 btnM.className = "px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 cursor-pointer transition-all";
-                criarModelo3D('esqueleto');
+                criarModeloAnatomico('esqueleto');
             }
         }
 
-        // RENDERIZAR ATLAS
         function renderizarAtlasAnatomia() {
             const container = document.getElementById('grid-anatomia');
             if (!container) return;
@@ -785,7 +838,6 @@
             changeTab('editor-word');
         }
 
-        // AUTENTICAÇÃO REAL
         function alternarTelaAuth(modo) {
             const fLogin = document.getElementById('form-login');
             const fReg = document.getElementById('form-registrar');
@@ -905,7 +957,7 @@
 
             if(tabId === 'anatomia') {
                 renderizarAtlasAnatomia();
-                setTimeout(() => initThreeJS(), 100);
+                setTimeout(() => initThreeJS(), 150);
             }
             if(tabId === 'chamada') {
                 atualizarSelectTurmasChamada();

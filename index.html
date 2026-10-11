@@ -53,20 +53,22 @@
         let agendaHojeDados = JSON.parse(localStorage.getItem('edufis_agenda_v8')) || { turma: '', conteudo: '' };
         
         let bancoJogos = JSON.parse(localStorage.getItem('edufis_jogos_v8')) || [
-            { id: 1, titulo: "Queimada Cooperativa", categoria: "Jogos Tradicionais", objetivo: "Estimular a agilidade, mira e cooperação em equipa.", materiais: "1 Bola de borracha, cones.", regras: "Quem for queimado vai para a 'cadeia', mas pode voltar se apanhar uma bola no ar." },
-            { id: 2, titulo: "Futsal Reduzido com Toques Limitados", categoria: "Futsal / Futebol", objetivo: "Desenvolver passe rápido e visão de jogo.", materiais: "Bolas de futsal, coletes, cones.", regras: "Máximo de 2 toques por jogador na bola para priorizar o trabalho coletivo e triangulações." },
-            { id: 3, titulo: "Racha Recreativo de Futsal", categoria: "Futsal / Futebol", objetivo: "Prática lúdica e fair-play em situação real.", materiais: "Bola e coletes.", regras: "Partidas de 4x4 ou 5x5 sem árbitro oficial. Golos de primeira valem duplo." },
-            { id: 4, titulo: "Desafio de Condução e Drible", categoria: "Futsal / Futebol", objetivo: "Aperfeiçoar domínio de bola e agilidade.", materiais: "Cones e bolas.", regras: "Percurso em ziguezague com finalização rápida na baliza." },
-            { id: 5, titulo: "Handebol: Ataque Rápido 3x2", categoria: "Handebol", objetivo: "Trabalhar superioridade numérica ofensiva.", materiais: "Bolas de handebol e balizas.", regras: "3 atacantes contra 2 defensores na linha de 9 metros." },
-            { id: 6, titulo: "Voleibol: Regra dos 3 Toques", categoria: "Voleibol", objetivo: "Fixar manchete, toque de dedos e remate.", materiais: "Bola de vólei e rede.", regras: "Obrigatório passar por Recepção ➔ Distribuição ➔ Ataque." },
-            { id: 7, titulo: "Basquetebol: Estafeta de Cestos", categoria: "Basquetebol", objetivo: "Melhorar precisão no lançamento e transição.", materiais: "Bolas e tabelas de basquete.", regras: "Competição de lançamentos rápidos por equipas." },
-            { id: 8, titulo: "Circuito Funcional de Habilidades", categoria: "Aptidão Física", objetivo: "Desenvolver força, velocidade e equilíbrio.", materiais: "Cones, cordas e colchonetes.", regras: "Estações de 45 segundos com revezamento de grupos." }
+            { id: 1, titulo: "Queimada Cooperativa", categoria: "Jogos Tradicionais", objetivo: "Estimular a agilidade, mira e cooperação em equipa.", materiais: "1 Bola de borracha, cones para delimitar o campo.", regras: "Quem for queimado vai para a 'cadeia' adversária, mas pode voltar se apanhar uma bola no ar ou se um colega acertar um alvo específico." },
+            { id: 2, titulo: "Circuito Funcional de Habilidades", categoria: "Aptidão Física", objetivo: "Desenvolver força, velocidade, equilíbrio e coordenação motora.", materiais: "Cones, cordas, arcos e colchonetes.", regras: "Os alunos dividem-se em grupos e revezam-se nas estações a cada 45 segundos, focando na execução correta dos movimentos." },
+            { id: 3, titulo: "Futsal Reduzido com Toques Limitados", categoria: "Futsal / Futebol", objetivo: "Desenvolver o passe rápido, a visão de jogo e a ocupação racional do espaço.", materiais: "Bolas de futsal, coletes, balizas móveis ou cones.", regras: "Cada jogador só pode dar no máximo 2 toques na bola antes de passar. Prioriza a triangulação e o trabalho coletivo." },
+            { id: 4, titulo: "Racha de Futsal / Futebol Recreativo", categoria: "Futsal / Futebol", objetivo: "Estimular a prática lúdica e o fair-play em situação real de jogo.", materiais: "Bola, coletes.", regras: "Partida com equipas reduzidas (4x4 ou 5x5). Sem árbitro oficial; as faltas são marcadas por consenso. Golos de primeira valem duplo." },
+            { id: 5, titulo: "Desafio de Condução e Drible no Futsal", categoria: "Futsal / Futebol", objetivo: "Aperfeiçoar o domínio de bola, mudança de direção e agilidade com os pés.", materiais: "Cones, bolas de futsal.", regras: "Percurso ziguezagueando entre cones conduzindo a bola, terminando com remate certeiro à baliza." },
+            { id: 6, titulo: "Handebol: Ataque Rápido e 3x2", categoria: "Handebol", objetivo: "Trabalhar superioridade numérica ofensiva e eficácia no remate.", materiais: "Bolas de handebol, balizas.", regras: "3 atacantes contra 2 defensores mais o guarda-redes. O ataque deve rodar a bola rapidamente para criar espaço." },
+            { id: 7, titulo: "Voleibol: Jogo de 3 Toques Obrigatórios", categoria: "Voleibol", objetivo: "Fixar a mecânica da manchete, toque de dedos e remate regulamentar.", materiais: "Bola de vólei, rede.", regras: "Obrigatório passar por Manobra de Recepção ➔ Distribuição ➔ Ataque antes de enviar para o campo contrário." },
+            { id: 8, titulo: "Basquetebol: Estafeta de Lançamentos", categoria: "Basquetebol", objetivo: "Melhorar a precisão no cesto e a transição rápida.", materiais: "Bolas de basquetebol, tabelas.", regras: "Equipas em linha realizam lançamentos rápidos. Cada cesto convertido pontua de acordo com a distância." }
         ];
 
         let baseSocorros = JSON.parse(localStorage.getItem('edufis_socorros_v8')) || [
-            { id: 1, titulo: "Entorse / Torção no Tornozelo ou Joelho", categoria: "Traumas e Lesões", oqfazer: "1. Parar a atividade imediatamente.\n2. Aplicar gelo enrolado num pano (15-20 min).\n3. Elevar o membro afetado.", alerta: "Se houver dor insuportável ou incapacidade de apoiar o pé, encaminhar ao hospital." },
-            { id: 2, titulo: "Pancada na Cabeça (Concussão Leve)", categoria: "Traumas e Lesões", oqfazer: "1. Afastar o aluno e mantê-lo sentado.\n2. Avaliar tonturas ou visão turva.\n3. Aplicar compressa fria.", alerta: "Se houver perda de consciência ou vómitos, ligar 112." },
-            { id: 3, titulo: "Sangramento Nasal (Epistaxe)", categoria: "Emergências", oqfazer: "1. Sentar com a cabeça ligeiramente inclinada para a frente.\n2. Apertar a parte mole do nariz por 10 minutos.", alerta: "Se durar mais de 20 minutos, procurar assistência." }
+            { id: 1, titulo: "Entorse / Torção no Tornozelo ou Joelho", categoria: "Traumas e Lesões", oqfazer: "1. Parar a atividade imediatamente.\n2. Aplicar gelo enrolado num pano (15-20 min).\n3. Elevar o membro afetado.\n4. NÃO forçar nem tentar colocar no sítio se houver deformidade.", alerta: "Se houver dor insuportável ou incapacidade total de apoiar o pé, encaminhar para o hospital." },
+            { id: 2, titulo: "Pancada na Cabeça (Concussão Leve)", categoria: "Traumas e Lesões", oqfazer: "1. Afastar o aluno da atividade e mantê-lo sentado.\n2. Avaliar sintomas: tontura, confusão, vómitos ou visão turva.\n3. Aplicar compressa fria no galo/inchaço.\n4. Vigiar atentamente nas horas seguintes.", alerta: "Se houver perda de consciência, desorientação ou sonolência excessiva, ligar imediatamente para o 112." },
+            { id: 3, titulo: "Sangramento Nasal (Epistaxe)", categoria: "Emergências Comuns", oqfazer: "1. Sentar o aluno com a cabeça ligeiramente inclinada para a **frente** (nunca para trás para evitar engasgamento).\n2. Apertar a parte mole do nariz com os dedos durante 10 minutos.\n3. Respirar pela boca.", alerta: "Se o sangramento durar mais de 20 minutos, procurar assistência médica." },
+            { id: 4, titulo: "Desmaio ou Lipotimia", categoria: "Emergências Comuns", oqfazer: "1. Deitar a pessoa de costas e elevar as pernas cerca de 30 cm.\n2. Desapertar roupas apertadas (golas, cintos).\n3. Garantir circulação de ar fresco.\n4. Assim que acordar, não levantar bruscamente.", alerta: "Se não recuperar a consciência em 1-2 minutos, verificar respiração e chamar o 112." },
+            { id: 5, titulo: "Cãibras Musculares", categoria: "Esforço Físico", oqfazer: "1. Interromper o exercício físico.\n2. Fazer um alongamento suave e progressivo do músculo afetado.\n3. Massajar levemente o local.\n4. Hidratar o aluno com água ou isotónico.", alerta: "Se a dor persistir ou houver edema severo, suspender a aula para este aluno." }
         ];
 
         let configApp = JSON.parse(localStorage.getItem('edufis_config_v8')) || {
@@ -76,16 +78,25 @@
         };
 
         const baseAnatomia = [
-            { id: "m1", nome: "Quadríceps Femoral", tipo: "Músculo", regiao: "Inferiores", acao: "Extensão do joelho e flexão do quadril.", exercicios: "Agachamento, Salto, Chute no Futsal/Futebol." },
-            { id: "m2", nome: "Isquiotibiais", tipo: "Músculo", regiao: "Inferiores", acao: "Flexão do joelho e extensão do quadril.", exercicios: "Corrida, Sprints, Salto em Distância." },
-            { id: "m3", nome: "Tríceps Sural (Gastrocnêmio)", tipo: "Músculo", regiao: "Inferiores", acao: "Flexão plantar (impulsão).", exercicios: "Elevação de calcanhar, saltos." },
-            { id: "m4", nome: "Peitoral Maior", tipo: "Músculo", regiao: "Tronco", acao: "Adução e flexão do braço.", exercicios: "Flexão de braços, Arremesso no Basquete/Handebol." },
-            { id: "m5", nome: "Deltoide", tipo: "Músculo", regiao: "Superiores", acao: "Elevação do braço.", exercicios: "Arremessos, Saque no Voleibol." }
+            { id: "m1", nome: "Quadríceps Femoral", tipo: "Músculo", regiao: "Inferiores", acao: "Extensão do joelho e flexão do quadril (reto femoral).", exercicios: "Agachamento, Avanço, Salto Vertical, Chute no Futebol." },
+            { id: "m2", nome: "Isquiotibiais", tipo: "Músculo", regiao: "Inferiores", acao: "Flexão do joelho e extensão do quadril.", exercicios: "Corrida/Sprints, Stiff, Salto em Distância." },
+            { id: "m3", nome: "Tríceps Sural (Gastrocnêmio e Sóleo)", tipo: "Músculo", regiao: "Inferiores", acao: "Flexão plantar do tornozelo (impulsão).", exercicios: "Elevação de calcanhar, Corridas, Saltos de corda." },
+            { id: "m4", nome: "Glúteo Máximo", tipo: "Músculo", regiao: "Inferiores", acao: "Extensão e rotação lateral do quadril.", exercicios: "Elevação pélvica, Agachamento profundo, Corridas de velocidade." },
+            { id: "m5", nome: "Peitoral Maior", tipo: "Músculo", regiao: "Tronco", acao: "Adução e rotação medial do ombro, flexão do braço.", exercicios: "Flexão de braços (apoio), Arremesso no Basquete/Handebol." },
+            { id: "m6", nome: "Latíssimo do Dorso (Grande Dorsal)", tipo: "Músculo", regiao: "Tronco", acao: "Extensão, adução e rotação medial do ombro.", exercicios: "Puxada alta, Natação (Crawl/Borboleta), Escalada." },
+            { id: "m7", nome: "Deltoide", tipo: "Músculo", regiao: "Superiores", acao: "Abdução e elevação do braço nos três planos.", exercicios: "Desenvolvimento, Arremessos, Saque no Vôlei." },
+            { id: "m8", nome: "Bíceps Braquial", tipo: "Músculo", regiao: "Superiores", acao: "Flexão do cotovelo e supinação do antebraço.", exercicios: "Barra fixa (supinada), Remo na ginástica." },
+            { id: "m9", nome: "Tríceps Braquial", tipo: "Músculo", regiao: "Superiores", acao: "Extensão do cotovelo.", exercicios: "Flexão no solo, Passe de peito no basquete, Cortada no Vôlei." },
+            { id: "m10", nome: "Reto Abdominal e Oblíquos", tipo: "Músculo", regiao: "Tronco", acao: "Flexão e rotação do tronco, estabilização do Core.", exercicios: "Prancha abdominal, Rotações com bola medicinal." },
+            { id: "o1", nome: "Fêmur", tipo: "Osso", regiao: "Esqueleto", acao: "Maior osso do corpo humano; suporta o peso corporal e articula no quadril e joelho.", exercicios: "Suporte de carga, Corridas, Saltos." },
+            { id: "o2", nome: "Tíbia e Fíbula", tipo: "Osso", regiao: "Esqueleto", acao: "Ossos da perna; sustentação e fixação muscular para tornozelo/joelho.", exercicios: "Impacto controlado, Treino de agilidade e mudança de direção." }
         ];
 
         const baseBNCC = [
             { codigo: "EF67EF01", tema: "Esportes", desc: "Experimentar e fruir diferentes esportes de marca, precisão, invasão e técnico-combinatórios." },
-            { codigo: "EF67EF03", tema: "Esportes", desc: "Praticar um ou mais esportes oferecidos na escola." }
+            { codigo: "EF67EF03", tema: "Esportes", desc: "Praticar um ou mais esportes de marca, precisão, invasão e técnico-combinatórios oferecidos na escola." },
+            { codigo: "EF89EF07", tema: "Esportes", desc: "Formular e propor estratégias para o resolução de desafios em jogos desportivos." },
+            { codigo: "EF67EF07", tema: "Ginástica", desc: "Propor e produzir alternativas para a prática da ginástica de conscientização corporal." }
         ];
 
         function salvarDadosLocais() {
@@ -127,7 +138,11 @@
     <div id="view-login" class="flex flex-col items-center justify-center flex-1 p-4 bg-slate-100">
         <div class="w-full max-w-md bg-white border border-slate-200 rounded-3xl p-8 shadow-xl space-y-6">
             <div class="text-center space-y-2">
-                <div class="w-16 h-16 brand-icon-bg bg-emerald-600 rounded-2xl flex items-center justify-center mx-auto shadow-md p-3.5 text-white font-black text-xl">EF</div>
+                <div class="w-16 h-16 brand-icon-bg bg-emerald-600 rounded-2xl flex items-center justify-center mx-auto shadow-md p-3.5 text-white">
+                    <svg class="w-full h-full text-white" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round">
+                        <path d="M30 35 v30 M70 35 v30 M20 40 v20 M80 40 v20 M30 50 h40"/>
+                    </svg>
+                </div>
                 <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight" id="auth-box-titulo">EduFís Pro</h1>
                 <p class="text-slate-500 text-xs font-medium" id="auth-box-sub">Aceda à sua conta de Gestão Pedagógica</p>
             </div>
@@ -178,7 +193,11 @@
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                 </button>
                 <div class="flex items-center gap-2.5">
-                    <div class="w-9 h-9 brand-icon-bg bg-emerald-600 rounded-xl flex items-center justify-center p-2 text-white font-black text-xs shadow-sm">EF</div>
+                    <div class="w-9 h-9 brand-icon-bg bg-emerald-600 rounded-xl flex items-center justify-center p-2 shadow-sm text-white">
+                        <svg class="w-full h-full text-white" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round">
+                            <path d="M30 35 v30 M70 35 v30 M20 40 v20 M80 40 v20 M30 50 h40"/>
+                        </svg>
+                    </div>
                     <div>
                         <span class="text-base font-extrabold text-slate-900 leading-none block">EduFís</span>
                         <span class="text-[10px] uppercase tracking-wider text-emerald-600 font-extrabold">Pro v8.6</span>
@@ -226,16 +245,16 @@
                     <div class="bg-gradient-to-r from-slate-800 to-slate-900 text-white p-6 sm:p-8 rounded-3xl shadow-lg flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                         <div>
                             <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Bem-vindo ao EduFís Pro 🏋️</h2>
-                            <p class="text-slate-300 text-sm mt-1">Plataforma pedagógica completa para Educação Física.</p>
+                            <p class="text-slate-300 text-sm mt-1">Tecnologia e organização para transformar as suas aulas de Educação Física.</p>
                         </div>
-                        <button onclick="changeTab('socorros')" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-5 py-3 rounded-2xl text-sm shadow-md transition-all cursor-pointer">🚑 Primeiros Socorros</button>
+                        <button onclick="changeTab('socorros')" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-5 py-3 rounded-2xl text-sm shadow-md transition-all cursor-pointer">🚑 Guia de Primeiros Socorros</button>
                     </div>
                     
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
                         <div class="bg-white border border-slate-200/80 p-5 rounded-3xl shadow-xs"><div class="text-3xl font-black text-emerald-600" id="stat-turmas">0</div><div class="text-xs font-bold text-slate-400 mt-1 uppercase tracking-wider">Turmas Ativas</div></div>
-                        <div class="bg-white border border-slate-200/80 p-5 rounded-3xl shadow-xs"><div class="text-3xl font-black text-emerald-600" id="stat-alunos">0</div><div class="text-xs font-bold text-slate-400 mt-1 uppercase tracking-wider">Alunos</div></div>
-                        <div class="bg-white border border-slate-200/80 p-5 rounded-3xl shadow-xs"><div class="text-3xl font-black text-emerald-600" id="stat-documentos">0</div><div class="text-xs font-bold text-slate-400 mt-1 uppercase tracking-wider">Atividades</div></div>
-                        <div class="bg-white border border-slate-200/80 p-5 rounded-3xl shadow-xs"><div class="text-3xl font-black text-emerald-600" id="stat-pdfs">0</div><div class="text-xs font-bold text-slate-400 mt-1 uppercase tracking-wider">PDFs</div></div>
+                        <div class="bg-white border border-slate-200/80 p-5 rounded-3xl shadow-xs"><div class="text-3xl font-black text-emerald-600" id="stat-alunos">0</div><div class="text-xs font-bold text-slate-400 mt-1 uppercase tracking-wider">Alunos Matriculados</div></div>
+                        <div class="bg-white border border-slate-200/80 p-5 rounded-3xl shadow-xs"><div class="text-3xl font-black text-emerald-600" id="stat-documentos">0</div><div class="text-xs font-bold text-slate-400 mt-1 uppercase tracking-wider">Atividades Salvas</div></div>
+                        <div class="bg-white border border-slate-200/80 p-5 rounded-3xl shadow-xs"><div class="text-3xl font-black text-emerald-600" id="stat-pdfs">0</div><div class="text-xs font-bold text-slate-400 mt-1 uppercase tracking-wider">PDFs Anexados</div></div>
                     </div>
                 </div>
 
@@ -243,8 +262,8 @@
                 <div id="tab-socorros" class="hidden space-y-6">
                     <div class="flex justify-between items-center flex-wrap gap-3">
                         <div>
-                            <h2 class="text-2xl font-black text-slate-900 tracking-tight">Guia de Primeiros Socorros 🚑</h2>
-                            <p class="text-slate-500 text-sm">Procedimentos de atendimento rápido para lesões e emergências.</p>
+                            <h2 class="text-2xl font-black text-slate-900 tracking-tight">Guia de Primeiros Socorros no Desporto 🚑</h2>
+                            <p class="text-slate-500 text-sm">Procedimentos de atendimento rápido para lesões e emergências escolares.</p>
                         </div>
                         <button onclick="abrirModalSocorros()" class="bg-rose-600 hover:bg-rose-700 text-white px-4 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all cursor-pointer">+ Adicionar Procedimento</button>
                     </div>
@@ -258,7 +277,7 @@
                             <h2 class="text-2xl font-black text-slate-900 tracking-tight">Banco de Jogos & Desportos Coletivos ⚽</h2>
                             <p class="text-slate-500 text-sm">Futebol, Futsal, Basquetebol, Voleibol, Andebol e dinâmicas lúdicas.</p>
                         </div>
-                        <button onclick="abrirModalJogo()" class="btn-primary-theme bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all cursor-pointer">+ Adicionar Atividade</button>
+                        <button onclick="abrirModalJogo()" class="btn-primary-theme bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all cursor-pointer">+ Adicionar Nova Ideia</button>
                     </div>
                     <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
                         <input type="text" id="search-jogos" oninput="renderizarBancoJogos()" placeholder="Pesquisar por futsal, basquete, objetivo..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
@@ -270,7 +289,7 @@
                 <div id="tab-anatomia" class="hidden space-y-6">
                     <div>
                         <h2 class="text-2xl font-black text-slate-900 tracking-tight">Atlas de Anatomia & Cinesiologia 🦴</h2>
-                        <p class="text-slate-500 text-sm">Consulte músculos e ossos aplicados à Educação Física.</p>
+                        <p class="text-slate-500 text-sm">Consulte músculos, ossos e a biomecânica dos exercícios.</p>
                     </div>
                     <div id="grid-anatomia" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
                 </div>
@@ -278,13 +297,16 @@
                 <!-- ABA TURMAS -->
                 <div id="tab-turmas" class="hidden space-y-6">
                     <div class="flex justify-between items-center">
-                        <h2 class="text-2xl font-black text-slate-900 tracking-tight">Gestão de Turmas</h2>
+                        <div>
+                            <h2 class="text-2xl font-black text-slate-900 tracking-tight">Gestão de Turmas</h2>
+                            <p class="text-slate-500 text-sm">Crie e organize as turmas da sua escola.</p>
+                        </div>
                         <button onclick="abrirModalTurma()" class="btn-primary-theme bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all cursor-pointer">+ Nova Turma</button>
                     </div>
                     <div class="bg-white border border-slate-200/80 rounded-3xl overflow-x-auto shadow-xs">
                         <table class="w-full text-left text-sm min-w-[500px]">
                             <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 text-xs uppercase font-bold">
-                                <tr><th class="p-4">Nome</th><th class="p-4">Ano</th><th class="p-4">Turno</th><th class="p-4 text-right">Ações</th></tr>
+                                <tr><th class="p-4">Nome da Turma</th><th class="p-4">Ano / Série</th><th class="p-4">Turno</th><th class="p-4 text-right">Ações</th></tr>
                             </thead>
                             <tbody id="tabela-turmas" class="divide-y divide-slate-100">
                                 <tr><td colspan="4" class="p-8 text-center text-slate-400">Nenhuma turma registada.</td></tr>
@@ -296,13 +318,16 @@
                 <!-- ABA ALUNOS -->
                 <div id="tab-alunos" class="hidden space-y-6">
                     <div class="flex justify-between items-center">
-                        <h2 class="text-2xl font-black text-slate-900 tracking-tight">Matrícula de Alunos</h2>
+                        <div>
+                            <h2 class="text-2xl font-black text-slate-900 tracking-tight">Matrícula de Alunos</h2>
+                            <p class="text-slate-500 text-sm">Gerencie os estudantes matriculados em cada turma.</p>
+                        </div>
                         <button onclick="abrirModalAluno()" class="btn-primary-theme bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all cursor-pointer">+ Novo Aluno</button>
                     </div>
                     <div class="bg-white border border-slate-200/80 rounded-3xl overflow-x-auto shadow-xs">
                         <table class="w-full text-left text-sm min-w-[500px]">
                             <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 text-xs uppercase font-bold">
-                                <tr><th class="p-4">Nome</th><th class="p-4">Turma</th><th class="p-4 text-right">Ações</th></tr>
+                                <tr><th class="p-4">Nome Completo</th><th class="p-4">Turma</th><th class="p-4 text-right">Ações</th></tr>
                             </thead>
                             <tbody id="tabela-alunos" class="divide-y divide-slate-100">
                                 <tr><td colspan="3" class="p-8 text-center text-slate-400">Nenhum aluno registado.</td></tr>
@@ -336,9 +361,9 @@
                     </div>
                 </div>
 
-                <!-- ABA GESTÃO & BNCC -->
+                <!-- ABA PLANEJAMENTO & BNCC -->
                 <div id="tab-gestao" class="hidden space-y-6">
-                    <h2 class="text-2xl font-black text-slate-900 tracking-tight">Planejamento & BNCC</h2>
+                    <h2 class="text-2xl font-black text-slate-900 tracking-tight">Planejamento Pedagógico & BNCC</h2>
                     <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 max-w-4xl">
                         <div><label class="block text-xs font-bold uppercase mb-1">Escola</label><input type="text" id="plano-escola" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm"></div>
                         <div><label class="block text-xs font-bold uppercase mb-1">Professor</label><input type="text" id="plano-professor" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm"></div>
@@ -346,16 +371,16 @@
                     </div>
                 </div>
 
-                <!-- ABA DOCUMENTOS -->
+                <!-- ABA GESTOR DE DOCUMENTOS -->
                 <div id="tab-documentos" class="hidden space-y-6">
-                    <h2 class="text-2xl font-black text-slate-900 tracking-tight">Gestor de Documentos PDF</h2>
+                    <h2 class="text-2xl font-black text-slate-900 tracking-tight">Gestor de Documentos & PDFs</h2>
                     <button onclick="abrirModalUploadPDF()" class="btn-primary-theme bg-emerald-600 text-white px-4 py-2.5 rounded-xl text-sm font-bold">+ Adicionar PDF</button>
                     <div id="lista-provas-cards" class="grid grid-cols-1 sm:grid-cols-2 gap-5"></div>
                 </div>
 
                 <!-- ABA BACKUP -->
                 <div id="tab-backup" class="hidden space-y-6">
-                    <h2 class="text-2xl font-black text-slate-900 tracking-tight">Backup & Nuvem</h2>
+                    <h2 class="text-2xl font-black text-slate-900 tracking-tight">Sincronização & Backup</h2>
                     <button onclick="descarregarBackupJSON()" class="btn-primary-theme bg-emerald-600 text-white font-bold py-3 px-6 rounded-2xl text-sm">📥 Descarregar Backup (.json)</button>
                 </div>
 
@@ -364,7 +389,7 @@
                     <h2 class="text-2xl font-black text-slate-900 tracking-tight">Configurações do Sistema</h2>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl">
                         <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
-                            <h3 class="font-extrabold text-sm uppercase text-slate-700">👤 Perfil & Escola</h3>
+                            <h3 class="font-extrabold text-sm uppercase text-slate-700">👤 Perfil & Escola Padrão</h3>
                             <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Nome do Professor</label><input type="text" id="cfg-nome-prof" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
                             <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Escola Padrão</label><input type="text" id="cfg-nome-escola" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
                             <button onclick="salvarConfigPerfil()" class="btn-primary-theme w-full bg-emerald-600 text-white font-bold py-2.5 rounded-xl text-xs cursor-pointer">Guardar Perfil</button>
@@ -372,10 +397,10 @@
                         <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
                             <h3 class="font-extrabold text-sm uppercase text-slate-700">🎨 Cor da Interface</h3>
                             <div class="grid grid-cols-2 gap-3 pt-1">
-                                <button onclick="aplicarTemaCor('emerald')" class="p-3 bg-emerald-600 text-white rounded-xl font-bold text-xs cursor-pointer">🟢 Verde</button>
-                                <button onclick="aplicarTemaCor('sky')" class="p-3 bg-sky-600 text-white rounded-xl font-bold text-xs cursor-pointer">🔵 Azul</button>
-                                <button onclick="aplicarTemaCor('purple')" class="p-3 bg-purple-600 text-white rounded-xl font-bold text-xs cursor-pointer">🟣 Roxo</button>
-                                <button onclick="aplicarTemaCor('slate')" class="p-3 bg-slate-800 text-white rounded-xl font-bold text-xs cursor-pointer">⚫ Preto</button>
+                                <button onclick="aplicarTemaCor('emerald')" class="p-3 bg-emerald-600 text-white rounded-xl font-bold text-xs cursor-pointer">🟢 Verde-Esmeralda</button>
+                                <button onclick="aplicarTemaCor('sky')" class="p-3 bg-sky-600 text-white rounded-xl font-bold text-xs cursor-pointer">🔵 Azul-Marinho</button>
+                                <button onclick="aplicarTemaCor('purple')" class="p-3 bg-purple-600 text-white rounded-xl font-bold text-xs cursor-pointer">🟣 Violeta</button>
+                                <button onclick="aplicarTemaCor('slate')" class="p-3 bg-slate-800 text-white rounded-xl font-bold text-xs cursor-pointer">⚫ Neutro / Escuro</button>
                             </div>
                         </div>
                     </div>
@@ -412,7 +437,7 @@
             const busca = document.getElementById('search-jogos').value.toLowerCase().trim();
             const filtrados = bancoJogos.filter(j => j.titulo.toLowerCase().includes(busca) || j.categoria.toLowerCase().includes(busca) || j.objetivo.toLowerCase().includes(busca));
 
-            container.innerHTML = filtrados.map((j, idx) => `
+            container.innerHTML = filtrados.map((j) => `
                 <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-xs flex flex-col justify-between space-y-4">
                     <div class="space-y-2">
                         <div class="flex justify-between items-center"><h3 class="font-extrabold text-base">${j.titulo}</h3><span class="px-3 py-1 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-800">${j.categoria}</span></div>

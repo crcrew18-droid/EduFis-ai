@@ -63,7 +63,7 @@
             { id: "m1", nome: "Quadríceps Femoral", tipo: "Músculo", regiao: "Inferiores", acao: "Extensão do joelho e flexão do quadril (reto femoral).", exercicios: "Agachamento, Avanço, Salto Vertical, Chute no Futebol." },
             { id: "m2", nome: "Isquiotibiais (Bíceps Femoral, Semitendíneo, Semimembranoso)", tipo: "Músculo", regiao: "Inferiores", acao: "Flexão do joelho e extensão do quadril.", exercicios: "Corrida/Sprints, Stiff, Salto em Distância." },
             { id: "m3", nome: "Tríceps Sural (Gastrocnêmio e Sóleo)", tipo: "Músculo", regiao: "Inferiores", acao: "Flexão plantar do tornozelo (impulsão).", exercicios: "Elevação de calcanhar, Corridas, Saltos de corda." },
-            { id: "m4", nome: "Gláteo Máximo", tipo: "Músculo", regiao: "Inferiores", acao: "Extensão e rotação lateral do quadril.", exercicios: "Elevação pélvica, Agachamento profundo, Corridas de velocidade." },
+            { id: "m4", nome: "Glúteo Máximo", tipo: "Músculo", regiao: "Inferiores", acao: "Extensão e rotação lateral do quadril.", exercicios: "Elevação pélvica, Agachamento profundo, Corridas de velocidade." },
             { id: "m5", nome: "Peitoral Maior", tipo: "Músculo", regiao: "Tronco", acao: "Adução e rotação medial do ombro, flexão do braço.", exercicios: "Flexão de braços (apoio), Arremesso no Basquete/Handebol." },
             { id: "m6", nome: "Latíssimo do Dorso (Grande Dorsal)", tipo: "Músculo", regiao: "Tronco", acao: "Extensão, adução e rotação medial do ombro.", exercicios: "Puxada alta, Natação (Crawl/Borboleta), Escalada." },
             { id: "m7", nome: "Deltoide (Anterior, Lateral, Posterior)", tipo: "Músculo", regiao: "Superiores", acao: "Abdução e elevação do braço nos três planos.", exercicios: "Desenvolvimento, Arremessos, Saque no Vôlei." },
@@ -73,6 +73,14 @@
             { id: "o1", nome: "Fêmur", tipo: "Osso", regiao: "Esqueleto", acao: "Maior osso do corpo humano; suporta o peso corporal e articula no quadril e joelho.", exercicios: "Suporte de carga, Corridas, Saltos." },
             { id: "o2", nome: "Tíbia e Fíbula", tipo: "Osso", regiao: "Esqueleto", acao: "Ossos da perna; sustentação e fixação muscular para tornozelo/joelho.", exercicios: "Impacto controlado, Treino de agilidade e mudança de direção." },
             { id: "o3", nome: "Escápula e Clavícula", tipo: "Osso", regiao: "Esqueleto", acao: "Cinto escapular; dão mobilidade e amplitude de movimento aos ombros.", exercicios: "Movimentos de arremesso, natação e ginástica artística." }
+        ];
+
+        const baseBNCC = [
+            { codigo: "EF67EF01", tema: "Esportes", desc: "Experimentar e fruir diferentes esportes de marca, precisão, invasão e técnico-combinatórios." },
+            { codigo: "EF67EF03", tema: "Esportes", desc: "Praticar um ou mais esportes de marca, precisão, invasão e técnico-combinatórios oferecidos na escola." },
+            { codigo: "EF89EF07", tema: "Esportes", desc: "Formular e propor estratégias para o resolução de desafios em jogos desportivos." },
+            { codigo: "EF67EF07", tema: "Ginástica", desc: "Propor e produzir alternativas para a prática da ginástica de conscientização corporal." },
+            { codigo: "EF89EF09", tema: "Ginástica", desc: "Construir apresentações de ginástica geral, integrando diferentes elementos gimnásticos." }
         ];
 
         function salvarDadosLocais() {
@@ -242,7 +250,6 @@
         </header>
 
         <div class="flex flex-1 relative">
-            
             <div id="sidebar-overlay" onclick="toggleSidebarMobile()" class="hidden fixed inset-0 bg-slate-900/50 z-30 lg:hidden"></div>
 
             <!-- MENU LATERAL -->
@@ -319,7 +326,7 @@
                     </div>
                 </div>
 
-                <!-- NOVA ABA: ATLAS DE ANATOMIA & CINESIOLOGIA -->
+                <!-- ABA: ATLAS DE ANATOMIA & CINESIOLOGIA -->
                 <div id="tab-anatomia" class="hidden space-y-6">
                     <div class="flex justify-between items-center flex-wrap gap-3">
                         <div>
@@ -333,7 +340,7 @@
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                             <div class="sm:col-span-2">
                                 <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Buscar Estrutura Anatômica</label>
-                                <input type="text" id="search-anatomia" oninput="renderizarAtlasAnatomia()" placeholder="Ex: Quadríceps, Deltoide, Fêmur, Flexão de Cotovelo..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                <input type="text" id="search-anatomia" oninput="renderizarAtlasAnatomia()" placeholder="Ex: Quadríceps, Deltoide, Fêmur..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
                             </div>
                             <div>
                                 <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Região Corporal</label>
@@ -604,10 +611,10 @@
                         <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs sm:col-span-2">
                             <h3 class="font-extrabold text-sm uppercase tracking-wider text-slate-700">🎨 Cor da Interface</h3>
                             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1">
-                                <button onclick="aplicarTemaCor('emerald')" class="p-3 bg-emerald-600 text-white rounded-xl font-bold text-xs text-center hover:opacity-90 transition-opacity cursor-pointer">🟢 Verde-Esmeralda</button>
-                                <button onclick="aplicarTemaCor('sky')" class="p-3 bg-sky-600 text-white rounded-xl font-bold text-xs text-center hover:opacity-90 transition-opacity cursor-pointer">🔵 Azul-Marinho</button>
-                                <button onclick="aplicarTemaCor('purple')" class="p-3 bg-purple-600 text-white rounded-xl font-bold text-xs text-center hover:opacity-90 transition-opacity cursor-pointer">🟣 Violeta</button>
-                                <button onclick="aplicarTemaCor('slate')" class="p-3 bg-slate-800 text-white rounded-xl font-bold text-xs text-center hover:opacity-90 transition-opacity cursor-pointer">⚫ Neutro / Escuro</button>
+                                <button onclick="aplicarTemaCor('emerald')" class="p-3 bg-emerald-600 text-white rounded-xl font-bold text-xs text-center hover:opacity-95 transition-opacity cursor-pointer">🟢 Verde-Esmeralda</button>
+                                <button onclick="aplicarTemaCor('sky')" class="p-3 bg-sky-600 text-white rounded-xl font-bold text-xs text-center hover:opacity-95 transition-opacity cursor-pointer">🔵 Azul-Marinho</button>
+                                <button onclick="aplicarTemaCor('purple')" class="p-3 bg-purple-600 text-white rounded-xl font-bold text-xs text-center hover:opacity-95 transition-opacity cursor-pointer">🟣 Violeta</button>
+                                <button onclick="aplicarTemaCor('slate')" class="p-3 bg-slate-800 text-white rounded-xl font-bold text-xs text-center hover:opacity-95 transition-opacity cursor-pointer">⚫ Neutro / Escuro</button>
                             </div>
                         </div>
 
@@ -637,6 +644,7 @@
 
     <script>
         let modalTipo = '';
+        let editandoIndex = -1;
 
         function toggleSidebarMobile() {
             const sidebar = document.getElementById('sidebar-menu');
@@ -645,7 +653,6 @@
             overlay.classList.toggle('hidden');
         }
 
-        // LÓGICA DO ATLAS DE ANATOMIA
         function renderizarAtlasAnatomia() {
             const container = document.getElementById('grid-anatomia');
             if (!container) return;
@@ -662,24 +669,24 @@
             });
 
             if (itensFiltrados.length === 0) {
-                container.innerHTML = `<div class="col-span-2 bg-white border border-slate-200 rounded-3xl p-8 text-center text-slate-400 text-sm">Nenhuma estrutura anatômica encontrada para esta pesquisa.</div>`;
+                container.innerHTML = `<div class="col-span-2 bg-white border border-slate-200 rounded-3xl p-8 text-center text-slate-400 text-sm">Nenhuma estrutura anatómica encontrada.</div>`;
                 return;
             }
 
             container.innerHTML = itensFiltrados.map(item => `
-                <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs flex flex-col justify-between">
+                <div class="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-xs flex flex-col justify-between space-y-4">
                     <div class="space-y-3">
-                        <div class="flex justify-between items-start gap-2">
+                        <div class="flex justify-between items-center">
                             <h3 class="font-extrabold text-base text-slate-900">${item.nome}</h3>
-                            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${item.tipo === 'Músculo' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">${item.tipo} • ${item.regiao}</span>
+                            <span class="px-3 py-1 rounded-full text-[10px] font-extrabold ${item.tipo === 'Músculo' ? 'bg-rose-100 text-rose-700' : 'bg-slate-100 text-slate-700'}">${item.tipo} • ${item.regiao}</span>
                         </div>
-                        <div class="space-y-1.5 text-xs text-slate-600">
-                            <div><strong class="text-slate-800 font-bold uppercase text-[10px] block">Ação / Biomecânica:</strong> ${item.acao}</div>
+                        <div class="space-y-2 text-xs text-slate-600">
+                            <div><strong class="text-slate-800 font-bold uppercase text-[10px] block">Ação / Descrição:</strong> ${item.acao}</div>
                             <div><strong class="text-emerald-700 font-bold uppercase text-[10px] block">Aplicações na Ed. Física:</strong> ${item.exercicios}</div>
                         </div>
                     </div>
-                    <div class="pt-3 border-t border-slate-100 flex justify-end">
-                        <button onclick="inserirAnatomiaNoEditor('${item.nome.replace(/'/g, "\\'")}', '${item.acao.replace(/'/g, "\\'")}', '${item.exercicios.replace(/'/g, "\\'")}')" class="btn-primary-theme bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3.5 py-2 rounded-xl text-xs transition-colors cursor-pointer flex items-center gap-1.5">
+                    <div>
+                        <button onclick="inserirAnatomiaNoEditor('${item.nome.replace(/'/g, "\\'")}', '${item.acao.replace(/'/g, "\\'")}', '${item.exercicios.replace(/'/g, "\\'")}')" class="btn-primary-theme w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl text-xs transition-colors cursor-pointer flex items-center justify-center gap-1.5 shadow-xs">
                             ＋ Inserir no Editor de Atividades
                         </button>
                     </div>
@@ -691,11 +698,10 @@
             const editor = document.getElementById('editor-word-area');
             const blocoAnatomico = `<p><strong>🧠 Foco Anatômico - ${nome}:</strong> ${acao} <em>(Aplicações: ${exercicios})</em></p>`;
             editor.innerHTML += blocoAnatomico;
-            alert(`✅ Conhecimento anatômico do ${nome} adicionado ao Editor de Atividades!`);
+            alert(`✅ Conteúdo de ${nome} adicionado ao Editor de Atividades!`);
             changeTab('editor-word');
         }
 
-        // AUTENTICAÇÃO REAL
         function alternarTelaAuth(modo) {
             const fLogin = document.getElementById('form-login');
             const fReg = document.getElementById('form-registrar');
@@ -723,8 +729,7 @@
                 return;
             }
 
-            const novoUser = { nome, email, senha };
-            usuarios.push(novoUser);
+            usuarios.push({ nome, email, senha });
             usuarioLogado = { nome, email };
             configApp.nomeProf = nome;
 
@@ -739,7 +744,6 @@
             const senha = document.getElementById('login-senha').value;
 
             const userEncontrado = usuarios.find(u => u.email === email && u.senha === senha);
-
             if (!userEncontrado) {
                 alert('❌ E-mail ou palavra-passe incorretos!');
                 return;
@@ -910,31 +914,38 @@
             salvarDadosLocais();
         }
 
-        // MODAIS
-        function abrirModalTurma() {
+        function abrirModalTurma(idx = -1) {
             modalTipo = 'turma';
-            document.getElementById('modal-titulo').textContent = 'Registar Nova Turma';
+            editandoIndex = idx;
+            document.getElementById('modal-titulo').textContent = idx === -1 ? 'Registar Nova Turma' : 'Editar Turma';
+            
+            const t = idx !== -1 ? turmas[idx] : { nome: '', ano: '', turno: '' };
+            
             document.getElementById('modal-corpo').innerHTML = `
-                <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Nome da Turma</label><input type="text" id="m-t-nome" placeholder="Ex: 8º Ano A" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></div>
-                <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Ano / Série</label><input type="text" id="m-t-ano" placeholder="Ex: Ensino Fundamental" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></div>
-                <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Turno</label><input type="text" id="m-t-turno" placeholder="Ex: Manhã" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></div>
+                <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Nome da Turma</label><input type="text" id="m-t-nome" value="${t.nome}" placeholder="Ex: 8º Ano A" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></div>
+                <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Ano / Série</label><input type="text" id="m-t-ano" value="${t.ano}" placeholder="Ex: Ensino Fundamental" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></div>
+                <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Turno</label><input type="text" id="m-t-turno" value="${t.turno}" placeholder="Ex: Manhã" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></div>
             `;
             document.getElementById('modal-app').classList.remove('hidden');
         }
 
-        function abrirModalAluno() {
+        function abrirModalAluno(idx = -1) {
             modalTipo = 'aluno';
-            document.getElementById('modal-titulo').textContent = 'Matricular Novo Aluno';
-            let turmasOpts = turmas.length ? turmas.map(t => `<option value="${t.nome}">${t.nome}</option>`).join('') : '<option value="Geral">Sem turmas disponíveis</option>';
+            editandoIndex = idx;
+            document.getElementById('modal-titulo').textContent = idx === -1 ? 'Matricular Novo Aluno' : 'Editar Aluno';
+            
+            const a = idx !== -1 ? alunos[idx] : { nome: '', email: '', turma: '' };
+            let turmasOpts = turmas.length ? turmas.map(t => `<option value="${t.nome}" ${a.turma === t.nome ? 'selected' : ''}>${t.nome}</option>`).join('') : '<option value="Geral">Sem turmas disponíveis</option>';
+            
             document.getElementById('modal-corpo').innerHTML = `
-                <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Nome Completo</label><input type="text" id="m-a-nome" placeholder="Nome do aluno" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></div>
-                <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">E-mail</label><input type="email" id="m-a-email" placeholder="aluno@escola.pt" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></div>
+                <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Nome Completo</label><input type="text" id="m-a-nome" value="${a.nome}" placeholder="Nome do aluno" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></div>
+                <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">E-mail</label><input type="email" id="m-a-email" value="${a.email || ''}" placeholder="aluno@escola.pt" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></div>
                 <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Turma</label><select id="m-a-turma" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">${turmasOpts}</select></div>
             `;
             document.getElementById('modal-app').classList.remove('hidden');
         }
 
-        function fecharModal() { document.getElementById('modal-app').classList.add('hidden'); }
+        function fecharModal() { document.getElementById('modal-app').classList.add('hidden'); editandoIndex = -1; }
 
         function executarSalvarModal() {
             if(modalTipo === 'turma') {
@@ -942,7 +953,12 @@
                 const ano = document.getElementById('m-t-ano').value.trim();
                 const turno = document.getElementById('m-t-turno').value.trim();
                 if(!nome) { alert('Insira o nome da turma.'); return; }
-                turmas.push({ nome, ano: ano || 'N/A', turno: turno || 'N/A' });
+                
+                if(editandoIndex === -1) {
+                    turmas.push({ nome, ano: ano || 'N/A', turno: turno || 'N/A' });
+                } else {
+                    turmas[editandoIndex] = { nome, ano: ano || 'N/A', turno: turno || 'N/A' };
+                }
                 atualizarTabelaTurmas();
                 atualizarSelectTurmasChamada();
                 atualizarSelectTurmasWord();
@@ -952,7 +968,12 @@
                 const email = document.getElementById('m-a-email').value.trim();
                 const turma = document.getElementById('m-a-turma').value;
                 if(!nome) { alert('Insira o nome do aluno.'); return; }
-                alunos.push({ nome, email, turma });
+                
+                if(editandoIndex === -1) {
+                    alunos.push({ nome, email, turma });
+                } else {
+                    alunos[editandoIndex] = { nome, email, turma };
+                }
                 atualizarTabelaAlunos();
             }
             salvarDadosLocais();
@@ -970,7 +991,10 @@
                     <td class="p-4 text-slate-600">${t.ano}</td>
                     <td class="p-4 text-slate-600">${t.turno}</td>
                     <td class="p-4"><span class="bg-slate-100 text-slate-700 px-3 py-1 rounded-full text-xs font-extrabold">${alunos.filter(a => a.turma === t.nome).length} aluno(s)</span></td>
-                    <td class="p-4 text-right"><button onclick="removerTurma(${idx})" class="text-rose-600 hover:text-rose-800 text-xs font-bold cursor-pointer">Excluir</button></td>
+                    <td class="p-4 text-right space-x-2">
+                        <button onclick="abrirModalTurma(${idx})" class="text-emerald-600 hover:text-emerald-800 text-xs font-bold cursor-pointer">Editar</button>
+                        <button onclick="removerTurma(${idx})" class="text-rose-600 hover:text-rose-800 text-xs font-bold cursor-pointer">Excluir</button>
+                    </td>
                 </tr>
             `).join('');
         }
@@ -983,7 +1007,10 @@
                     <td class="p-4 font-bold text-slate-900">${a.nome}</td>
                     <td class="p-4 text-slate-600">${a.email || '-'}</td>
                     <td class="p-4"><span class="bg-slate-100 text-slate-700 px-3 py-1 rounded-md text-xs font-bold">${a.turma}</span></td>
-                    <td class="p-4 text-right"><button onclick="removerAluno(${idx})" class="text-rose-600 hover:text-rose-800 text-xs font-bold cursor-pointer">Excluir</button></td>
+                    <td class="p-4 text-right space-x-2">
+                        <button onclick="abrirModalAluno(${idx})" class="text-emerald-600 hover:text-emerald-800 text-xs font-bold cursor-pointer">Editar</button>
+                        <button onclick="removerAluno(${idx})" class="text-rose-600 hover:text-rose-800 text-xs font-bold cursor-pointer">Excluir</button>
+                    </td>
                 </tr>
             `).join('');
         }
@@ -1009,7 +1036,6 @@
             }
         }
 
-        // CHAMADA
         function atualizarSelectTurmasChamada() {
             const select = document.getElementById('select-turma-chamada');
             if(!select) return;
@@ -1046,11 +1072,8 @@
             clicked.className = tipo === 'P' ? "btn-primary-theme px-3 py-1.5 rounded-xl font-bold bg-emerald-600 text-white shadow-xs cursor-pointer" : "px-3 py-1.5 rounded-xl font-bold bg-rose-600 text-white shadow-xs cursor-pointer";
         }
 
-        function salvarChamada() {
-            alert('✅ Frequência guardada com sucesso!');
-        }
+        function salvarChamada() { alert('✅ Frequência guardada com sucesso!'); }
 
-        // EDITOR WORD E BNCC
         function atualizarSelectTurmasWord() {
             const select = document.getElementById('doc-word-turma');
             if(!select) return;
@@ -1143,7 +1166,6 @@
             if(planoGestaoDados.bncc) document.getElementById('plano-bncc-texto').value = planoGestaoDados.bncc;
         }
 
-        // GESTOR DE PDFS
         function abrirModalUploadPDF() {
             let turmasOpts = turmas.length ? turmas.map(t => `<option value="${t.nome}">${t.nome}</option>`).join('') : '<option value="Geral">Geral</option>';
             modalTipo = 'pdf';
@@ -1220,7 +1242,6 @@
             if(elPdfs) elPdfs.textContent = documentosPDF.length;
         }
 
-        // INICIALIZAÇÃO
         if (usuarioLogado) {
             switchView('dashboard');
         } else {

@@ -791,7 +791,7 @@
             document.getElementById('sidebar-overlay').classList.toggle('hidden');
         }
 
-        // LÓGICA DO CHAT PROFESSOR EDU (IA DIRETA COM GEMINI API)
+        // LÓGICA DO CHAT PROFESSOR EDU (IA DIRETA COM GEMINI API ATUALIZADA)
         function toggleChatEdu() {
             const box = document.getElementById('chat-edu-box');
             box.classList.toggle('hidden');
@@ -806,7 +806,6 @@
             const texto = input.value.trim();
             if (!texto) return;
 
-            // Busca a chave atualizada diretamente das configurações ou do campo
             const inputKey = document.getElementById('cfg-gemini-key') ? document.getElementById('cfg-gemini-key').value.trim() : '';
             const apiKey = configApp.geminiKey || inputKey;
 
@@ -837,8 +836,8 @@
             mensagensDiv.scrollTop = mensagensDiv.scrollHeight;
 
             try {
-                // Modelo atualizado para gemini-2.5-flash
-                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+                // Modelo atualizado para gemini-3.8-flash
+                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${apiKey}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({

@@ -391,42 +391,96 @@
 
                 <!-- ABA EDITOR -->
                 <div id="tab-editor-word" class="hidden space-y-6">
-                    <div class="flex justify-between items-center">
-                        <h2 class="text-2xl font-black text-slate-900 tracking-tight">Editor de Atividades</h2>
-                        <button onclick="salvarDocumentoWord()" class="btn-primary-theme bg-emerald-600 text-white px-5 py-2.5 rounded-xl text-sm font-bold">💾 Guardar</button>
+                    <div class="flex justify-between items-center flex-wrap gap-3">
+                        <div>
+                            <h2 class="text-2xl font-black text-slate-900 tracking-tight">Editor de Atividades & Provas 📝</h2>
+                            <p class="text-slate-500 text-sm">Crie testes, planos de aula ou fichas formativas com formatação rica.</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="novoDocumentoWord()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-xs font-bold">Novo</button>
+                            <button onclick="salvarDocumentoWord()" class="btn-primary-theme bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold">💾 Guardar</button>
+                        </div>
                     </div>
-                    <div class="bg-white border border-slate-200/80 rounded-3xl p-6 space-y-4">
-                        <input type="text" id="doc-word-titulo" placeholder="Título da Atividade" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm">
-                        <div id="editor-word-area" contenteditable="true" class="min-h-[250px] p-4 bg-slate-50 border border-slate-300 rounded-xl text-sm">Descreva a atividade...</div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="bg-white border border-slate-200/80 p-5 rounded-3xl space-y-4 shadow-xs h-fit">
+                            <h3 class="font-extrabold text-sm uppercase text-slate-700">Atividades Guardadas</h3>
+                            <div id="lista-docs-word" class="space-y-2 max-h-[350px] overflow-y-auto"></div>
+                        </div>
+
+                        <div class="lg:col-span-2 bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
+                            <input type="text" id="doc-word-titulo" placeholder="Título da Atividade / Ficha..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            
+                            <div class="flex items-center gap-1.5 p-2 bg-slate-50 border border-slate-200 rounded-xl flex-wrap">
+                                <button onclick="formatarEditorWord('bold')" class="px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold hover:bg-slate-100">B</button>
+                                <button onclick="formatarEditorWord('italic')" class="px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs italic hover:bg-slate-100">I</button>
+                                <button onclick="formatarEditorWord('underline')" class="px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs underline hover:bg-slate-100">U</button>
+                                <button onclick="formatarEditorWord('insertUnorderedList')" class="px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs hover:bg-slate-100">• Lista</button>
+                                <button onclick="inserirQuestaoQuizWord()" class="px-3 py-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg text-xs font-bold hover:bg-emerald-100">+ Questão Múltipla Escolha</button>
+                            </div>
+
+                            <div id="editor-word-area" contenteditable="true" class="w-full min-h-[300px] p-4 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 overflow-y-auto">Comece a escrever a sua atividade pedagógica aqui...</div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- ABA GESTÃO & BNCC -->
                 <div id="tab-gestao" class="hidden space-y-6">
-                    <h2 class="text-2xl font-black text-slate-900 tracking-tight">Planejamento & BNCC</h2>
-                    <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 max-w-4xl">
-                        <div><label class="block text-xs font-bold uppercase mb-1">Escola</label><input type="text" id="plano-escola" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm"></div>
-                        <div><label class="block text-xs font-bold uppercase mb-1">Professor</label><input type="text" id="plano-professor" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm"></div>
-                        <button onclick="salvarPlanoGestao()" class="btn-primary-theme bg-emerald-600 text-white px-5 py-2.5 rounded-xl text-sm font-bold">💾 Guardar Plano</button>
+                    <div class="flex justify-between items-center flex-wrap gap-3">
+                        <div>
+                            <h2 class="text-2xl font-black text-slate-900 tracking-tight">Planejamento Pedagógico & BNCC 📅</h2>
+                            <p class="text-slate-500 text-sm">Estruture o seu plano de aulas integrando as competências da Base Nacional Comum Curricular.</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="window.print()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-xs font-bold">🖨️ Imprimir / PDF</button>
+                            <button onclick="salvarPlanoGestao()" class="btn-primary-theme bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold">💾 Guardar Plano</button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white border border-slate-200/80 p-6 sm:p-8 rounded-3xl space-y-6 shadow-xs">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div><label class="block text-xs font-bold uppercase text-slate-600 mb-1">Escola</label><input type="text" id="plano-escola" placeholder="Nome da Escola" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm font-semibold"></div>
+                            <div><label class="block text-xs font-bold uppercase text-slate-600 mb-1">Professor(a)</label><input type="text" id="plano-professor" placeholder="Seu Nome" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm font-semibold"></div>
+                            <div><label class="block text-xs font-bold uppercase text-slate-600 mb-1">Período / Trimestre</label><input type="text" id="plano-periodo" placeholder="Ex: 1º Período" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm font-semibold"></div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Objetivos de Aprendizagem & Desenvolvimento</label>
+                            <textarea id="plano-objetivos" placeholder="Descreva os objetivos principais das aulas..." class="w-full bg-slate-50 border border-slate-300 rounded-xl p-4 text-sm h-24 focus:outline-none focus:ring-2 focus:ring-emerald-500"></textarea>
+                        </div>
+
+                        <div class="space-y-3">
+                            <label class="block text-xs font-bold uppercase text-slate-600">Códigos BNCC Recomendados para Educação Física</label>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="bncc-container-checks"></div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- ABA DOCUMENTOS -->
                 <div id="tab-documentos" class="hidden space-y-6">
-                    <h2 class="text-2xl font-black text-slate-900 tracking-tight">Gestor de Documentos</h2>
-                    <button onclick="abrirModalUploadPDF()" class="btn-primary-theme bg-emerald-600 text-white px-4 py-2.5 rounded-xl text-sm font-bold">+ Adicionar PDF</button>
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h2 class="text-2xl font-black text-slate-900 tracking-tight">Gestor de Documentos 📄</h2>
+                            <p class="text-slate-500 text-sm">Guarde referências a PDFs, relatórios e testes externos.</p>
+                        </div>
+                        <button onclick="abrirModalUploadPDF()" class="btn-primary-theme bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all cursor-pointer">+ Adicionar PDF / Documento</button>
+                    </div>
                     <div id="lista-provas-cards" class="grid grid-cols-1 sm:grid-cols-2 gap-5"></div>
                 </div>
 
                 <!-- ABA BACKUP -->
                 <div id="tab-backup" class="hidden space-y-6">
-                    <h2 class="text-2xl font-black text-slate-900 tracking-tight">Backup & Nuvem</h2>
-                    <button onclick="descarregarBackupJSON()" class="btn-primary-theme bg-emerald-600 text-white font-bold py-3 px-6 rounded-2xl text-sm cursor-pointer">📥 Descarregar Backup (.json)</button>
+                    <h2 class="text-2xl font-black text-slate-900 tracking-tight">Backup & Nuvem ☁️</h2>
+                    <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 max-w-xl shadow-xs">
+                        <h3 class="font-extrabold text-sm uppercase text-slate-700">💾 Cópia de Segurança Local</h3>
+                        <p class="text-xs text-slate-500">Descarregue um ficheiro com todos os seus dados (turmas, alunos, notas, jogos e configurações) para salvaguarda.</p>
+                        <button onclick="descarregarBackupJSON()" class="btn-primary-theme w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-6 rounded-2xl text-sm shadow-sm cursor-pointer">📥 Descarregar Backup Completo (.json)</button>
+                    </div>
                 </div>
 
                 <!-- ABA CONFIGURAÇÕES -->
                 <div id="tab-config" class="hidden space-y-6">
-                    <h2 class="text-2xl font-black text-slate-900 tracking-tight">Configurações do Sistema</h2>
+                    <h2 class="text-2xl font-black text-slate-900 tracking-tight">Configurações do Sistema ⚙️</h2>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl">
                         <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
                             <h3 class="font-extrabold text-sm uppercase text-slate-700">👤 Perfil & Escola</h3>
@@ -464,7 +518,7 @@
 
     <script>
         let modalTipo = '';
-        let editandoIndex = -1;
+        let documentoAtualId = null;
 
         function toggleSidebarMobile() {
             document.getElementById('sidebar-menu').classList.toggle('-translate-x-full');
@@ -572,6 +626,8 @@
             if(tabId === 'jogos') renderizarBancoJogos();
             if(tabId === 'anatomia') renderizarAtlasAnatomia();
             if(tabId === 'config') carregarConfigNaTela();
+            if(tabId === 'editor-word') renderizarListaDocsWord();
+            if(tabId === 'gestao') carregarPlanoGestaoNaTela();
         }
 
         function carregarTudoNaTela() {
@@ -583,6 +639,8 @@
             atualizarEstatisticas();
             renderizarBancoJogos();
             renderizarAtlasAnatomia();
+            renderizarListaDocsWord();
+            renderizarBNCCChecks();
         }
 
         function carregarConfigNaTela() {
@@ -748,20 +806,109 @@
             container.classList.remove('hidden');
         }
 
+        // Funções do Editor de Atividades
+        function formatarEditorWord(cmd) {
+            document.execCommand(cmd, false, null);
+        }
+
+        function inserirQuestaoQuizWord() {
+            const area = document.getElementById('editor-word-area');
+            area.innerHTML += `<br><div style="border: 1px solid #cbd5e1; padding: 10px; border-radius: 8px; margin: 10px 0;"><strong>Questão:</strong> [Digite a pergunta aqui]<br>a) [Opção A]<br>b) [Opção B]<br>c) [Opção C]<br>d) [Opção D]</div><br>`;
+        }
+
+        function novoDocumentoWord() {
+            documentoAtualId = null;
+            document.getElementById('doc-word-titulo').value = '';
+            document.getElementById('editor-word-area').innerHTML = 'Comece a escrever a sua atividade pedagógica aqui...';
+        }
+
         function salvarDocumentoWord() {
             const titulo = document.getElementById('doc-word-titulo').value.trim() || 'Atividade Sem Título';
             const conteudo = document.getElementById('editor-word-area').innerHTML;
-            documentosWord.push({ id: Date.now(), titulo, conteudo });
+            
+            if (documentoAtualId) {
+                const doc = documentosWord.find(d => d.id === documentoAtualId);
+                if(doc) { doc.titulo = titulo; doc.conteudo = conteudo; }
+            } else {
+                const novoDoc = { id: Date.now(), titulo, conteudo };
+                documentosWord.push(novoDoc);
+                documentoAtualId = novoDoc.id;
+            }
             salvarDadosLocais();
             atualizarEstatisticas();
+            renderizarListaDocsWord();
             alert('✅ Atividade guardada com sucesso!');
+        }
+
+        function renderizarListaDocsWord() {
+            const container = document.getElementById('lista-docs-word');
+            if(!container) return;
+            container.innerHTML = documentosWord.length === 0 ? `<p class="text-xs text-slate-400">Nenhuma atividade salva.</p>` : documentosWord.map(d => `
+                <div onclick="carregarDocumentoWord(${d.id})" class="p-3 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 cursor-pointer flex justify-between items-center">
+                    <span class="text-xs font-bold text-slate-800 truncate">${d.titulo}</span>
+                    <button onclick="event.stopPropagation(); excluirDocumentoWord(${d.id})" class="text-xs text-rose-600 font-bold hover:underline">Excluir</button>
+                </div>
+            `).join('');
+        }
+
+        function carregarDocumentoWord(id) {
+            const doc = documentosWord.find(d => d.id === id);
+            if(doc) {
+                documentoAtualId = doc.id;
+                document.getElementById('doc-word-titulo').value = doc.titulo;
+                document.getElementById('editor-word-area').innerHTML = doc.conteudo;
+            }
+        }
+
+        function excluirDocumentoWord(id) {
+            documentosWord = documentosWord.filter(d => d.id !== id);
+            if(documentoAtualId === id) novoDocumentoWord();
+            salvarDadosLocais();
+            atualizarEstatisticas();
+            renderizarListaDocsWord();
+        }
+
+        // Funções do Planejamento & BNCC
+        function renderizarBNCCChecks() {
+            const container = document.getElementById('bncc-container-checks');
+            if(!container) return;
+            container.innerHTML = baseBNCC.map(b => `
+                <label class="flex items-start gap-3 p-3 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-100">
+                    <input type="checkbox" value="${b.codigo}" class="mt-0.5 bncc-check">
+                    <div>
+                        <strong class="text-xs text-emerald-700">${b.codigo} (${b.tema})</strong>
+                        <p class="text-xs text-slate-600">${b.desc}</p>
+                    </div>
+                </label>
+            `).join('');
+            carregarPlanoGestaoNaTela();
         }
 
         function salvarPlanoGestao() {
             planoGestaoDados.escola = document.getElementById('plano-escola').value;
             planoGestaoDados.professor = document.getElementById('plano-professor').value;
+            planoGestaoDados.periodo = document.getElementById('plano-periodo').value;
+            planoGestaoDados.objetivos = document.getElementById('plano-objetivos').value;
+            
+            const selecionados = [];
+            document.querySelectorAll('.bncc-check:checked').forEach(chk => selecionados.push(chk.value));
+            planoGestaoDados.bnccSelecionados = selecionados;
+
             salvarDadosLocais();
-            alert('✅ Plano pedagógico guardado!');
+            alert('✅ Plano pedagógico guardado com sucesso!');
+        }
+
+        function carregarPlanoGestaoNaTela() {
+            if(document.getElementById('plano-escola')) document.getElementById('plano-escola').value = planoGestaoDados.escola || configApp.nomeEscola || '';
+            if(document.getElementById('plano-professor')) document.getElementById('plano-professor').value = planoGestaoDados.professor || configApp.nomeProf || '';
+            if(document.getElementById('plano-periodo')) document.getElementById('plano-periodo').value = planoGestaoDados.periodo || '';
+            if(document.getElementById('plano-objetivos')) document.getElementById('plano-objetivos').value = planoGestaoDados.objetivos || '';
+
+            if(planoGestaoDados.bnccSelecionados) {
+                document.querySelectorAll('.bncc-check').forEach(chk => {
+                    if(planoGestaoDados.bnccSelecionados.includes(chk.value)) chk.checked = true;
+                });
+            }
         }
 
         function abrirModalUploadPDF() {
@@ -793,10 +940,22 @@
         }
 
         function descarregarBackupJSON() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ turmas, alunos, bancoJogos, documentosWord, documentosPDF, configApp }, null, 2));
+            const dadosCompletos = {
+                versao: "8.6",
+                turmas: turmas,
+                alunos: alunos,
+                bancoJogos: bancoJogos,
+                documentosWord: documentosWord,
+                documentosPDF: documentosPDF,
+                planoGestao: planoGestaoDados,
+                agendaHoje: agendaHojeDados,
+                configApp: configApp
+            };
+
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dadosCompletos, null, 2));
             const dl = document.createElement('a');
             dl.setAttribute("href", dataStr);
-            dl.setAttribute("download", `EduFis_Backup_Completo.json`);
+            dl.setAttribute("download", `EduFis_Backup.json`);
             document.body.appendChild(dl);
             dl.click();
             dl.remove();

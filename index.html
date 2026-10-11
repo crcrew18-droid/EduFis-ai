@@ -806,11 +806,14 @@
             const texto = input.value.trim();
             if (!texto) return;
 
-            const apiKey = configApp.geminiKey;
+            // Busca a chave atualizada diretamente das configurações ou do campo
+            const inputKey = document.getElementById('cfg-gemini-key') ? document.getElementById('cfg-gemini-key').value.trim() : '';
+            const apiKey = configApp.geminiKey || inputKey;
+
             if (!apiKey) {
                 mensagensDiv.innerHTML += `
                     <div class="bg-rose-50 text-rose-700 p-3 rounded-2xl border border-rose-200 shadow-2xs">
-                        ⚠️ Chave da API do Gemini não configurada. Vá a <strong>Configurações</strong> no menu lateral e cole a sua chave da API para ativar o Professor Edu.
+                        ⚠️ Chave da API do Gemini não configurada. Vá a <strong>Configurações</strong> no menu lateral, cole a sua chave da API e clique no botão <strong>Guardar Todas as Configurações</strong>.
                     </div>
                 `;
                 mensagensDiv.scrollTop = mensagensDiv.scrollHeight;
@@ -834,7 +837,8 @@
             mensagensDiv.scrollTop = mensagensDiv.scrollHeight;
 
             try {
-                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+                // Modelo atualizado para gemini-2.5-flash
+                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -842,7 +846,7 @@
                             {
                                 role: "user",
                                 parts: [
-                                    { text: "Você é o Professor Edu, um assistente de inteligência artificial especializado em Educação Física escolar brasileira, BNCC, anatomia, fisiologia do exercício, criação de planos de aula, circuitos motores e adaptações inclusivas. Responda de forma prática, profissional e objetiva aos professores." },
+                                    { text: "Você é o Professor Edu, um assistente de inteligência artificial especializado em Educação Física escolar, BNCC, anatomia, fisiologia do exercício, criação de planos de aula, circuitos motores e adaptações inclusivas. Responda de forma prática, profissional e objetiva aos professores." },
                                     { text: texto }
                                 ]
                             }
@@ -853,20 +857,28 @@
                 const data = await res.json();
                 if(document.getElementById(loadingId)) document.getElementById(loadingId).remove();
 
-                const respostaTexto = data.candidates?.[0]?.content?.parts?.[0]?.text;
-
-                if (respostaTexto) {
+                if (data.error) {
                     mensagensDiv.innerHTML += `
-                        <div class="bg-white p-3 rounded-2xl border border-slate-200/80 text-slate-700 shadow-2xs whitespace-pre-wrap">
-                            ${escapeHtmlEdu(respostaTexto)}
+                        <div class="bg-rose-50 text-rose-700 p-3 rounded-2xl border border-rose-200 shadow-2xs">
+                            Erro da API (${data.error.code}): ${escapeHtmlEdu(data.error.message)}
                         </div>
                     `;
                 } else {
-                    mensagensDiv.innerHTML += `
-                        <div class="bg-rose-50 text-rose-700 p-3 rounded-2xl border border-rose-200 shadow-2xs">
-                            Erro ao obter resposta da IA. Verifique se a sua chave do Gemini está correta nas Configurações.
-                        </div>
-                    `;
+                    const respostaTexto = data.candidates?.[0]?.content?.parts?.[0]?.text;
+
+                    if (respostaTexto) {
+                        mensagensDiv.innerHTML += `
+                            <div class="bg-white p-3 rounded-2xl border border-slate-200/80 text-slate-700 shadow-2xs whitespace-pre-wrap">
+                                ${escapeHtmlEdu(respostaTexto)}
+                            </div>
+                        `;
+                    } else {
+                        mensagensDiv.innerHTML += `
+                            <div class="bg-rose-50 text-rose-700 p-3 rounded-2xl border border-rose-200 shadow-2xs">
+                                Erro ao obter resposta da IA. Verifique se a sua chave do Gemini está correta nas Configurações.
+                            </div>
+                        `;
+                    }
                 }
             } catch (err) {
                 if(document.getElementById(loadingId)) document.getElementById(loadingId).remove();

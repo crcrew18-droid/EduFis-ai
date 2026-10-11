@@ -56,7 +56,10 @@
         
         let bancoJogos = JSON.parse(localStorage.getItem('edufis_jogos_v8')) || [
             { id: 1, titulo: "Queimada Cooperativa", categoria: "Jogos Tradicionais", objetivo: "Estimular a agilidade, mira e cooperação em equipa.", materiais: "1 Bola de borracha, cones para delimitar o campo.", regras: "Quem for queimado vai para a 'cadeia' adversária, mas pode voltar se apanhar uma bola no ar ou se um colega acertar um alvo específico." },
-            { id: 2, titulo: "Circuito Funcional de Habilidades", categoria: "Aptidão Física", objetivo: "Desenvolver força, velocidade, equilíbrio e coordenação motora.", materiais: "Cones, cordas, arcos e colchonetes.", regras: "Os alunos dividem-se em grupos e revezam-se nas estações a cada 45 segundos, focando na execução correta dos movimentos." }
+            { id: 2, titulo: "Circuito Funcional de Habilidades", categoria: "Aptidão Física", objetivo: "Desenvolver força, velocidade, equilíbrio e coordenação motora.", materiais: "Cones, cordas, arcos e colchonetes.", regras: "Os alunos dividem-se em grupos e revezam-se nas estações a cada 45 segundos, focando na execução correta dos movimentos." },
+            { id: 3, titulo: "Bandeirinha (Rouba Bandeira Adaptado)", categoria: "Esportes Coletivos", objetivo: "Trabalhar estratégia, tomada de decisão rápida e velocidade de reação.", materiais: "2 coletes ou bandeiras, cones.", regras: "Duas equipas tentam roubar a bandeira no campo adversário sem serem apanhados (tocados) no campo inimigo." },
+            { id: 4, titulo: "Estafeta das Cores e Formas", categoria: "Coordenação", objetivo: "Trabalhar locomoção, agilidade e raciocínio rápido sob esforço físico.", materiais: "Bolas coloridas, baldes, cartões de tarefas.", regras: "Cada elemento do grupo deve correr até ao centro, recolher um objeto com a cor solicitada e regressar para passar a vez." },
+            { id: 5, titulo: "Cabra-cega Cooperativa", categoria: "Jogos Sensoriais", objetivo: "Desenvolver a confiança, orientação espacial e perceção auditiva/tátil.", materiais: "Vendas para os olhos, espaço delimitado e seguro.", regras: "O aluno vendado deve guiar-se pelas indicações verbais dos colegas para apanhar um objeto ou toque leve." }
         ];
 
         let baseSocorros = JSON.parse(localStorage.getItem('edufis_socorros_v8')) || [
@@ -76,12 +79,25 @@
         const baseAnatomia = [
             { id: "m1", nome: "Quadríceps Femoral", tipo: "Músculo", regiao: "Inferiores", acao: "Extensão do joelho e flexão do quadril (reto femoral).", exercicios: "Agachamento, Avanço, Salto Vertical, Chute no Futebol." },
             { id: "m2", nome: "Isquiotibiais (Bíceps Femoral, Semitendíneo, Semimembranoso)", tipo: "Músculo", regiao: "Inferiores", acao: "Flexão do joelho e extensão do quadril.", exercicios: "Corrida/Sprints, Stiff, Salto em Distância." },
-            { id: "m3", nome: "Tríceps Sural (Gastrocnêmio e Sóleo)", tipo: "Músculo", regiao: "Inferiores", acao: "Flexão plantar do tornozelo (impulsão).", exercicios: "Elevação de calcanhar, Corridas, Saltos de corda." }
+            { id: "m3", nome: "Tríceps Sural (Gastrocnêmio e Sóleo)", tipo: "Músculo", regiao: "Inferiores", acao: "Flexão plantar do tornozelo (impulsão).", exercicios: "Elevação de calcanhar, Corridas, Saltos de corda." },
+            { id: "m4", nome: "Glúteo Máximo", tipo: "Músculo", regiao: "Inferiores", acao: "Extensão e rotação lateral do quadril.", exercicios: "Elevação pélvica, Agachamento profundo, Corridas de velocidade." },
+            { id: "m5", nome: "Peitoral Maior", tipo: "Músculo", regiao: "Tronco", acao: "Adução e rotação medial do ombro, flexão do braço.", exercicios: "Flexão de braços (apoio), Arremesso no Basquete/Handebol." },
+            { id: "m6", nome: "Latíssimo do Dorso (Grande Dorsal)", tipo: "Músculo", regiao: "Tronco", acao: "Extensão, adução e rotação medial do ombro.", exercicios: "Puxada alta, Natação (Crawl/Borboleta), Escalada." },
+            { id: "m7", nome: "Deltoide (Anterior, Lateral, Posterior)", tipo: "Músculo", regiao: "Superiores", acao: "Abdução e elevação do braço nos três planos.", exercicios: "Desenvolvimento, Arremessos, Saque no Vôlei." },
+            { id: "m8", nome: "Bíceps Braquial", tipo: "Músculo", regiao: "Superiores", acao: "Flexão do cotovelo e supinação do antebraço.", exercicios: "Barra fixa (supinada), Remo na ginástica." },
+            { id: "m9", nome: "Tríceps Braquial", tipo: "Músculo", regiao: "Superiores", acao: "Extensão do cotovelo.", exercicios: "Flexão no solo, Passe de peito no basquete, Cortada no Vôlei." },
+            { id: "m10", nome: "Reto Abdominal e Oblíquos", tipo: "Músculo", regiao: "Tronco", acao: "Flexão e rotação do tronco, estabilização do Core.", exercicios: "Prancha abdominal, Rotações com bola medicinal." },
+            { id: "o1", nome: "Fêmur", tipo: "Osso", regiao: "Esqueleto", acao: "Maior osso do corpo humano; suporta o peso corporal e articula no quadril e joelho.", exercicios: "Suporte de carga, Corridas, Saltos." },
+            { id: "o2", nome: "Tíbia e Fíbula", tipo: "Osso", regiao: "Esqueleto", acao: "Ossos da perna; sustentação e fixação muscular para tornozelo/joelho.", exercicios: "Impacto controlado, Treino de agilidade e mudança de direção." },
+            { id: "o3", nome: "Escápula e Clavícula", tipo: "Osso", regiao: "Esqueleto", acao: "Cinto escapular; dão mobilidade e amplitude de movimento aos ombros.", exercicios: "Movimentos de arremesso, natação e ginástica artística." }
         ];
 
         const baseBNCC = [
             { codigo: "EF67EF01", tema: "Esportes", desc: "Experimentar e fruir diferentes esportes de marca, precisão, invasão e técnico-combinatórios." },
-            { codigo: "EF89EF07", tema: "Esportes", desc: "Formular e propor estratégias para o resolução de desafios em jogos desportivos." }
+            { codigo: "EF67EF03", tema: "Esportes", desc: "Praticar um ou mais esportes de marca, precisão, invasão e técnico-combinatórios oferecidos na escola." },
+            { codigo: "EF89EF07", tema: "Esportes", desc: "Formular e propor estratégias para o resolução de desafios em jogos desportivos." },
+            { codigo: "EF67EF07", tema: "Ginástica", desc: "Propor e produzir alternativas para a prática da ginástica de conscientização corporal." },
+            { codigo: "EF89EF09", tema: "Ginástica", desc: "Construir apresentações de ginástica geral, integrando diferentes elementos gimnásticos." }
         ];
 
         function salvarDadosLocais() {
@@ -98,28 +114,49 @@
             localStorage.setItem('edufis_config_v8', JSON.stringify(configApp));
         }
 
-        function aplicarTemaCor(cor) {
-            configApp.temaCor = cor;
-            salvarDadosLocais();
-
-            const mapaCores = {
-                emerald: { main: 'bg-emerald-600', hover: 'hover:bg-emerald-700', text: 'text-emerald-600' },
-                sky: { main: 'bg-sky-600', hover: 'hover:bg-sky-700', text: 'text-sky-600' },
-                purple: { main: 'bg-purple-600', hover: 'hover:bg-purple-700', text: 'text-purple-600' },
-                slate: { main: 'bg-slate-800', hover: 'hover:bg-slate-900', text: 'text-slate-800' }
+        function descarregarBackupJSON() {
+            const dadosBackup = {
+                versao: "8.6",
+                dataBackup: new Date().toISOString(),
+                usuarios, turmas, alunos, documentosWord, documentosPDF, planoGestaoDados, agendaHojeDados, bancoJogos, baseSocorros, configApp
             };
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dadosBackup, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `EduFis_Pro_Backup_${new Date().toISOString().split('T')[0]}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+            alert('✅ Ficheiro de backup gerado e transferido com sucesso!');
+        }
 
-            const c = mapaCores[cor] || mapaCores.emerald;
-
-            document.querySelectorAll('.btn-primary-theme').forEach(el => {
-                el.className = el.className.replace(/bg-\w+-\d+/g, c.main).replace(/hover:bg-\w+-\d+/g, c.hover);
-            });
-            document.querySelectorAll('.text-theme-main').forEach(el => {
-                el.className = el.className.replace(/text-\w+-\d+/g, c.text);
-            });
-            document.querySelectorAll('.brand-icon-bg').forEach(el => {
-                el.className = el.className.replace(/bg-\w+-\d+/g, c.main);
-            });
+        function importarBackupDrive(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const conteudo = JSON.parse(e.target.result);
+                    if(conteudo.usuarios) usuarios = conteudo.usuarios;
+                    if(conteudo.turmas) turmas = conteudo.turmas;
+                    if(conteudo.alunos) alunos = conteudo.alunos;
+                    if(conteudo.documentosWord) documentosWord = conteudo.documentosWord;
+                    if(conteudo.documentosPDF) documentosPDF = conteudo.documentosPDF;
+                    if(conteudo.planoGestaoDados) planoGestaoDados = conteudo.planoGestaoDados;
+                    if(conteudo.agendaHojeDados) agendaHojeDados = conteudo.agendaHojeDados;
+                    if(conteudo.bancoJogos) bancoJogos = conteudo.bancoJogos;
+                    if(conteudo.baseSocorros) baseSocorros = conteudo.baseSocorros;
+                    if(conteudo.configApp) configApp = conteudo.configApp;
+                    
+                    salvarDadosLocais();
+                    carregarTudoNaTela();
+                    aplicarTemaCor(configApp.temaCor || 'emerald');
+                    alert('✅ Dados restaurados com sucesso!');
+                } catch(err) {
+                    alert('❌ Erro ao ler ficheiro de backup.');
+                }
+            };
+            reader.readAsText(file);
         }
     </script>
 
@@ -549,9 +586,9 @@
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl">
                         <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
-                            <h3 class="font-extrabold text-base text-slate-900">Backup na Nuvem</h3>
-                            <button onclick="salvarAutomaticoNoGoogleDrive()" class="btn-primary-theme w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-2xl cursor-pointer text-sm shadow-sm transition-all">☁️ Salvar no Drive</button>
-                            <span id="status-drive-txt" class="text-xs text-slate-500 block text-center font-medium">Pronto para sincronizar</span>
+                            <h3 class="font-extrabold text-base text-slate-900">Descarregar Backup (.json)</h3>
+                            <button onclick="descarregarBackupJSON()" class="btn-primary-theme w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-2xl cursor-pointer text-sm shadow-sm transition-all">📥 Guardar Ficheiro no Computador</button>
+                            <span class="text-xs text-slate-500 block text-center font-medium">Guarde uma cópia segura dos seus dados</span>
                         </div>
                         <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
                             <h3 class="font-extrabold text-base text-slate-900">Restaurar Ficheiro (.json)</h3>
@@ -559,7 +596,7 @@
                                 Selecionar Ficheiro
                                 <input type="file" accept=".json" onchange="importarBackupDrive(event)" class="hidden">
                             </label>
-                            <span class="text-xs text-slate-500 block text-center font-medium">Carregue um backup guardado</span>
+                            <span class="text-xs text-slate-500 block text-center font-medium">Carregue um backup guardado anteriormente</span>
                         </div>
                     </div>
                 </div>

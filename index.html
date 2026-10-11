@@ -44,9 +44,19 @@
                 padding: 0 !important;
                 box-shadow: none !important;
             }
-            .bncc-check-card {
-                border: 1px solid #e2e8f0 !important;
-                background: white !important;
+            /* Oculta os itens da BNCC que NÃO estão marcados na impressão */
+            .bncc-item-wrapper:not(.checked-item) {
+                display: none !important;
+            }
+            /* Remove a caixa de seleção na impressão e deixa limpo */
+            .bncc-item-wrapper {
+                border: none !important;
+                background: transparent !important;
+                padding: 4px 0 !important;
+                margin-bottom: 6px !important;
+            }
+            .bncc-check {
+                display: none !important;
             }
         }
     </style>
@@ -487,7 +497,7 @@
                     <div id="lista-provas-cards" class="grid grid-cols-1 sm:grid-cols-2 gap-5"></div>
                 </div>
 
-                <!-- ABA BACKUP (ENVIAR E RECEBER CORRIGIDOS) -->
+                <!-- ABA BACKUP -->
                 <div id="tab-backup" class="hidden space-y-6">
                     <h2 class="text-2xl font-black text-slate-900 tracking-tight">Backup & Nuvem ☁️</h2>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl">
@@ -933,13 +943,13 @@
             renderizarListaDocsWord();
         }
 
-        // Planejamento & BNCC
+        // Planejamento & BNCC com atualização dinâmica da classe para impressão
         function renderizarBNCCChecks() {
             const container = document.getElementById('bncc-container-checks');
             if(!container) return;
             container.innerHTML = baseBNCC.map(b => `
-                <label class="flex items-start gap-3 p-3 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-100 bncc-check-card">
-                    <input type="checkbox" value="${b.codigo}" class="mt-0.5 bncc-check">
+                <label class="flex items-start gap-3 p-3 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-100 bncc-item-wrapper" id="label-bncc-${b.codigo}">
+                    <input type="checkbox" value="${b.codigo}" class="mt-0.5 bncc-check" onchange="atualizarClasseCheckBNCC(this)">
                     <div>
                         <strong class="text-xs text-emerald-700">${b.codigo} (${b.tema})</strong>
                         <p class="text-xs text-slate-600">${b.desc}</p>
@@ -947,6 +957,15 @@
                 </label>
             `).join('');
             carregarPlanoGestaoNaTela();
+        }
+
+        function atualizarClasseCheckBNCC(checkbox) {
+            const wrapper = checkbox.closest('.bncc-item-wrapper');
+            if (checkbox.checked) {
+                wrapper.classList.add('checked-item');
+            } else {
+                wrapper.classList.remove('checked-item');
+            }
         }
 
         function salvarPlanoGestao() {
@@ -975,7 +994,10 @@
 
             if(planoGestaoDados.bnccSelecionados) {
                 document.querySelectorAll('.bncc-check').forEach(chk => {
-                    if(planoGestaoDados.bnccSelecionados.includes(chk.value)) chk.checked = true;
+                    if(planoGestaoDados.bnccSelecionados.includes(chk.value)) {
+                        chk.checked = true;
+                        atualizarClasseCheckBNCC(chk);
+                    }
                 });
             }
         }

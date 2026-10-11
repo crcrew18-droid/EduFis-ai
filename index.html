@@ -10,10 +10,15 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
 
+        /* REGRAS EXCLUSIVAS DE IMPRESSÃO */
         @media print {
-            header, aside, button, .no-print, #view-login { 
+            header, aside, button, .no-print, #view-login, 
+            #tab-home, #tab-jogos, #tab-anatomia, #tab-turmas, 
+            #tab-alunos, #tab-chamada, #tab-editor-word, 
+            #tab-documentos, #tab-backup, #tab-config, #modal-app { 
                 display: none !important; 
             }
+            
             body, main { 
                 background: white !important; 
                 padding: 0 !important; 
@@ -21,6 +26,7 @@
                 box-shadow: none !important;
                 width: 100% !important;
             }
+
             #tab-gestao { 
                 display: block !important; 
                 width: 100% !important; 
@@ -30,6 +36,7 @@
                 border: none !important;
                 box-shadow: none !important;
             }
+
             textarea, input {
                 border: 1px solid #cbd5e1 !important;
                 background: white !important;
@@ -132,7 +139,7 @@
     </script>
 
     <!-- TELA DE LOGIN & REGISTRO -->
-    <div id="view-login" class="flex flex-col items-center justify-center flex-1 p-4 bg-slate-100">
+    <div id="view-login" class="flex flex-col items-center justify-center flex-1 p-4 bg-slate-100 no-print">
         <div class="w-full max-w-md bg-white border border-slate-200 rounded-3xl p-8 shadow-xl space-y-6">
             <div class="text-center space-y-2">
                 <div class="w-16 h-16 brand-icon-bg bg-emerald-600 rounded-2xl flex items-center justify-center mx-auto shadow-md p-3.5">
@@ -184,7 +191,7 @@
     <div id="view-dashboard" class="hidden flex flex-col flex-1 min-h-screen">
         
         <!-- CABEÇALHO -->
-        <header class="bg-white border-b border-slate-200 px-4 sm:px-8 py-3.5 flex items-center justify-between sticky top-0 z-40 shadow-xs">
+        <header class="bg-white border-b border-slate-200 px-4 sm:px-8 py-3.5 flex items-center justify-between sticky top-0 z-40 shadow-xs no-print">
             <div class="flex items-center gap-3">
                 <button onclick="toggleSidebarMobile()" class="lg:hidden text-slate-700 p-2 rounded-xl bg-slate-100 hover:bg-slate-200">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
@@ -208,10 +215,10 @@
         </header>
 
         <div class="flex flex-1 relative">
-            <div id="sidebar-overlay" onclick="toggleSidebarMobile()" class="hidden fixed inset-0 bg-slate-900/50 z-30 lg:hidden"></div>
+            <div id="sidebar-overlay" onclick="toggleSidebarMobile()" class="hidden fixed inset-0 bg-slate-900/50 z-30 lg:hidden no-print"></div>
 
             <!-- MENU LATERAL -->
-            <aside id="sidebar-menu" class="fixed lg:static inset-y-0 left-0 w-72 bg-white border-r border-slate-200 p-4 flex flex-col justify-between z-40 transform -translate-x-full lg:translate-x-0 transition-transform duration-200 shadow-lg lg:shadow-none">
+            <aside id="sidebar-menu" class="fixed lg:static inset-y-0 left-0 w-72 bg-white border-r border-slate-200 p-4 flex flex-col justify-between z-40 transform -translate-x-full lg:translate-x-0 transition-transform duration-200 shadow-lg lg:shadow-none no-print">
                 <div class="space-y-1 overflow-y-auto">
                     <div class="text-[10px] uppercase font-bold text-slate-400 px-3 pb-1">Navegação Principal</div>
                     <button onclick="changeTab('home')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">🏠 Visão Geral</button>
@@ -428,7 +435,7 @@
 
                 <!-- ABA PLANEJAMENTO & BNCC -->
                 <div id="tab-gestao" class="hidden space-y-6">
-                    <div class="flex justify-between items-center flex-wrap gap-3">
+                    <div class="flex justify-between items-center flex-wrap gap-3 no-print">
                         <div>
                             <h2 class="text-2xl font-black text-slate-900 tracking-tight">Planejamento Pedagógico & BNCC 📅</h2>
                             <p class="text-slate-500 text-sm">Estruture o plano de ensino anual/mensal alinhado às diretrizes da BNCC.</p>
@@ -512,7 +519,7 @@
     </div>
 
     <!-- MODAL GENÉRICO -->
-    <div id="modal-app" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4 z-50">
+    <div id="modal-app" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4 z-50 no-print">
         <div class="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 w-full max-w-md space-y-5 shadow-2xl">
             <h3 id="modal-titulo" class="font-extrabold text-lg text-slate-900">Registar</h3>
             <div id="modal-corpo" class="space-y-4"></div>

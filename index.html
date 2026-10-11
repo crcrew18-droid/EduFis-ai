@@ -10,7 +10,6 @@
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
         body { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
 
-        /* REGRAS RÍGIDAS EXCLUSIVAS PARA IMPRESSÃO DO PLANO */
         @media print {
             body * {
                 visibility: hidden !important;
@@ -26,7 +25,7 @@
                 margin: 0 !important;
                 padding: 0 !important;
             }
-            header, aside, button, .no-print, #view-login, #sidebar-overlay, #modal-app { 
+            header, aside, button, .no-print, #view-login, #sidebar-overlay, #modal-app, #professor-edu-container { 
                 display: none !important; 
             }
             body, main { 
@@ -62,8 +61,6 @@
 <body class="bg-slate-900/5 text-slate-800 min-h-screen flex flex-col antialiased selection:bg-sky-500 selection:text-white">
 
     <script>
-        const URL_GOOGLE_SCRIPT = "https://script.google.com/macros/s/AKfycbyTUXPXMwt_qEjteIef1pfSDs1kgzc_ck3QJkLpGzHygB8nOq03zANVHAfvDC1vKfrvKA/exec";
-
         let usuarios = JSON.parse(localStorage.getItem('edufis_usuarios_v8')) || [];
         let usuarioLogado = JSON.parse(localStorage.getItem('edufis_sessao_v8')) || null;
 
@@ -90,7 +87,8 @@
             anoLetivo: '2026',
             duracaoAula: '50',
             periodoPadrao: '1º Bimestre',
-            segmentoPadrao: 'Ensino Fundamental II'
+            segmentoPadrao: 'Ensino Fundamental II',
+            geminiKey: ''
         };
 
         const baseAnatomia = [
@@ -137,10 +135,10 @@
             salvarDadosLocais();
 
             const mapaCores = {
-                sky: { main: 'bg-sky-600', hover: 'hover:bg-sky-700', text: 'text-sky-600', ring: 'focus:ring-sky-500' },
-                emerald: { main: 'bg-emerald-600', hover: 'hover:bg-emerald-700', text: 'text-emerald-600', ring: 'focus:ring-emerald-500' },
-                purple: { main: 'bg-purple-600', hover: 'hover:bg-purple-700', text: 'text-purple-600', ring: 'focus:ring-purple-500' },
-                slate: { main: 'bg-slate-900', hover: 'hover:bg-black', text: 'text-slate-900', ring: 'focus:ring-slate-700' }
+                sky: { main: 'bg-sky-600', hover: 'hover:bg-sky-700', text: 'text-sky-600' },
+                emerald: { main: 'bg-emerald-600', hover: 'hover:bg-emerald-700', text: 'text-emerald-600' },
+                purple: { main: 'bg-purple-600', hover: 'hover:bg-purple-700', text: 'text-purple-600' },
+                slate: { main: 'bg-slate-900', hover: 'hover:bg-black', text: 'text-slate-900' }
             };
 
             const c = mapaCores[cor] || mapaCores.sky;
@@ -157,11 +155,11 @@
         }
     </script>
 
-    <!-- TELA DE LOGIN & REGISTRO (SAAS PROFESSIONAL) -->
+    <!-- TELA DE LOGIN & REGISTRO -->
     <div id="view-login" class="flex flex-col items-center justify-center flex-1 p-4 bg-gradient-to-br from-slate-900 via-slate-800 to-sky-950 no-print min-h-screen">
         <div class="w-full max-w-md bg-white/95 backdrop-blur-xl border border-white/20 rounded-3xl p-8 shadow-2xl space-y-6">
             <div class="text-center space-y-3">
-                <div class="w-16 h-16 brand-icon-bg bg-sky-600 rounded-2xl flex items-center justify-center mx-auto shadow-lg shadow-sky-500/30 p-3.5 transform hover:scale-105 transition-transform">
+                <div class="w-16 h-16 brand-icon-bg bg-sky-600 rounded-2xl flex items-center justify-center mx-auto shadow-lg shadow-sky-500/30 p-3.5">
                     <svg class="w-full h-full text-white" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round">
                         <path d="M30 35 v30 M70 35 v30 M20 40 v20 M80 40 v20 M30 50 h40"/>
                     </svg>
@@ -209,7 +207,7 @@
     <!-- DASHBOARD PRINCIPAL -->
     <div id="view-dashboard" class="hidden flex flex-col flex-1 min-h-screen bg-slate-50">
         
-        <!-- CABEÇALHO SUPERIOR (SAAS BAR) -->
+        <!-- CABEÇALHO SUPERIOR -->
         <header class="bg-white/80 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-8 py-3.5 flex items-center justify-between sticky top-0 z-40 shadow-xs no-print">
             <div class="flex items-center gap-3">
                 <button onclick="toggleSidebarMobile()" class="lg:hidden text-slate-700 p-2 rounded-xl bg-slate-100 hover:bg-slate-200 transition-colors">
@@ -239,7 +237,7 @@
         <div class="flex flex-1 relative">
             <div id="sidebar-overlay" onclick="toggleSidebarMobile()" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-30 lg:hidden no-print"></div>
 
-            <!-- MENU LATERAL (SIDEBAR PREMIUM) -->
+            <!-- MENU LATERAL -->
             <aside id="sidebar-menu" class="fixed lg:static inset-y-0 left-0 w-72 bg-white border-r border-slate-200/80 p-5 flex flex-col justify-between z-40 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 shadow-xl lg:shadow-none no-print">
                 <div class="space-y-6 overflow-y-auto pr-1">
                     <div class="space-y-1.5">
@@ -600,7 +598,7 @@
                 <div id="tab-config" class="hidden space-y-6">
                     <div>
                         <h2 class="text-2xl font-black text-slate-900 tracking-tight">Configurações do Sistema ⚙️</h2>
-                        <p class="text-slate-500 text-xs sm:text-sm">Personalize o perfil do professor, dados institucionais, preferências pedagógicas e a aparência do sistema.</p>
+                        <p class="text-slate-500 text-xs sm:text-sm">Personalize o perfil do professor, dados institucionais, preferências pedagógicas e a chave da Inteligência Artificial.</p>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl">
@@ -647,7 +645,20 @@
                             </div>
                         </div>
 
-                        <!-- CARD 3: PREFERÊNCIAS PEDAGÓGICAS -->
+                        <!-- CARD 3: CHAVE DA INTELIGÊNCIA ARTIFICIAL (GEMINI API) -->
+                        <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs md:col-span-2">
+                            <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
+                                <span class="text-lg">🤖</span>
+                                <h3 class="font-extrabold text-xs uppercase text-slate-500 tracking-wider">Chave da Inteligência Artificial (Google Gemini API)</h3>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="block text-[11px] uppercase font-bold text-slate-500">Cole aqui a sua API Key do Google AI Studio</label>
+                                <input type="password" id="cfg-gemini-key" placeholder="AIzaSy..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs">
+                                <p class="text-[11px] text-slate-400">Esta chave é guardada exclusivamente no seu navegador (localStorage) para permitir que o <strong>Professor Edu</strong> responda às suas dúvidas pedagógicas em tempo real.</p>
+                            </div>
+                        </div>
+
+                        <!-- CARD 4: PREFERÊNCIAS PEDAGÓGICAS -->
                         <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
                             <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
                                 <span class="text-lg">⏱️</span>
@@ -686,7 +697,7 @@
                             </div>
                         </div>
 
-                        <!-- CARD 4: TEMA E APARÊNCIA -->
+                        <!-- CARD 5: TEMA E APARÊNCIA -->
                         <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
                             <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
                                 <span class="text-lg">🎨</span>
@@ -723,6 +734,41 @@
         </div>
     </div>
 
+    <!-- MASCOTE FLUTUANTE & CHAT DO PROFESSOR EDU (IA) -->
+    <div id="professor-edu-container" class="fixed bottom-6 right-6 z-50 no-print">
+        <button onclick="toggleChatEdu()" class="w-14 h-14 bg-sky-600 hover:bg-sky-700 text-white rounded-full shadow-2xl flex items-center justify-center transition-transform hover:scale-110 cursor-pointer relative group">
+            <span class="text-2xl">🤖</span>
+            <span class="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full"></span>
+            <div class="absolute right-16 bg-slate-900 text-white text-[11px] font-bold px-3 py-1.5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-md pointer-events-none">
+                Falar com Professor Edu 💡
+            </div>
+        </button>
+
+        <div id="chat-edu-box" class="hidden absolute bottom-20 right-0 w-80 sm:w-96 bg-white border border-slate-200 rounded-3xl shadow-2xl flex flex-col overflow-hidden transition-all duration-300 max-h-[500px]">
+            <div class="bg-slate-900 text-white p-4 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-xl bg-sky-600 flex items-center justify-center text-base">🤖</div>
+                    <div>
+                        <h4 class="text-xs font-extrabold tracking-wide">Professor Edu</h4>
+                        <p class="text-[10px] text-sky-400 font-semibold">IA Especialista em Educação Física</p>
+                    </div>
+                </div>
+                <button onclick="toggleChatEdu()" class="text-slate-400 hover:text-white text-sm font-bold cursor-pointer p-1">✕</button>
+            </div>
+
+            <div id="chat-edu-messages" class="flex-1 p-4 overflow-y-auto space-y-3 bg-slate-50 min-h-[280px] max-h-[340px] text-xs">
+                <div class="bg-white p-3 rounded-2xl border border-slate-200/80 text-slate-700 shadow-2xs">
+                    Olá! Sou o <strong>Professor Edu</strong>. Como posso ajudar nas suas aulas, planos de ensino, circuitos ou conteúdos de anatomia hoje? 🚀
+                </div>
+            </div>
+
+            <div class="p-3 bg-white border-t border-slate-200 flex gap-2">
+                <input type="text" id="chat-edu-input" placeholder="Digite sua dúvida pedagógica..." onkeypress="if(event.key==='Enter') enviarMensagemEdu()" class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500">
+                <button onclick="enviarMensagemEdu()" class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer shadow-xs">Enviar</button>
+            </div>
+        </div>
+    </div>
+
     <!-- MODAL GENÉRICO -->
     <div id="modal-app" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 z-50 no-print">
         <div class="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 w-full max-w-md space-y-5 shadow-2xl">
@@ -743,6 +789,98 @@
         function toggleSidebarMobile() {
             document.getElementById('sidebar-menu').classList.toggle('-translate-x-full');
             document.getElementById('sidebar-overlay').classList.toggle('hidden');
+        }
+
+        // LÓGICA DO CHAT PROFESSOR EDU (IA DIRETA COM GEMINI API)
+        function toggleChatEdu() {
+            const box = document.getElementById('chat-edu-box');
+            box.classList.toggle('hidden');
+            if (!box.classList.contains('hidden')) {
+                document.getElementById('chat-edu-input').focus();
+            }
+        }
+
+        async function enviarMensagemEdu() {
+            const input = document.getElementById('chat-edu-input');
+            const mensagensDiv = document.getElementById('chat-edu-messages');
+            const texto = input.value.trim();
+            if (!texto) return;
+
+            const apiKey = configApp.geminiKey;
+            if (!apiKey) {
+                mensagensDiv.innerHTML += `
+                    <div class="bg-rose-50 text-rose-700 p-3 rounded-2xl border border-rose-200 shadow-2xs">
+                        ⚠️ Chave da API do Gemini não configurada. Vá a <strong>Configurações</strong> no menu lateral e cole a sua chave da API para ativar o Professor Edu.
+                    </div>
+                `;
+                mensagensDiv.scrollTop = mensagensDiv.scrollHeight;
+                return;
+            }
+
+            mensagensDiv.innerHTML += `
+                <div class="bg-sky-600 text-white p-3 rounded-2xl ml-8 shadow-2xs">
+                    ${escapeHtmlEdu(texto)}
+                </div>
+            `;
+            input.value = '';
+            mensagensDiv.scrollTop = mensagensDiv.scrollHeight;
+
+            const loadingId = 'loading_' + Date.now();
+            mensagensDiv.innerHTML += `
+                <div id="${loadingId}" class="bg-white p-3 rounded-2xl border border-slate-200 text-slate-500 shadow-2xs italic">
+                    Professor Edu está a elaborar a resposta... ⏳
+                </div>
+            `;
+            mensagensDiv.scrollTop = mensagensDiv.scrollHeight;
+
+            try {
+                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [
+                            {
+                                role: "user",
+                                parts: [
+                                    { text: "Você é o Professor Edu, um assistente de inteligência artificial especializado em Educação Física escolar brasileira, BNCC, anatomia, fisiologia do exercício, criação de planos de aula, circuitos motores e adaptações inclusivas. Responda de forma prática, profissional e objetiva aos professores." },
+                                    { text: texto }
+                                ]
+                            }
+                        ]
+                    })
+                });
+
+                const data = await res.json();
+                if(document.getElementById(loadingId)) document.getElementById(loadingId).remove();
+
+                const respostaTexto = data.candidates?.[0]?.content?.parts?.[0]?.text;
+
+                if (respostaTexto) {
+                    mensagensDiv.innerHTML += `
+                        <div class="bg-white p-3 rounded-2xl border border-slate-200/80 text-slate-700 shadow-2xs whitespace-pre-wrap">
+                            ${escapeHtmlEdu(respostaTexto)}
+                        </div>
+                    `;
+                } else {
+                    mensagensDiv.innerHTML += `
+                        <div class="bg-rose-50 text-rose-700 p-3 rounded-2xl border border-rose-200 shadow-2xs">
+                            Erro ao obter resposta da IA. Verifique se a sua chave do Gemini está correta nas Configurações.
+                        </div>
+                    `;
+                }
+            } catch (err) {
+                if(document.getElementById(loadingId)) document.getElementById(loadingId).remove();
+                mensagensDiv.innerHTML += `
+                    <div class="bg-rose-50 text-rose-700 p-3 rounded-2xl border border-rose-200 shadow-2xs">
+                        Erro de conexão com a API do Google Gemini.
+                    </div>
+                `;
+            }
+            mensagensDiv.scrollTop = mensagensDiv.scrollHeight;
+        }
+
+        function escapeHtmlEdu(text) {
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         }
 
         function renderizarBancoJogos() {
@@ -879,6 +1017,7 @@
             if(document.getElementById('cfg-nome-escola')) document.getElementById('cfg-nome-escola').value = configApp.nomeEscola || '';
             if(document.getElementById('cfg-municipio')) document.getElementById('cfg-municipio').value = configApp.municipioEscola || '';
             if(document.getElementById('cfg-ano-letivo')) document.getElementById('cfg-ano-letivo').value = configApp.anoLetivo || '';
+            if(document.getElementById('cfg-gemini-key')) document.getElementById('cfg-gemini-key').value = configApp.geminiKey || '';
             if(document.getElementById('cfg-duracao-aula')) document.getElementById('cfg-duracao-aula').value = configApp.duracaoAula || '50';
             if(document.getElementById('cfg-periodo-padrao')) document.getElementById('cfg-periodo-padrao').value = configApp.periodoPadrao || '1º Bimestre';
             if(document.getElementById('cfg-segmento')) document.getElementById('cfg-segmento').value = configApp.segmentoPadrao || 'Ensino Fundamental II';
@@ -890,13 +1029,14 @@
             configApp.nomeEscola = document.getElementById('cfg-nome-escola').value.trim();
             configApp.municipioEscola = document.getElementById('cfg-municipio').value.trim();
             configApp.anoLetivo = document.getElementById('cfg-ano-letivo').value.trim();
+            configApp.geminiKey = document.getElementById('cfg-gemini-key').value.trim();
             configApp.duracaoAula = document.getElementById('cfg-duracao-aula').value;
             configApp.periodoPadrao = document.getElementById('cfg-periodo-padrao').value;
             configApp.segmentoPadrao = document.getElementById('cfg-segmento').value;
 
             if(configApp.nomeProf) document.getElementById('header-user-nome').textContent = `👤 ${configApp.nomeProf}`;
             salvarDadosLocais();
-            alert('✅ Todas as configurações foram salvas com sucesso!');
+            alert('✅ Todas as configurações e a chave da IA foram salvas com sucesso!');
         }
 
         function resetarTodosDadosSistema() {
@@ -932,7 +1072,6 @@
             salvarDadosLocais();
         }
 
-        // MODAIS COM SUPORTE A EDIÇÃO
         function abrirModalTurma(idx = -1) {
             modalTipo = 'turma';
             editandoIndex = idx;
@@ -1088,7 +1227,6 @@
             container.classList.remove('hidden');
         }
 
-        // Editor de Atividades
         function formatarEditorWord(cmd) {
             document.execCommand(cmd, false, null);
         }
@@ -1150,7 +1288,6 @@
             renderizarListaDocsWord();
         }
 
-        // Planejamento & BNCC com atualização dinâmica da classe para impressão
         function renderizarBNCCChecks() {
             const container = document.getElementById('bncc-container-checks');
             if(!container) return;
@@ -1237,7 +1374,6 @@
             renderizarListaPDFs();
         }
 
-        // EXPORTAR / DESCARREGAR BACKUP
         function descarregarBackupJSON() {
             const dadosCompletos = {
                 versao: "8.6",
@@ -1260,7 +1396,6 @@
             dl.remove();
         }
 
-        // IMPORTAR / RESTAURAR BACKUP (RECEBER)
         function restaurarBackupJSON(e) {
             const file = e.target.files[0];
             if (!file) return;

@@ -10,15 +10,25 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
 
-        /* REGRAS EXCLUSIVAS DE IMPRESSÃO */
+        /* REGRAS RÍGIDAS EXCLUSIVAS PARA IMPRESSÃO DO PLANO */
         @media print {
-            header, aside, button, .no-print, #view-login, 
-            #tab-home, #tab-jogos, #tab-anatomia, #tab-turmas, 
-            #tab-alunos, #tab-chamada, #tab-editor-word, 
-            #tab-documentos, #tab-backup, #tab-config, #modal-app { 
+            body * {
+                visibility: hidden !important;
+            }
+            #tab-gestao, #tab-gestao * {
+                visibility: visible !important;
+            }
+            #tab-gestao {
+                position: absolute !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            header, aside, button, .no-print, #view-login, #sidebar-overlay, #modal-app { 
                 display: none !important; 
             }
-            
             body, main { 
                 background: white !important; 
                 padding: 0 !important; 
@@ -26,22 +36,17 @@
                 box-shadow: none !important;
                 width: 100% !important;
             }
-
-            #tab-gestao { 
-                display: block !important; 
-                width: 100% !important; 
-                max-width: 100% !important; 
-                margin: 0 !important;
-                padding: 0 !important;
+            input, textarea, select {
                 border: none !important;
-                box-shadow: none !important;
-            }
-
-            textarea, input {
-                border: 1px solid #cbd5e1 !important;
-                background: white !important;
+                background: transparent !important;
                 resize: none !important;
                 color: black !important;
+                padding: 0 !important;
+                box-shadow: none !important;
+            }
+            .bncc-check-card {
+                border: 1px solid #e2e8f0 !important;
+                background: white !important;
             }
         }
     </style>
@@ -482,13 +487,26 @@
                     <div id="lista-provas-cards" class="grid grid-cols-1 sm:grid-cols-2 gap-5"></div>
                 </div>
 
-                <!-- ABA BACKUP -->
+                <!-- ABA BACKUP (ENVIAR E RECEBER CORRIGIDOS) -->
                 <div id="tab-backup" class="hidden space-y-6">
                     <h2 class="text-2xl font-black text-slate-900 tracking-tight">Backup & Nuvem ☁️</h2>
-                    <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 max-w-xl shadow-xs">
-                        <h3 class="font-extrabold text-sm uppercase text-slate-700">💾 Cópia de Segurança Local</h3>
-                        <p class="text-xs text-slate-500">Descarregue um ficheiro com todos os seus dados (turmas, alunos, notas, jogos e configurações) para salvaguarda.</p>
-                        <button onclick="descarregarBackupJSON()" class="btn-primary-theme w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-6 rounded-2xl text-sm shadow-sm cursor-pointer">📥 Descarregar Backup Completo (.json)</button>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl">
+                        
+                        <!-- ENVIAR / EXPORTAR -->
+                        <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
+                            <h3 class="font-extrabold text-sm uppercase text-slate-700">📤 Enviar / Descarregar Backup</h3>
+                            <p class="text-xs text-slate-500">Gere e salve um arquivo com todos os seus dados (turmas, alunos, notas, jogos e planos).</p>
+                            <button onclick="descarregarBackupJSON()" class="btn-primary-theme w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-6 rounded-2xl text-sm shadow-sm cursor-pointer">📥 Baixar Backup (.json)</button>
+                        </div>
+
+                        <!-- RECEBER / IMPORTAR -->
+                        <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
+                            <h3 class="font-extrabold text-sm uppercase text-slate-700">📥 Receber / Restaurar Backup</h3>
+                            <p class="text-xs text-slate-500">Selecione um ficheiro `.json` salvo anteriormente para carregar seus dados nesta dispositivo.</p>
+                            <input type="file" id="input-restore-json" accept=".json" class="hidden" onchange="restaurarBackupJSON(event)">
+                            <button onclick="document.getElementById('input-restore-json').click()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-3.5 px-6 rounded-2xl text-sm shadow-sm cursor-pointer">📂 Selecionar Ficheiro (.json)</button>
+                        </div>
+
                     </div>
                 </div>
 
@@ -920,7 +938,7 @@
             const container = document.getElementById('bncc-container-checks');
             if(!container) return;
             container.innerHTML = baseBNCC.map(b => `
-                <label class="flex items-start gap-3 p-3 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-100">
+                <label class="flex items-start gap-3 p-3 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-100 bncc-check-card">
                     <input type="checkbox" value="${b.codigo}" class="mt-0.5 bncc-check">
                     <div>
                         <strong class="text-xs text-emerald-700">${b.codigo} (${b.tema})</strong>
@@ -990,6 +1008,7 @@
             renderizarListaPDFs();
         }
 
+        // EXPORTAR / DESCARREGAR BACKUP
         function descarregarBackupJSON() {
             const dadosCompletos = {
                 versao: "8.6",
@@ -1010,6 +1029,34 @@
             document.body.appendChild(dl);
             dl.click();
             dl.remove();
+        }
+
+        // IMPORTAR / RESTAURAR BACKUP (RECEBER)
+        function restaurarBackupJSON(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    const dados = JSON.parse(evt.target.result);
+                    if (dados.turmas) turmas = dados.turmas;
+                    if (dados.alunos) alunos = dados.alunos;
+                    if (dados.bancoJogos) bancoJogos = dados.bancoJogos;
+                    if (dados.documentosWord) documentosWord = dados.documentosWord;
+                    if (dados.documentosPDF) documentosPDF = dados.documentosPDF;
+                    if (dados.planoGestao) planoGestaoDados = dados.planoGestao;
+                    if (dados.agendaHoje) agendaHojeDados = dados.agendaHoje;
+                    if (dados.configApp) configApp = dados.configApp;
+
+                    salvarDadosLocais();
+                    carregarTudoNaTela();
+                    alert("✅ Backup restaurado com sucesso! Seus dados foram carregados.");
+                } catch (err) {
+                    alert("❌ Ocorreu um erro ao carregar o ficheiro de backup. Certifique-se de usar um ficheiro .json válido.");
+                }
+            };
+            reader.readAsText(file);
         }
 
         if (usuarioLogado) {

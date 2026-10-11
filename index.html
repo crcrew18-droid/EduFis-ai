@@ -53,6 +53,14 @@
         let documentosPDF = JSON.parse(localStorage.getItem('edufis_pdf_v8')) || [];
         let planoGestaoDados = JSON.parse(localStorage.getItem('edufis_plano_v8')) || {};
         let agendaHojeDados = JSON.parse(localStorage.getItem('edufis_agenda_v8')) || { turma: '', conteudo: '' };
+        
+        let bancoJogos = JSON.parse(localStorage.getItem('edufis_jogos_v8')) || [
+            { id: 1, titulo: "Queimada Cooperativa", categoria: "Jogos Tradicionais", objetivo: "Estimular a agilidade, mira e cooperação em equipa.", materiais: "1 Bola de borracha, cones para delimitar o campo.", regras: "Quem for queimado vai para a 'cadeia' adversária, mas pode voltar se apanhar uma bola no ar ou se um colega acertar um alvo específico." },
+            { id: 2, titulo: "Circuito Funcional de Habilidades", categoria: "Aptidão Física", objetivo: "Desenvolver força, velocidade, equilíbrio e coordenação motora.", materiais: "Cones, cordas, arcos e colchonetes.", regras: "Os alunos dividem-se em grupos e revezam-se nas estações a cada 45 segundos, focando na execução correta dos movimentos." },
+            { id: 3, titulo: "Bandeirinha (Rouba Bandeira Adaptado)", categoria: "Esportes Coletivos", objetivo: "Trabalhar estratégia, tomada de decisão rápida e velocidade de reação.", materiais: "2 coletes ou bandeiras, cones.", regras: "Duas equipas tentam roubar a bandeira no campo adversário sem serem apanhados (tocados) no campo inimigo." },
+            { id: 4, titulo: "Estafeta das Cores e Formas", categoria: "Coordenação", objetivo: "Trabalhar locomoção, agilidade e raciocínio rápido sob esforço físico.", materiais: "Bolas coloridas, baldes, cartões de tarefas.", regras: "Cada elemento do grupo deve correr até ao centro, recolher um objeto com a cor solicitada e regressar para passar a vez." }
+        ];
+
         let configApp = JSON.parse(localStorage.getItem('edufis_config_v8')) || {
             temaCor: 'emerald',
             nomeProf: '',
@@ -92,6 +100,7 @@
             localStorage.setItem('edufis_pdf_v8', JSON.stringify(documentosPDF));
             localStorage.setItem('edufis_plano_v8', JSON.stringify(planoGestaoDados));
             localStorage.setItem('edufis_agenda_v8', JSON.stringify(agendaHojeDados));
+            localStorage.setItem('edufis_jogos_v8', JSON.stringify(bancoJogos));
             localStorage.setItem('edufis_config_v8', JSON.stringify(configApp));
         }
 
@@ -117,59 +126,6 @@
             document.querySelectorAll('.brand-icon-bg').forEach(el => {
                 el.className = el.className.replace(/bg-\w+-\d+/g, c.main);
             });
-        }
-
-        async function salvarAutomaticoNoGoogleDrive() {
-            const statusEl = document.getElementById('status-drive-txt');
-            if(statusEl) statusEl.textContent = "⏳ A enviar backup para a nuvem...";
-
-            const dadosBackup = {
-                versao: "8.6",
-                dataBackup: new Date().toISOString(),
-                usuarios, turmas, alunos, documentosWord, documentosPDF, planoGestaoDados, agendaHojeDados, configApp
-            };
-
-            try {
-                await fetch(URL_GOOGLE_SCRIPT, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(dadosBackup)
-                });
-
-                if(statusEl) statusEl.textContent = "🟢 Sincronizado com o Google Drive!";
-                alert('✅ Backup enviado para o Google Drive com sucesso!');
-            } catch (err) {
-                if(statusEl) statusEl.textContent = "🔴 Erro na sincronização";
-                alert('Erro ao ligar ao Google Drive. Os dados estão salvos localmente.');
-            }
-        }
-
-        function importarBackupDrive(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const conteudo = JSON.parse(e.target.result);
-                    if(conteudo.usuarios) usuarios = conteudo.usuarios;
-                    if(conteudo.turmas) turmas = conteudo.turmas;
-                    if(conteudo.alunos) alunos = conteudo.alunos;
-                    if(conteudo.documentosWord) documentosWord = conteudo.documentosWord;
-                    if(conteudo.documentosPDF) documentosPDF = conteudo.documentosPDF;
-                    if(conteudo.planoGestaoDados) planoGestaoDados = conteudo.planoGestaoDados;
-                    if(conteudo.agendaHojeDados) agendaHojeDados = conteudo.agendaHojeDados;
-                    if(conteudo.configApp) configApp = conteudo.configApp;
-                    
-                    salvarDadosLocais();
-                    carregarTudoNaTela();
-                    aplicarTemaCor(configApp.temaCor || 'emerald');
-                    alert('✅ Dados restaurados com sucesso!');
-                } catch(err) {
-                    alert('❌ Erro ao ler ficheiro de backup.');
-                }
-            };
-            reader.readAsText(file);
         }
     </script>
 
@@ -262,13 +218,14 @@
                     <button onclick="changeTab('chamada')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">📋 Chamada Rápida</button>
                     
                     <div class="text-[10px] uppercase font-bold text-slate-400 px-3 pt-4 pb-1">Pedagógico</div>
-                    <button onclick="changeTab('anatomia')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 flex items-center gap-3 transition-colors cursor-pointer">🦴 Atlas de Anatomia</button>
+                    <button onclick="changeTab('jogos')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 flex items-center gap-3 transition-colors cursor-pointer">🎮 Banco de Jogos & Ideias</button>
+                    <button onclick="changeTab('anatomia')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">🦴 Atlas de Anatomia</button>
                     <button onclick="changeTab('editor-word')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">📝 Editor de Atividades</button>
                     <button onclick="changeTab('gestao')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">📅 Planejamento & BNCC</button>
                     <button onclick="changeTab('documentos')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">📄 Gestor de Documentos</button>
                     
                     <div class="text-[10px] uppercase font-bold text-slate-400 px-3 pt-4 pb-1">Sistema</div>
-                    <button onclick="changeTab('backup')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">☁️ Backup Google Drive</button>
+                    <button onclick="changeTab('backup')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">☁️ Backup & Nuvem</button>
                     <button onclick="changeTab('config')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">⚙️ Configurações</button>
                 </div>
                 <div class="pt-4 border-t border-slate-100 px-3 text-[11px] text-slate-400 font-medium">EduFís Pro v8.6 • 2026</div>
@@ -284,7 +241,7 @@
                             <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Bem-vindo ao EduFís Pro 🏋️</h2>
                             <p class="text-slate-300 text-sm mt-1">Tecnologia e organização para transformar as suas aulas de Educação Física.</p>
                         </div>
-                        <button onclick="salvarAutomaticoNoGoogleDrive()" class="bg-white hover:bg-slate-100 text-slate-900 font-bold px-5 py-3 rounded-2xl text-sm shadow-md transition-all cursor-pointer w-full sm:w-auto">🚀 Backup para o Drive</button>
+                        <button onclick="changeTab('jogos')" class="bg-white hover:bg-slate-100 text-slate-900 font-bold px-5 py-3 rounded-2xl text-sm shadow-md transition-all cursor-pointer w-full sm:w-auto">🎮 Explorar Banco de Jogos</button>
                     </div>
                     
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -298,7 +255,7 @@
                         <div class="bg-white border border-slate-200/80 p-6 rounded-3xl shadow-xs space-y-4">
                             <h3 class="font-extrabold text-sm uppercase text-slate-700 tracking-wider">⚡ Atalhos Rápidos</h3>
                             <div class="grid grid-cols-2 gap-3">
-                                <button onclick="changeTab('anatomia')" class="p-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 rounded-2xl font-bold text-xs text-left transition-colors cursor-pointer">🦴 Atlas de Anatomia</button>
+                                <button onclick="changeTab('jogos')" class="p-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 rounded-2xl font-bold text-xs text-left transition-colors cursor-pointer">🎮 Banco de Jogos</button>
                                 <button onclick="changeTab('turmas'); abrirModalTurma();" class="p-3 bg-slate-50 hover:bg-slate-100 text-slate-800 rounded-2xl font-bold text-xs text-left transition-colors cursor-pointer">+ Registar Turma</button>
                                 <button onclick="changeTab('chamada')" class="p-3 bg-slate-50 hover:bg-slate-100 text-slate-800 rounded-2xl font-bold text-xs text-left transition-colors cursor-pointer">📋 Fazer Chamada</button>
                                 <button onclick="changeTab('editor-word')" class="p-3 bg-slate-50 hover:bg-slate-100 text-slate-800 rounded-2xl font-bold text-xs text-left transition-colors cursor-pointer">📝 Nova Atividade</button>
@@ -326,16 +283,35 @@
                     </div>
                 </div>
 
+                <!-- ABA: BANCO DE JOGOS & IDEIAS EDITÁVEIS -->
+                <div id="tab-jogos" class="hidden space-y-6">
+                    <div class="flex justify-between items-center flex-wrap gap-3">
+                        <div>
+                            <h2 class="text-2xl font-black text-slate-900 tracking-tight">Banco de Jogos, Brincadeiras & Ideias 🎮</h2>
+                            <p class="text-slate-500 text-sm">Sugestões práticas para as suas aulas. Pode editar, adaptar ou criar novas dinâmicas.</p>
+                        </div>
+                        <button onclick="abrirModalJogo()" class="btn-primary-theme bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all cursor-pointer">+ Adicionar Nova Ideia</button>
+                    </div>
+
+                    <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
+                        <div>
+                            <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Pesquisar Dinâmica / Jogo</label>
+                            <input type="text" id="search-jogos" oninput="renderizarBancoJogos()" placeholder="Pesquisar por título, objetivo ou categoria..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        </div>
+                    </div>
+
+                    <div id="grid-jogos" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+                </div>
+
                 <!-- ABA: ATLAS DE ANATOMIA & CINESIOLOGIA -->
                 <div id="tab-anatomia" class="hidden space-y-6">
                     <div class="flex justify-between items-center flex-wrap gap-3">
                         <div>
                             <h2 class="text-2xl font-black text-slate-900 tracking-tight">Atlas de Anatomia & Cinesiologia 🦴</h2>
-                            <p class="text-slate-500 text-sm">Consulte músculos, ossos e a biomecânica dos exercícios para as suas aulas.</p>
+                            <p class="text-slate-500 text-sm">Consulte músculos, ossos e a biomecânica dos exercícios para fundamentação pedagógica.</p>
                         </div>
                     </div>
 
-                    <!-- BARRA DE PESQUISA E FILTROS -->
                     <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                             <div class="sm:col-span-2">
@@ -355,7 +331,6 @@
                         </div>
                     </div>
 
-                    <!-- GRID DE CARDS ANATÔMICOS -->
                     <div id="grid-anatomia" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
                 </div>
 
@@ -384,7 +359,7 @@
                 <div id="tab-alunos" class="hidden space-y-6">
                     <div class="flex justify-between items-center">
                         <div>
-                            <h2 class="text-2xl font-black text-slate-900 tracking-tight">Matícula de Alunos</h2>
+                            <h2 class="text-2xl font-black text-slate-900 tracking-tight">Matrícula de Alunos</h2>
                             <p class="text-slate-500 text-sm">Gerencie os estudantes matriculados em cada turma.</p>
                         </div>
                         <button onclick="abrirModalAluno()" class="btn-primary-theme bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all cursor-pointer">+ Novo Aluno</button>
@@ -554,7 +529,7 @@
                 <!-- ABA BACKUP GOOGLE DRIVE -->
                 <div id="tab-backup" class="hidden space-y-6">
                     <div>
-                        <h2 class="text-2xl font-black text-slate-900 tracking-tight">Sincronização com o Google Drive</h2>
+                        <h2 class="text-2xl font-black text-slate-900 tracking-tight">Sincronização & Backup</h2>
                         <p class="text-slate-500 text-sm">Faça backups seguros ou restaure dados anteriores.</p>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl">
@@ -653,6 +628,72 @@
             overlay.classList.toggle('hidden');
         }
 
+        function renderizarBancoJogos() {
+            const container = document.getElementById('grid-jogos');
+            if (!container) return;
+            const busca = document.getElementById('search-jogos').value.toLowerCase().trim();
+
+            const filtrados = bancoJogos.filter(j => 
+                j.titulo.toLowerCase().includes(busca) || 
+                j.categoria.toLowerCase().includes(busca) || 
+                j.objetivo.toLowerCase().includes(busca) ||
+                j.materiais.toLowerCase().includes(busca)
+            );
+
+            if (filtrados.length === 0) {
+                container.innerHTML = `<div class="col-span-2 bg-white border border-slate-200 rounded-3xl p-8 text-center text-slate-400 text-sm">Nenhum jogo ou ideia encontrada.</div>`;
+                return;
+            }
+
+            container.innerHTML = filtrados.map((j) => {
+                const realIndex = bancoJogos.findIndex(item => item.id === j.id);
+                return `
+                    <div class="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-xs flex flex-col justify-between space-y-4">
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <h3 class="font-extrabold text-base text-slate-900">${j.titulo}</h3>
+                                <span class="px-3 py-1 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-800">${j.categoria}</span>
+                            </div>
+                            <div class="space-y-2 text-xs text-slate-600">
+                                <div><strong class="text-slate-800 font-bold uppercase text-[10px] block">🎯 Objetivo Pedagógico:</strong> ${j.objetivo}</div>
+                                <div><strong class="text-slate-800 font-bold uppercase text-[10px] block">🎒 Materiais Necessários:</strong> ${j.materiais}</div>
+                                <div><strong class="text-emerald-700 font-bold uppercase text-[10px] block">📋 Regras & Dinâmica Adaptável:</strong> ${j.regras}</div>
+                            </div>
+                        </div>
+                        <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
+                            <button onclick="abrirModalJogo(${realIndex})" class="text-emerald-600 hover:text-emerald-800 text-xs font-bold cursor-pointer px-3 py-1 bg-emerald-50 rounded-lg">Editar</button>
+                            <button onclick="removerJogo(${realIndex})" class="text-rose-600 hover:text-rose-800 text-xs font-bold cursor-pointer px-3 py-1 bg-rose-50 rounded-lg">Excluir</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function abrirModalJogo(idx = -1) {
+            modalTipo = 'jogo';
+            editandoIndex = idx;
+            document.getElementById('modal-titulo').textContent = idx === -1 ? 'Adicionar Nova Ideia / Jogo' : 'Editar Jogo ou Brincadeira';
+            
+            const j = idx !== -1 ? bancoJogos[idx] : { titulo: '', categoria: '', objetivo: '', materiais: '', regras: '' };
+            
+            document.getElementById('modal-corpo').innerHTML = `
+                <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Título da Atividade</label><input type="text" id="m-j-titulo" value="${j.titulo}" placeholder="Ex: Corrida do Saco Adaptada" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></div>
+                <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Categoria</label><input type="text" id="m-j-categoria" value="${j.categoria}" placeholder="Ex: Jogos Tradicionais / Aptidão" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></div>
+                <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Objetivo Pedagógico</label><input type="text" id="m-j-objetivo" value="${j.objetivo}" placeholder="O que se pretende desenvolver..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></div>
+                <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Materiais Necessários</label><input type="text" id="m-j-materiais" value="${j.materiais}" placeholder="Ex: Cones, bolas, cordas..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></div>
+                <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Regras & Adaptações</label><textarea id="m-j-regras" rows="3" placeholder="Como funciona a dinâmica..." class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">${j.regras}</textarea></div>
+            `;
+            document.getElementById('modal-app').classList.remove('hidden');
+        }
+
+        function removerJogo(idx) {
+            if(confirm('Tem certeza que deseja excluir esta ideia/jogo do banco?')) {
+                bancoJogos.splice(idx, 1);
+                salvarDadosLocais();
+                renderizarBancoJogos();
+            }
+        }
+
         function renderizarAtlasAnatomia() {
             const container = document.getElementById('grid-anatomia');
             if (!container) return;
@@ -685,21 +726,8 @@
                             <div><strong class="text-emerald-700 font-bold uppercase text-[10px] block">Aplicações na Ed. Física:</strong> ${item.exercicios}</div>
                         </div>
                     </div>
-                    <div>
-                        <button onclick="inserirAnatomiaNoEditor('${item.nome.replace(/'/g, "\\'")}', '${item.acao.replace(/'/g, "\\'")}', '${item.exercicios.replace(/'/g, "\\'")}')" class="btn-primary-theme w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl text-xs transition-colors cursor-pointer flex items-center justify-center gap-1.5 shadow-xs">
-                            ＋ Inserir no Editor de Atividades
-                        </button>
-                    </div>
                 </div>
             `).join('');
-        }
-
-        function inserirAnatomiaNoEditor(nome, acao, exercicios) {
-            const editor = document.getElementById('editor-word-area');
-            const blocoAnatomico = `<p><strong>🧠 Foco Anatômico - ${nome}:</strong> ${acao} <em>(Aplicações: ${exercicios})</em></p>`;
-            editor.innerHTML += blocoAnatomico;
-            alert(`✅ Conteúdo de ${nome} adicionado ao Editor de Atividades!`);
-            changeTab('editor-word');
         }
 
         function alternarTelaAuth(modo) {
@@ -805,7 +833,7 @@
         }
 
         function changeTab(tabId) {
-            ['home', 'anatomia', 'turmas', 'alunos', 'chamada', 'editor-word', 'gestao', 'documentos', 'backup', 'config'].forEach(t => {
+            ['home', 'jogos', 'anatomia', 'turmas', 'alunos', 'chamada', 'editor-word', 'gestao', 'documentos', 'backup', 'config'].forEach(t => {
                 const el = document.getElementById(`tab-${t}`);
                 if(el) el.classList.add('hidden');
             });
@@ -819,6 +847,7 @@
                 if(overlay) overlay.classList.add('hidden');
             }
 
+            if(tabId === 'jogos') renderizarBancoJogos();
             if(tabId === 'anatomia') renderizarAtlasAnatomia();
             if(tabId === 'chamada') {
                 atualizarSelectTurmasChamada();
@@ -847,6 +876,7 @@
             carregarPlanoGestao();
             atualizarListaDocsWord();
             atualizarAgendaHoje();
+            renderizarBancoJogos();
             renderizarAtlasAnatomia();
         }
 
@@ -975,6 +1005,20 @@
                     alunos[editandoIndex] = { nome, email, turma };
                 }
                 atualizarTabelaAlunos();
+            } else if(modalTipo === 'jogo') {
+                const titulo = document.getElementById('m-j-titulo').value.trim();
+                const categoria = document.getElementById('m-j-categoria').value.trim();
+                const objetivo = document.getElementById('m-j-objetivo').value.trim();
+                const materiais = document.getElementById('m-j-materiais').value.trim();
+                const regras = document.getElementById('m-j-regras').value.trim();
+                if(!titulo) { alert('Insira o título da atividade.'); return; }
+
+                if(editandoIndex === -1) {
+                    bancoJogos.push({ id: Date.now(), titulo, categoria: categoria || 'Geral', objetivo, materiais, regras });
+                } else {
+                    bancoJogos[editandoIndex] = { ...bancoJogos[editandoIndex], titulo, categoria: categoria || 'Geral', objetivo, materiais, regras };
+                }
+                renderizarBancoJogos();
             }
             salvarDadosLocais();
             atualizarEstatisticas();

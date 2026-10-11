@@ -86,9 +86,11 @@
         const baseBNCC = [
             { codigo: "EF67EF01", tema: "Esportes", desc: "Experimentar e fruir diferentes esportes de marca, precisão, invasão e técnico-combinatórios." },
             { codigo: "EF67EF03", tema: "Esportes", desc: "Praticar um ou mais esportes de marca, precisão, invasão e técnico-combinatórios oferecidos na escola." },
-            { codigo: "EF89EF07", tema: "Esportes", desc: "Formular e propor estratégias para o resolução de desafios em jogos desportivos." },
+            { codigo: "EF89EF07", tema: "Esportes", desc: "Formular e propor estratégias para a resolução de desafios em jogos desportivos." },
             { codigo: "EF67EF07", tema: "Ginástica", desc: "Propor e produzir alternativas para a prática da ginástica de conscientização corporal." },
-            { codigo: "EF89EF09", tema: "Ginástica", desc: "Construir apresentações de ginástica geral, integrando diferentes elementos gimnásticos." }
+            { codigo: "EF89EF09", tema: "Ginástica", desc: "Construir apresentações de ginástica geral, integrando diferentes elementos gimnásticos." },
+            { codigo: "EF35EF01", tema: "Brincadeiras e Jogos", desc: "Experimentar e fruir brincadeiras e jogos populares do Brasil e do mundo." },
+            { codigo: "EF35EF05", tema: "Lutas", desc: "Experimentar e fruir lutas presentes no contexto comunitário e regional." }
         ];
 
         function salvarDadosLocais() {
@@ -339,7 +341,7 @@
                     <div class="flex justify-between items-center">
                         <div>
                             <h2 class="text-2xl font-black text-slate-900 tracking-tight">Gestão de Turmas</h2>
-                            <p class="text-slate-500 text-sm">Crie e organize as turmas da sua escola.</p>
+                            <p class="text-slate-500 text-sm">Crie, edite e organize as turmas da sua escola.</p>
                         </div>
                         <button onclick="abrirModalTurma()" class="btn-primary-theme bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all cursor-pointer">+ Nova Turma</button>
                     </div>
@@ -397,8 +399,8 @@
                             <p class="text-slate-500 text-sm">Crie testes, planos de aula ou fichas formativas com formatação rica.</p>
                         </div>
                         <div class="flex gap-2">
-                            <button onclick="novoDocumentoWord()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-xs font-bold">Novo</button>
-                            <button onclick="salvarDocumentoWord()" class="btn-primary-theme bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold">💾 Guardar</button>
+                            <button onclick="novoDocumentoWord()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-xs font-bold cursor-pointer">Novo</button>
+                            <button onclick="salvarDocumentoWord()" class="btn-primary-theme bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold cursor-pointer">💾 Guardar</button>
                         </div>
                     </div>
 
@@ -424,33 +426,38 @@
                     </div>
                 </div>
 
-                <!-- ABA GESTÃO & BNCC -->
+                <!-- ABA PLANEJAMENTO & BNCC -->
                 <div id="tab-gestao" class="hidden space-y-6">
                     <div class="flex justify-between items-center flex-wrap gap-3">
                         <div>
                             <h2 class="text-2xl font-black text-slate-900 tracking-tight">Planejamento Pedagógico & BNCC 📅</h2>
-                            <p class="text-slate-500 text-sm">Estruture o seu plano de aulas integrando as competências da Base Nacional Comum Curricular.</p>
+                            <p class="text-slate-500 text-sm">Estruture o plano de ensino anual/mensal alinhado às diretrizes da BNCC.</p>
                         </div>
                         <div class="flex gap-2">
-                            <button onclick="window.print()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-xs font-bold">🖨️ Imprimir / PDF</button>
-                            <button onclick="salvarPlanoGestao()" class="btn-primary-theme bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold">💾 Guardar Plano</button>
+                            <button onclick="window.print()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-xs font-bold cursor-pointer">🖨️ Imprimir Plano</button>
+                            <button onclick="salvarPlanoGestao()" class="btn-primary-theme bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold cursor-pointer">💾 Guardar Plano</button>
                         </div>
                     </div>
 
                     <div class="bg-white border border-slate-200/80 p-6 sm:p-8 rounded-3xl space-y-6 shadow-xs">
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                            <div><label class="block text-xs font-bold uppercase text-slate-600 mb-1">Escola</label><input type="text" id="plano-escola" placeholder="Nome da Escola" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm font-semibold"></div>
-                            <div><label class="block text-xs font-bold uppercase text-slate-600 mb-1">Professor(a)</label><input type="text" id="plano-professor" placeholder="Seu Nome" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm font-semibold"></div>
-                            <div><label class="block text-xs font-bold uppercase text-slate-600 mb-1">Período / Trimestre</label><input type="text" id="plano-periodo" placeholder="Ex: 1º Período" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm font-semibold"></div>
+                            <div><label class="block text-xs font-bold uppercase text-slate-600 mb-1">Unidade Escolar</label><input type="text" id="plano-escola" placeholder="Nome da Escola" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm font-semibold"></div>
+                            <div><label class="block text-xs font-bold uppercase text-slate-600 mb-1">Docente Responsável</label><input type="text" id="plano-professor" placeholder="Seu Nome" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm font-semibold"></div>
+                            <div><label class="block text-xs font-bold uppercase text-slate-600 mb-1">Período / Bimestre</label><input type="text" id="plano-periodo" placeholder="Ex: 1º Bimestre / 2026" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm font-semibold"></div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div><label class="block text-xs font-bold uppercase text-slate-600 mb-1">Unidade Temática</label><input type="text" id="plano-unidade" placeholder="Ex: Esportes de Invasão / Jogos Tradicionais" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm"></div>
+                            <div><label class="block text-xs font-bold uppercase text-slate-600 mb-1">Objeto de Conhecimento / Conteúdo</label><input type="text" id="plano-conteudo" placeholder="Ex: Futsal, Basquetebol, Regras e Táticas" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm"></div>
                         </div>
 
                         <div>
-                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Objetivos de Aprendizagem & Desenvolvimento</label>
-                            <textarea id="plano-objetivos" placeholder="Descreva os objetivos principais das aulas..." class="w-full bg-slate-50 border border-slate-300 rounded-xl p-4 text-sm h-24 focus:outline-none focus:ring-2 focus:ring-emerald-500"></textarea>
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Objetivos de Aprendizagem & Metodologia</label>
+                            <textarea id="plano-objetivos" placeholder="Descreva os objetivos pedagógicos, estratégias de ensino e recursos que serão utilizados nas aulas..." class="w-full bg-slate-50 border border-slate-300 rounded-xl p-4 text-sm h-28 focus:outline-none focus:ring-2 focus:ring-emerald-500"></textarea>
                         </div>
 
                         <div class="space-y-3">
-                            <label class="block text-xs font-bold uppercase text-slate-600">Códigos BNCC Recomendados para Educação Física</label>
+                            <label class="block text-xs font-bold uppercase text-slate-600">Habilidades e Códigos BNCC para Seleção</label>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="bncc-container-checks"></div>
                         </div>
                     </div>
@@ -518,6 +525,7 @@
 
     <script>
         let modalTipo = '';
+        let editandoIndex = -1;
         let documentoAtualId = null;
 
         function toggleSidebarMobile() {
@@ -539,7 +547,8 @@
                         <p class="text-xs text-slate-600"><strong>🎒 Materiais:</strong> ${j.materiais}</p>
                         <p class="text-xs text-emerald-700"><strong>📋 Regras:</strong> ${j.regras}</p>
                     </div>
-                    <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
+                    <div class="flex justify-end gap-3 pt-2 border-t border-slate-100">
+                        <button onclick="editarJogo(${idx})" class="text-xs text-emerald-600 font-bold hover:underline cursor-pointer">Editar</button>
                         <button onclick="removerJogo(${idx})" class="text-xs text-rose-600 font-bold hover:underline cursor-pointer">Excluir</button>
                     </div>
                 </div>
@@ -681,40 +690,53 @@
             salvarDadosLocais();
         }
 
-        function abrirModalTurma() {
+        // MODAIS COM SUPORTE A EDIÇÃO
+        function abrirModalTurma(idx = -1) {
             modalTipo = 'turma';
-            document.getElementById('modal-titulo').textContent = 'Registar Nova Turma';
+            editandoIndex = idx;
+            const t = idx >= 0 ? turmas[idx] : { nome: '', ano: '', turno: '' };
+            document.getElementById('modal-titulo').textContent = idx >= 0 ? 'Editar Turma' : 'Registar Nova Turma';
             document.getElementById('modal-corpo').innerHTML = `
-                <div><label class="block text-xs uppercase font-bold mb-1">Nome da Turma</label><input type="text" id="m-t-nome" placeholder="Ex: 8º Ano A" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
-                <div><label class="block text-xs uppercase font-bold mb-1">Ano / Série</label><input type="text" id="m-t-ano" placeholder="Ex: 8º Ano" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
-                <div><label class="block text-xs uppercase font-bold mb-1">Turno</label><input type="text" id="m-t-turno" placeholder="Ex: Manhã" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
+                <div><label class="block text-xs uppercase font-bold mb-1">Nome da Turma</label><input type="text" id="m-t-nome" value="${t.nome}" placeholder="Ex: 8º Ano A" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
+                <div><label class="block text-xs uppercase font-bold mb-1">Ano / Série</label><input type="text" id="m-t-ano" value="${t.ano}" placeholder="Ex: 8º Ano" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
+                <div><label class="block text-xs uppercase font-bold mb-1">Turno</label><input type="text" id="m-t-turno" value="${t.turno}" placeholder="Ex: Manhã" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
             `;
             document.getElementById('modal-app').classList.remove('hidden');
         }
 
-        function abrirModalAluno() {
+        function editarTurma(idx) { abrirModalTurma(idx); }
+
+        function abrirModalAluno(idx = -1) {
             modalTipo = 'aluno';
-            let turmasOpts = turmas.length ? turmas.map(t => `<option value="${t.nome}">${t.nome}</option>`).join('') : '<option value="Geral">Sem turmas disponíveis</option>';
-            document.getElementById('modal-titulo').textContent = 'Matricular Aluno';
+            editandoIndex = idx;
+            const a = idx >= 0 ? alunos[idx] : { nome: '', turma: '' };
+            let turmasOpts = turmas.length ? turmas.map(t => `<option value="${t.nome}" ${t.nome === a.turma ? 'selected' : ''}>${t.nome}</option>`).join('') : '<option value="Geral">Sem turmas disponíveis</option>';
+            document.getElementById('modal-titulo').textContent = idx >= 0 ? 'Editar Aluno' : 'Matricular Aluno';
             document.getElementById('modal-corpo').innerHTML = `
-                <div><label class="block text-xs uppercase font-bold mb-1">Nome do Aluno</label><input type="text" id="m-a-nome" placeholder="Ex: João Silva" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
+                <div><label class="block text-xs uppercase font-bold mb-1">Nome do Aluno</label><input type="text" id="m-a-nome" value="${a.nome}" placeholder="Ex: João Silva" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
                 <div><label class="block text-xs uppercase font-bold mb-1">Turma</label><select id="m-a-turma" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm">${turmasOpts}</select></div>
             `;
             document.getElementById('modal-app').classList.remove('hidden');
         }
 
-        function abrirModalJogo() {
+        function editarAluno(idx) { abrirModalAluno(idx); }
+
+        function abrirModalJogo(idx = -1) {
             modalTipo = 'jogo';
-            document.getElementById('modal-titulo').textContent = 'Adicionar Nova Ideia de Jogo';
+            editandoIndex = idx;
+            const j = idx >= 0 ? bancoJogos[idx] : { titulo: '', categoria: '', objetivo: '', materiais: '', regras: '' };
+            document.getElementById('modal-titulo').textContent = idx >= 0 ? 'Editar Ideia de Jogo' : 'Adicionar Nova Ideia de Jogo';
             document.getElementById('modal-corpo').innerHTML = `
-                <div><label class="block text-xs uppercase font-bold mb-1">Título</label><input type="text" id="m-j-titulo" placeholder="Nome do Jogo" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
-                <div><label class="block text-xs uppercase font-bold mb-1">Categoria</label><input type="text" id="m-j-cat" placeholder="Ex: Esportes, Lúdico" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
-                <div><label class="block text-xs uppercase font-bold mb-1">Objetivo</label><input type="text" id="m-j-obj" placeholder="Objetivo pedagógico" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
-                <div><label class="block text-xs uppercase font-bold mb-1">Materiais</label><input type="text" id="m-j-mat" placeholder="Ex: Cones, bolas" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
-                <div><label class="block text-xs uppercase font-bold mb-1">Regras</label><textarea id="m-j-reg" placeholder="Explicação das regras..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm h-20"></textarea></div>
+                <div><label class="block text-xs uppercase font-bold mb-1">Título</label><input type="text" id="m-j-titulo" value="${j.titulo}" placeholder="Nome do Jogo" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
+                <div><label class="block text-xs uppercase font-bold mb-1">Categoria</label><input type="text" id="m-j-cat" value="${j.categoria}" placeholder="Ex: Esportes, Lúdico" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
+                <div><label class="block text-xs uppercase font-bold mb-1">Objetivo</label><input type="text" id="m-j-obj" value="${j.objetivo}" placeholder="Objetivo pedagógico" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
+                <div><label class="block text-xs uppercase font-bold mb-1">Materiais</label><input type="text" id="m-j-mat" value="${j.materiais}" placeholder="Ex: Cones, bolas" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
+                <div><label class="block text-xs uppercase font-bold mb-1">Regras</label><textarea id="m-j-reg" placeholder="Explicação das regras..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm h-20">${j.regras}</textarea></div>
             `;
             document.getElementById('modal-app').classList.remove('hidden');
         }
+
+        function editarJogo(idx) { abrirModalJogo(idx); }
 
         function fecharModal() { document.getElementById('modal-app').classList.add('hidden'); }
 
@@ -724,14 +746,22 @@
                 const ano = document.getElementById('m-t-ano').value.trim();
                 const turno = document.getElementById('m-t-turno').value.trim();
                 if(!nome) return;
-                turmas.push({ nome, ano: ano || 'N/A', turno: turno || 'N/A' });
+                if(editandoIndex >= 0) {
+                    turmas[editandoIndex] = { nome, ano: ano || 'N/A', turno: turno || 'N/A' };
+                } else {
+                    turmas.push({ nome, ano: ano || 'N/A', turno: turno || 'N/A' });
+                }
                 atualizarTabelaTurmas();
                 atualizarSelectsTurmas();
             } else if(modalTipo === 'aluno') {
                 const nome = document.getElementById('m-a-nome').value.trim();
                 const turma = document.getElementById('m-a-turma').value;
                 if(!nome) return;
-                alunos.push({ nome, turma });
+                if(editandoIndex >= 0) {
+                    alunos[editandoIndex] = { nome, turma };
+                } else {
+                    alunos.push({ nome, turma });
+                }
                 atualizarTabelaAlunos();
             } else if(modalTipo === 'jogo') {
                 const titulo = document.getElementById('m-j-titulo').value.trim();
@@ -740,7 +770,11 @@
                 const materiais = document.getElementById('m-j-mat').value.trim();
                 const regras = document.getElementById('m-j-reg').value.trim();
                 if(!titulo) return;
-                bancoJogos.push({ id: Date.now(), titulo, categoria: categoria || 'Geral', objetivo, materiais, regras });
+                if(editandoIndex >= 0) {
+                    bancoJogos[editandoIndex] = { id: bancoJogos[editandoIndex].id, titulo, categoria: categoria || 'Geral', objetivo, materiais, regras };
+                } else {
+                    bancoJogos.push({ id: Date.now(), titulo, categoria: categoria || 'Geral', objetivo, materiais, regras });
+                }
                 renderizarBancoJogos();
             }
             salvarDadosLocais();
@@ -765,7 +799,10 @@
                         <td class="p-4">${t.ano}</td>
                         <td class="p-4">${t.turno}</td>
                         <td class="p-4">${qtdAlunos} alunos</td>
-                        <td class="p-4 text-right"><button onclick="turmas.splice(${idx},1);salvarDadosLocais();atualizarTabelaTurmas();atualizarSelectsTurmas();" class="text-rose-600 font-bold cursor-pointer">Excluir</button></td>
+                        <td class="p-4 text-right space-x-2">
+                            <button onclick="editarTurma(${idx})" class="text-emerald-600 font-bold cursor-pointer hover:underline">Editar</button>
+                            <button onclick="turmas.splice(${idx},1);salvarDadosLocais();atualizarTabelaTurmas();atualizarSelectsTurmas();" class="text-rose-600 font-bold cursor-pointer hover:underline">Excluir</button>
+                        </td>
                     </tr>
                 `;
             }).join('');
@@ -778,7 +815,10 @@
                 <tr>
                     <td class="p-4 font-bold">${a.nome}</td>
                     <td class="p-4">${a.turma}</td>
-                    <td class="p-4 text-right"><button onclick="alunos.splice(${idx},1);salvarDadosLocais();atualizarTabelaAlunos()" class="text-rose-600 font-bold cursor-pointer">Excluir</button></td>
+                    <td class="p-4 text-right space-x-2">
+                        <button onclick="editarAluno(${idx})" class="text-emerald-600 font-bold cursor-pointer hover:underline">Editar</button>
+                        <button onclick="alunos.splice(${idx},1);salvarDadosLocais();atualizarTabelaAlunos()" class="text-rose-600 font-bold cursor-pointer hover:underline">Excluir</button>
+                    </td>
                 </tr>
             `).join('');
         }
@@ -806,7 +846,7 @@
             container.classList.remove('hidden');
         }
 
-        // Funções do Editor de Atividades
+        // Editor de Atividades
         function formatarEditorWord(cmd) {
             document.execCommand(cmd, false, null);
         }
@@ -868,7 +908,7 @@
             renderizarListaDocsWord();
         }
 
-        // Funções do Planejamento & BNCC
+        // Planejamento & BNCC
         function renderizarBNCCChecks() {
             const container = document.getElementById('bncc-container-checks');
             if(!container) return;
@@ -888,6 +928,8 @@
             planoGestaoDados.escola = document.getElementById('plano-escola').value;
             planoGestaoDados.professor = document.getElementById('plano-professor').value;
             planoGestaoDados.periodo = document.getElementById('plano-periodo').value;
+            planoGestaoDados.unidade = document.getElementById('plano-unidade').value;
+            planoGestaoDados.conteudo = document.getElementById('plano-conteudo').value;
             planoGestaoDados.objetivos = document.getElementById('plano-objetivos').value;
             
             const selecionados = [];
@@ -902,6 +944,8 @@
             if(document.getElementById('plano-escola')) document.getElementById('plano-escola').value = planoGestaoDados.escola || configApp.nomeEscola || '';
             if(document.getElementById('plano-professor')) document.getElementById('plano-professor').value = planoGestaoDados.professor || configApp.nomeProf || '';
             if(document.getElementById('plano-periodo')) document.getElementById('plano-periodo').value = planoGestaoDados.periodo || '';
+            if(document.getElementById('plano-unidade')) document.getElementById('plano-unidade').value = planoGestaoDados.unidade || '';
+            if(document.getElementById('plano-conteudo')) document.getElementById('plano-conteudo').value = planoGestaoDados.conteudo || '';
             if(document.getElementById('plano-objetivos')) document.getElementById('plano-objetivos').value = planoGestaoDados.objetivos || '';
 
             if(planoGestaoDados.bnccSelecionados) {

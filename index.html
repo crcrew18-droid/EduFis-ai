@@ -57,9 +57,12 @@
         let bancoJogos = JSON.parse(localStorage.getItem('edufis_jogos_v8')) || [
             { id: 1, titulo: "Queimada Cooperativa", categoria: "Jogos Tradicionais", objetivo: "Estimular a agilidade, mira e cooperação em equipa.", materiais: "1 Bola de borracha, cones para delimitar o campo.", regras: "Quem for queimado vai para a 'cadeia' adversária, mas pode voltar se apanhar uma bola no ar ou se um colega acertar um alvo específico." },
             { id: 2, titulo: "Circuito Funcional de Habilidades", categoria: "Aptidão Física", objetivo: "Desenvolver força, velocidade, equilíbrio e coordenação motora.", materiais: "Cones, cordas, arcos e colchonetes.", regras: "Os alunos dividem-se em grupos e revezam-se nas estações a cada 45 segundos, focando na execução correta dos movimentos." },
-            { id: 3, titulo: "Bandeirinha (Rouba Bandeira Adaptado)", categoria: "Esportes Coletivos", objetivo: "Trabalhar estratégia, tomada de decisão rápida e velocidade de reação.", materiais: "2 coletes ou bandeiras, cones.", regras: "Duas equipas tentam roubar a bandeira no campo adversário sem serem apanhados (tocados) no campo inimigo." },
-            { id: 4, titulo: "Estafeta das Cores e Formas", categoria: "Coordenação", objetivo: "Trabalhar locomoção, agilidade e raciocínio rápido sob esforço físico.", materiais: "Bolas coloridas, baldes, cartões de tarefas.", regras: "Cada elemento do grupo deve correr até ao centro, recolher um objeto com a cor solicitada e regressar para passar a vez." },
-            { id: 5, titulo: "Cabra-cega Cooperativa", categoria: "Jogos Sensoriais", objetivo: "Desenvolver a confiança, orientação espacial e perceção auditiva/tátil.", materiais: "Vendas para os olhos, espaço delimitado e seguro.", regras: "O aluno vendado deve guiar-se pelas indicações verbais dos colegas para apanhar um objeto ou toque leve." }
+            { id: 3, titulo: "Futsal Reduzido com Toques Limitados", categoria: "Futsal / Futebol", objetivo: "Desenvolver o passe rápido, a visão de jogo e a ocupação racional do espaço.", materiais: "Bolas de futsal, coletes, balizas móveis ou cones.", regras: "Cada jogador só pode dar no máximo 2 toques na bola antes de passar. O objetivo é priorizar a triangulação e o trabalho coletivo em vez da individualidade." },
+            { id: 4, titulo: "Racha de Futsal / Futebol Recreativo", categoria: "Futsal / Futebol", objetivo: "Estimular a prática lúdica e o fair-play em situação real de jogo.", materiais: "Bola, coletes.", regras: "Partida com equipas reduzidas (4x4 ou 5x5). Sem árbitro oficial; as faltas são marcadas por consenso e fair-play. Golos de primeira valem duplo." },
+            { id: 5, titulo: "Desafio de Condução e Drible no Futsal", categoria: "Futsal / Futebol", objetivo: "Aperfeiçoar o domínio de bola, mudança de direção e agilidade com os pés.", materiais: "Cones, bolas de futsal.", regras: "Os alunos fazem um percurso ziguezagueando entre cones conduzindo a bola com a sola e peito do pé, terminando com remate certeiro à baliza." },
+            { id: 6, titulo: "Handebol: Ataque Rápido e 3x2 na Linha de 9m", categoria: "Handebol", objetivo: "Trabalhar superioridade numérica ofensiva e eficácia no remate exterior.", materiais: "Bolas de handebol, balizas.", regras: "3 atacantes contra 2 defensores mais o guarda-redes. O ataque deve rodar a bola rapidamente para criar espaço para o lançamento em apoio ou em suspensão." },
+            { id: 7, titulo: "Voleibol: Jogo de 3 Toques Obrigatórios", categoria: "Voleibol", objetivo: "Fixar a mecânica da manchete, toque de dedos e remate regulamentar.", materiais: "Bola de vólei, rede.", regras: "Nenhum jogador pode devolver a bola à primeira ou segunda tentativa. É obrigatório passar por Manobra de Recepção ➔ Distribuição ➔ Ataque." },
+            { id: 8, titulo: "Basquetebol: Estafeta de Cestos em 3 Minutos", categoria: "Basquetebol", objetivo: "Melhorar a precisão no lançamento e a transição rápida defesa-ataque.", materiais: "Bolas de basquetebol, tabelas.", regras: "Equipas divididas em duas linhas. Cada cesto convertido vale pontos diferentes consoante a distância (lance livre, linha de 3 pontos)." }
         ];
 
         let baseSocorros = JSON.parse(localStorage.getItem('edufis_socorros_v8')) || [
@@ -77,7 +80,7 @@
         };
 
         const baseAnatomia = [
-            { id: "m1", nome: "Quadríceps Femoral", tipo: "Músculo", regiao: "Inferiores", acao: "Extensão do joelho e flexão do quadril (reto femoral).", exercicios: "Agachamento, Avanço, Salto Vertical, Chute no Futebol." },
+            { id: "m1", nome: "Quadríceps Femoral", tipo: "Músculo", regiao: "Inferiores", acao: "Extensão do joelho e flexão do quadril (reto femoral).", exercicios: "Agachamento, Avanço, Salto Vertical, Chute no Futebol/Futsal." },
             { id: "m2", nome: "Isquiotibiais (Bíceps Femoral, Semitendíneo, Semimembranoso)", tipo: "Músculo", regiao: "Inferiores", acao: "Flexão do joelho e extensão do quadril.", exercicios: "Corrida/Sprints, Stiff, Salto em Distância." },
             { id: "m3", nome: "Tríceps Sural (Gastrocnêmio e Sóleo)", tipo: "Músculo", regiao: "Inferiores", acao: "Flexão plantar do tornozelo (impulsão).", exercicios: "Elevação de calcanhar, Corridas, Saltos de corda." },
             { id: "m4", nome: "Glúteo Máximo", tipo: "Músculo", regiao: "Inferiores", acao: "Extensão e rotação lateral do quadril.", exercicios: "Elevação pélvica, Agachamento profundo, Corridas de velocidade." },
@@ -95,9 +98,7 @@
         const baseBNCC = [
             { codigo: "EF67EF01", tema: "Esportes", desc: "Experimentar e fruir diferentes esportes de marca, precisão, invasão e técnico-combinatórios." },
             { codigo: "EF67EF03", tema: "Esportes", desc: "Praticar um ou mais esportes de marca, precisão, invasão e técnico-combinatórios oferecidos na escola." },
-            { codigo: "EF89EF07", tema: "Esportes", desc: "Formular e propor estratégias para o resolução de desafios em jogos desportivos." },
-            { codigo: "EF67EF07", tema: "Ginástica", desc: "Propor e produzir alternativas para a prática da ginástica de conscientização corporal." },
-            { codigo: "EF89EF09", tema: "Ginástica", desc: "Construir apresentações de ginástica geral, integrando diferentes elementos gimnásticos." }
+            { codigo: "EF89EF07", tema: "Esportes", desc: "Formular e propor estratégias para o resolução de desafios em jogos desportivos." }
         ];
 
         function salvarDadosLocais() {
@@ -150,7 +151,6 @@
                     
                     salvarDadosLocais();
                     carregarTudoNaTela();
-                    aplicarTemaCor(configApp.temaCor || 'emerald');
                     alert('✅ Dados restaurados com sucesso!');
                 } catch(err) {
                     alert('❌ Erro ao ler ficheiro de backup.');
@@ -335,20 +335,20 @@
                     <div id="grid-socorros" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
                 </div>
 
-                <!-- ABA: BANCO DE JOGOS & IDEIAS EDITÁVEIS -->
+                <!-- ABA: BANCO DE JOGOS & DESPORTOS -->
                 <div id="tab-jogos" class="hidden space-y-6">
                     <div class="flex justify-between items-center flex-wrap gap-3">
                         <div>
-                            <h2 class="text-2xl font-black text-slate-900 tracking-tight">Banco de Jogos, Brincadeiras & Ideias 🎮</h2>
-                            <p class="text-slate-500 text-sm">Sugestões práticas para as suas aulas. Pode editar, adaptar ou criar novas dinâmicas.</p>
+                            <h2 class="text-2xl font-black text-slate-900 tracking-tight">Banco de Jogos & Desportos Coletivos ⚽</h2>
+                            <p class="text-slate-500 text-sm">Futebol, Futsal, Basquete, Vôlei, Andebol e dinâmicas para as suas aulas.</p>
                         </div>
                         <button onclick="abrirModalJogo()" class="btn-primary-theme bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all cursor-pointer">+ Adicionar Nova Ideia</button>
                     </div>
 
                     <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
                         <div>
-                            <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Pesquisar Dinâmica / Jogo</label>
-                            <input type="text" id="search-jogos" oninput="renderizarBancoJogos()" placeholder="Pesquisar por título, objetivo ou categoria..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Pesquisar Dinâmica / Desporto</label>
+                            <input type="text" id="search-jogos" oninput="renderizarBancoJogos()" placeholder="Pesquisar por título, objetivo, futsal, futebol..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
                         </div>
                     </div>
 
@@ -793,10 +793,10 @@
             const j = idx !== -1 ? bancoJogos[idx] : { titulo: '', categoria: '', objetivo: '', materiais: '', regras: '' };
             
             document.getElementById('modal-corpo').innerHTML = `
-                <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Título da Atividade</label><input type="text" id="m-j-titulo" value="${j.titulo}" placeholder="Ex: Corrida do Saco Adaptada" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></div>
-                <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Categoria</label><input type="text" id="m-j-categoria" value="${j.categoria}" placeholder="Ex: Jogos Tradicionais / Aptidão" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></div>
+                <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Título da Atividade</label><input type="text" id="m-j-titulo" value="${j.titulo}" placeholder="Ex: Futsal Educativo" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></div>
+                <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Categoria</label><input type="text" id="m-j-categoria" value="${j.categoria}" placeholder="Ex: Futsal / Futebol / Voleibol" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></div>
                 <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Objetivo Pedagógico</label><input type="text" id="m-j-objetivo" value="${j.objetivo}" placeholder="O que se pretende desenvolver..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></div>
-                <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Materiais Necessários</label><input type="text" id="m-j-materiais" value="${j.materiais}" placeholder="Ex: Cones, bolas, cordas..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></div>
+                <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Materiais Necessários</label><input type="text" id="m-j-materiais" value="${j.materiais}" placeholder="Ex: Cones, bolas, coletes..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></div>
                 <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Regras & Adaptações</label><textarea id="m-j-regras" rows="3" placeholder="Como funciona a dinâmica..." class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">${j.regras}</textarea></div>
             `;
             document.getElementById('modal-app').classList.remove('hidden');

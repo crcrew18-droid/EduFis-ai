@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%23059669'/><path d='M30 35 v30 M70 35 v30 M20 40 v20 M80 40 v20 M30 50 h40' stroke='white' stroke-width='8' stroke-linecap='round'/></svg>">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%230EA5E9'/><path d='M30 35 v30 M70 35 v30 M20 40 v20 M80 40 v20 M30 50 h40' stroke='white' stroke-width='8' stroke-linecap='round'/></svg>">
     <title>EduFís Pro v8.6 - Plataforma de Gestão Pedagógica</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
 
         /* REGRAS RÍGIDAS EXCLUSIVAS PARA IMPRESSÃO DO PLANO */
         @media print {
@@ -44,11 +44,9 @@
                 padding: 0 !important;
                 box-shadow: none !important;
             }
-            /* Oculta os itens da BNCC que NÃO estão marcados na impressão */
             .bncc-item-wrapper:not(.checked-item) {
                 display: none !important;
             }
-            /* Remove a caixa de seleção na impressão e deixa limpo */
             .bncc-item-wrapper {
                 border: none !important;
                 background: transparent !important;
@@ -61,7 +59,7 @@
         }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col antialiased">
+<body class="bg-slate-900/5 text-slate-800 min-h-screen flex flex-col antialiased selection:bg-sky-500 selection:text-white">
 
     <script>
         const URL_GOOGLE_SCRIPT = "https://script.google.com/macros/s/AKfycbyTUXPXMwt_qEjteIef1pfSDs1kgzc_ck3QJkLpGzHygB8nOq03zANVHAfvDC1vKfrvKA/exec";
@@ -84,7 +82,7 @@
         ];
 
         let configApp = JSON.parse(localStorage.getItem('edufis_config_v8')) || {
-            temaCor: 'emerald',
+            temaCor: 'sky',
             nomeProf: '',
             cargoProf: 'Professor(a) de Educação Física',
             nomeEscola: '',
@@ -115,7 +113,7 @@
             { codigo: "EF67EF01", tema: "Esportes", desc: "Experimentar e fruir diferentes esportes de marca, precisão, invasão e técnico-combinatórios." },
             { codigo: "EF67EF03", tema: "Esportes", desc: "Praticar um ou mais esportes de marca, precisão, invasão e técnico-combinatórios oferecidos na escola." },
             { codigo: "EF89EF07", tema: "Esportes", desc: "Formular e propor estratégias para a resolução de desafios em jogos desportivos." },
-            { codigo: "EF67EF07", tema: "Ginástica", desc: "Propor e produzir alternatives para a prática da ginástica de conscientização corporal." },
+            { codigo: "EF67EF07", tema: "Ginástica", desc: "Propor e produzir alternativas para a prática da ginástica de conscientização corporal." },
             { codigo: "EF89EF09", tema: "Ginástica", desc: "Construir apresentações de ginástica geral, integrando diferentes elementos gimnásticos." },
             { codigo: "EF35EF01", tema: "Brincadeiras e Jogos", desc: "Experimentar e fruir brincadeiras e jogos populares do Brasil e do mundo." },
             { codigo: "EF35EF05", tema: "Lutas", desc: "Experimentar e fruir lutas presentes no contexto comunitário e regional." }
@@ -139,13 +137,13 @@
             salvarDadosLocais();
 
             const mapaCores = {
-                emerald: { main: 'bg-emerald-600', hover: 'hover:bg-emerald-700', text: 'text-emerald-600' },
-                sky: { main: 'bg-sky-600', hover: 'hover:bg-sky-700', text: 'text-sky-600' },
-                purple: { main: 'bg-purple-600', hover: 'hover:bg-purple-700', text: 'text-purple-600' },
-                slate: { main: 'bg-slate-800', hover: 'hover:bg-slate-900', text: 'text-slate-800' }
+                sky: { main: 'bg-sky-600', hover: 'hover:bg-sky-700', text: 'text-sky-600', ring: 'focus:ring-sky-500' },
+                emerald: { main: 'bg-emerald-600', hover: 'hover:bg-emerald-700', text: 'text-emerald-600', ring: 'focus:ring-emerald-500' },
+                purple: { main: 'bg-purple-600', hover: 'hover:bg-purple-700', text: 'text-purple-600', ring: 'focus:ring-purple-500' },
+                slate: { main: 'bg-slate-900', hover: 'hover:bg-black', text: 'text-slate-900', ring: 'focus:ring-slate-700' }
             };
 
-            const c = mapaCores[cor] || mapaCores.emerald;
+            const c = mapaCores[cor] || mapaCores.sky;
 
             document.querySelectorAll('.btn-primary-theme').forEach(el => {
                 el.className = el.className.replace(/bg-\w+-\d+/g, c.main).replace(/hover:bg-\w+-\d+/g, c.hover);
@@ -159,106 +157,141 @@
         }
     </script>
 
-    <!-- TELA DE LOGIN & REGISTRO -->
-    <div id="view-login" class="flex flex-col items-center justify-center flex-1 p-4 bg-slate-100 no-print">
-        <div class="w-full max-w-md bg-white border border-slate-200 rounded-3xl p-8 shadow-xl space-y-6">
-            <div class="text-center space-y-2">
-                <div class="w-16 h-16 brand-icon-bg bg-emerald-600 rounded-2xl flex items-center justify-center mx-auto shadow-md p-3.5">
+    <!-- TELA DE LOGIN & REGISTRO (SAAS PROFESSIONAL) -->
+    <div id="view-login" class="flex flex-col items-center justify-center flex-1 p-4 bg-gradient-to-br from-slate-900 via-slate-800 to-sky-950 no-print min-h-screen">
+        <div class="w-full max-w-md bg-white/95 backdrop-blur-xl border border-white/20 rounded-3xl p-8 shadow-2xl space-y-6">
+            <div class="text-center space-y-3">
+                <div class="w-16 h-16 brand-icon-bg bg-sky-600 rounded-2xl flex items-center justify-center mx-auto shadow-lg shadow-sky-500/30 p-3.5 transform hover:scale-105 transition-transform">
                     <svg class="w-full h-full text-white" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round">
                         <path d="M30 35 v30 M70 35 v30 M20 40 v20 M80 40 v20 M30 50 h40"/>
                     </svg>
                 </div>
                 <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight" id="auth-box-titulo">EduFís Pro</h1>
-                <p class="text-slate-500 text-xs font-medium" id="auth-box-sub">Aceda à sua conta de Gestão Pedagógica</p>
+                <p class="text-slate-500 text-xs font-semibold tracking-wide" id="auth-box-sub">PLATAFORMA DE GESTÃO PEDAGÓGICA</p>
             </div>
             
             <form id="form-login" class="space-y-4" onsubmit="handleLogin(event)">
                 <div>
-                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1">E-mail Profissional</label>
-                    <input type="email" id="login-email" required placeholder="professor@escola.pt" class="w-full bg-slate-50 border border-slate-300 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    <label class="block text-[11px] font-extrabold uppercase text-slate-500 mb-1.5 tracking-wider">E-mail Profissional</label>
+                    <input type="email" id="login-email" required placeholder="professor@escola.pt" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:bg-white transition-all shadow-xs">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Palavra-passe</label>
-                    <input type="password" id="login-senha" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-300 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    <label class="block text-[11px] font-extrabold uppercase text-slate-500 mb-1.5 tracking-wider">Palavra-passe</label>
+                    <input type="password" id="login-senha" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:bg-white transition-all shadow-xs">
                 </div>
-                <button type="submit" class="w-full btn-primary-theme bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-2xl shadow-lg transition-all cursor-pointer">Entrar na Plataforma</button>
+                <button type="submit" class="w-full btn-primary-theme bg-sky-600 hover:bg-sky-700 text-white font-bold py-3.5 rounded-2xl shadow-lg shadow-sky-600/20 transition-all cursor-pointer">Entrar na Plataforma</button>
                 <div class="text-center pt-2">
-                    <button type="button" onclick="alternarTelaAuth('registrar')" class="text-xs text-slate-500 hover:text-slate-800 font-semibold cursor-pointer">Primeira vez? Criar nova conta</button>
+                    <button type="button" onclick="alternarTelaAuth('registrar')" class="text-xs text-slate-500 hover:text-sky-600 font-bold transition-colors cursor-pointer">Primeira vez? Criar nova conta</button>
                 </div>
             </form>
 
             <form id="form-registrar" class="hidden space-y-4" onsubmit="handleRegistrar(event)">
                 <div>
-                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Nome Completo</label>
-                    <input type="text" id="reg-nome" required placeholder="Ex: Prof. Carlos Silva" class="w-full bg-slate-50 border border-slate-300 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    <label class="block text-[11px] font-extrabold uppercase text-slate-500 mb-1.5 tracking-wider">Nome Completo</label>
+                    <input type="text" id="reg-nome" required placeholder="Ex: Prof. Carlos Silva" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:bg-white transition-all shadow-xs">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1">E-mail Profissional</label>
-                    <input type="email" id="reg-email" required placeholder="professor@escola.pt" class="w-full bg-slate-50 border border-slate-300 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    <label class="block text-[11px] font-extrabold uppercase text-slate-500 mb-1.5 tracking-wider">E-mail Profissional</label>
+                    <input type="email" id="reg-email" required placeholder="professor@escola.pt" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:bg-white transition-all shadow-xs">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Definir Palavra-passe</label>
-                    <input type="password" id="reg-senha" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-300 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    <label class="block text-[11px] font-extrabold uppercase text-slate-500 mb-1.5 tracking-wider">Definir Palavra-passe</label>
+                    <input type="password" id="reg-senha" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:bg-white transition-all shadow-xs">
                 </div>
-                <button type="submit" class="w-full btn-primary-theme bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-2xl shadow-lg transition-all cursor-pointer">Criar Minha Conta</button>
+                <button type="submit" class="w-full btn-primary-theme bg-sky-600 hover:bg-sky-700 text-white font-bold py-3.5 rounded-2xl shadow-lg shadow-sky-600/20 transition-all cursor-pointer">Criar Minha Conta</button>
                 <div class="text-center pt-2">
-                    <button type="button" onclick="alternarTelaAuth('login')" class="text-xs text-slate-500 hover:text-slate-800 font-semibold cursor-pointer">Já tem conta? Fazer Login</button>
+                    <button type="button" onclick="alternarTelaAuth('login')" class="text-xs text-slate-500 hover:text-sky-600 font-bold transition-colors cursor-pointer">Já tem conta? Fazer Login</button>
                 </div>
             </form>
         </div>
     </div>
 
     <!-- DASHBOARD PRINCIPAL -->
-    <div id="view-dashboard" class="hidden flex flex-col flex-1 min-h-screen">
+    <div id="view-dashboard" class="hidden flex flex-col flex-1 min-h-screen bg-slate-50">
         
-        <!-- CABEÇALHO -->
-        <header class="bg-white border-b border-slate-200 px-4 sm:px-8 py-3.5 flex items-center justify-between sticky top-0 z-40 shadow-xs no-print">
+        <!-- CABEÇALHO SUPERIOR (SAAS BAR) -->
+        <header class="bg-white/80 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-8 py-3.5 flex items-center justify-between sticky top-0 z-40 shadow-xs no-print">
             <div class="flex items-center gap-3">
-                <button onclick="toggleSidebarMobile()" class="lg:hidden text-slate-700 p-2 rounded-xl bg-slate-100 hover:bg-slate-200">
+                <button onclick="toggleSidebarMobile()" class="lg:hidden text-slate-700 p-2 rounded-xl bg-slate-100 hover:bg-slate-200 transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                 </button>
                 <div class="flex items-center gap-2.5">
-                    <div class="w-9 h-9 brand-icon-bg bg-emerald-600 rounded-xl flex items-center justify-center p-2 shadow-sm">
+                    <div class="w-10 h-10 brand-icon-bg bg-sky-600 rounded-2xl flex items-center justify-center p-2.5 shadow-md shadow-sky-500/20">
                         <svg class="w-full h-full text-white" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round">
                             <path d="M30 35 v30 M70 35 v30 M20 40 v20 M80 40 v20 M30 50 h40"/>
                         </svg>
                     </div>
                     <div>
-                        <span class="text-base font-extrabold text-slate-900 leading-none block">EduFís</span>
-                        <span class="text-[10px] uppercase tracking-wider text-theme-main text-emerald-600 font-extrabold">Pro v8.6</span>
+                        <span class="text-base font-extrabold text-slate-900 leading-none tracking-tight block">EduFís</span>
+                        <span class="text-[10px] uppercase tracking-widest text-theme-main text-sky-600 font-extrabold mt-0.5 block">Pro v8.6</span>
                     </div>
                 </div>
             </div>
-            <div class="flex items-center gap-3">
-                <span class="text-xs font-semibold text-slate-600 hidden sm:inline" id="header-user-nome">👤 Professor(a)</span>
-                <button onclick="logout()" class="text-xs bg-rose-50 text-rose-600 border border-rose-200 px-3.5 py-2 rounded-xl font-bold hover:bg-rose-100 transition-colors cursor-pointer">Sair</button>
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2.5 bg-slate-100/80 border border-slate-200/60 px-3.5 py-1.5 rounded-2xl">
+                    <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                    <span class="text-xs font-bold text-slate-700" id="header-user-nome">👤 Professor(a)</span>
+                </div>
+                <button onclick="logout()" class="text-xs bg-rose-50 text-rose-600 border border-rose-200/60 px-3.5 py-2 rounded-2xl font-bold hover:bg-rose-100 transition-all cursor-pointer shadow-xs">Sair</button>
             </div>
         </header>
 
         <div class="flex flex-1 relative">
-            <div id="sidebar-overlay" onclick="toggleSidebarMobile()" class="hidden fixed inset-0 bg-slate-900/50 z-30 lg:hidden no-print"></div>
+            <div id="sidebar-overlay" onclick="toggleSidebarMobile()" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-30 lg:hidden no-print"></div>
 
-            <!-- MENU LATERAL -->
-            <aside id="sidebar-menu" class="fixed lg:static inset-y-0 left-0 w-72 bg-white border-r border-slate-200 p-4 flex flex-col justify-between z-40 transform -translate-x-full lg:translate-x-0 transition-transform duration-200 shadow-lg lg:shadow-none no-print">
-                <div class="space-y-1 overflow-y-auto">
-                    <div class="text-[10px] uppercase font-bold text-slate-400 px-3 pb-1">Navegação Principal</div>
-                    <button onclick="changeTab('home')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">🏠 Visão Geral</button>
-                    <button onclick="changeTab('turmas')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">🏫 Turmas</button>
-                    <button onclick="changeTab('alunos')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">👤 Alunos</button>
-                    <button onclick="changeTab('chamada')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">📋 Chamada Rápida</button>
+            <!-- MENU LATERAL (SIDEBAR PREMIUM) -->
+            <aside id="sidebar-menu" class="fixed lg:static inset-y-0 left-0 w-72 bg-white border-r border-slate-200/80 p-5 flex flex-col justify-between z-40 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 shadow-xl lg:shadow-none no-print">
+                <div class="space-y-6 overflow-y-auto pr-1">
+                    <div class="space-y-1.5">
+                        <div class="text-[10px] uppercase font-extrabold text-slate-400 px-3 tracking-wider mb-2">Geral</div>
+                        <button onclick="changeTab('home')" id="btn-tab-home" class="w-full text-left px-3.5 py-3 rounded-2xl text-xs font-bold text-slate-700 hover:bg-sky-50 hover:text-sky-600 flex items-center gap-3 transition-all cursor-pointer group">
+                            <span class="text-base group-hover:scale-110 transition-transform">🏠</span> Visão Geral
+                        </button>
+                        <button onclick="changeTab('turmas')" id="btn-tab-turmas" class="w-full text-left px-3.5 py-3 rounded-2xl text-xs font-bold text-slate-700 hover:bg-sky-50 hover:text-sky-600 flex items-center gap-3 transition-all cursor-pointer group">
+                            <span class="text-base group-hover:scale-110 transition-transform">🏫</span> Turmas
+                        </button>
+                        <button onclick="changeTab('alunos')" id="btn-tab-alunos" class="w-full text-left px-3.5 py-3 rounded-2xl text-xs font-bold text-slate-700 hover:bg-sky-50 hover:text-sky-600 flex items-center gap-3 transition-all cursor-pointer group">
+                            <span class="text-base group-hover:scale-110 transition-transform">👤</span> Alunos
+                        </button>
+                        <button onclick="changeTab('chamada')" id="btn-tab-chamada" class="w-full text-left px-3.5 py-3 rounded-2xl text-xs font-bold text-slate-700 hover:bg-sky-50 hover:text-sky-600 flex items-center gap-3 transition-all cursor-pointer group">
+                            <span class="text-base group-hover:scale-110 transition-transform">📋</span> Chamada Rápida
+                        </button>
+                    </div>
                     
-                    <div class="text-[10px] uppercase font-bold text-slate-400 px-3 pt-4 pb-1">Pedagógico</div>
-                    <button onclick="changeTab('jogos')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 flex items-center gap-3 transition-colors cursor-pointer">🎮 Banco de Jogos & Ideias</button>
-                    <button onclick="changeTab('anatomia')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">🦴 Atlas de Anatomia</button>
-                    <button onclick="changeTab('editor-word')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">📝 Editor de Atividades</button>
-                    <button onclick="changeTab('gestao')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">📅 Planejamento & BNCC</button>
-                    <button onclick="changeTab('documentos')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">📄 Gestor de Documentos</button>
-                    
-                    <div class="text-[10px] uppercase font-bold text-slate-400 px-3 pt-4 pb-1">Sistema</div>
-                    <button onclick="changeTab('backup')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">☁️ Backup & Nuvem</button>
-                    <button onclick="changeTab('config')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">⚙️ Configurações</button>
+                    <div class="space-y-1.5 pt-2 border-t border-slate-100">
+                        <div class="text-[10px] uppercase font-extrabold text-slate-400 px-3 tracking-wider mb-2">Pedagógico</div>
+                        <button onclick="changeTab('jogos')" id="btn-tab-jogos" class="w-full text-left px-3.5 py-3 rounded-2xl text-xs font-bold text-slate-700 hover:bg-sky-50 hover:text-sky-600 flex items-center gap-3 transition-all cursor-pointer group">
+                            <span class="text-base group-hover:scale-110 transition-transform">🎮</span> Banco de Jogos & Ideias
+                        </button>
+                        <button onclick="changeTab('anatomia')" id="btn-tab-anatomia" class="w-full text-left px-3.5 py-3 rounded-2xl text-xs font-bold text-slate-700 hover:bg-sky-50 hover:text-sky-600 flex items-center gap-3 transition-all cursor-pointer group">
+                            <span class="text-base group-hover:scale-110 transition-transform">🦴</span> Atlas de Anatomia
+                        </button>
+                        <button onclick="changeTab('editor-word')" id="btn-tab-editor-word" class="w-full text-left px-3.5 py-3 rounded-2xl text-xs font-bold text-slate-700 hover:bg-sky-50 hover:text-sky-600 flex items-center gap-3 transition-all cursor-pointer group">
+                            <span class="text-base group-hover:scale-110 transition-transform">📝</span> Editor de Atividades
+                        </button>
+                        <button onclick="changeTab('gestao')" id="btn-tab-gestao" class="w-full text-left px-3.5 py-3 rounded-2xl text-xs font-bold text-slate-700 hover:bg-sky-50 hover:text-sky-600 flex items-center gap-3 transition-all cursor-pointer group">
+                            <span class="text-base group-hover:scale-110 transition-transform">📅</span> Planejamento & BNCC
+                        </button>
+                        <button onclick="changeTab('documentos')" id="btn-tab-documentos" class="w-full text-left px-3.5 py-3 rounded-2xl text-xs font-bold text-slate-700 hover:bg-sky-50 hover:text-sky-600 flex items-center gap-3 transition-all cursor-pointer group">
+                            <span class="text-base group-hover:scale-110 transition-transform">📄</span> Gestor de Documentos
+                        </button>
+                    </div>
+
+                    <div class="space-y-1.5 pt-2 border-t border-slate-100">
+                        <div class="text-[10px] uppercase font-extrabold text-slate-400 px-3 tracking-wider mb-2">Sistema</div>
+                        <button onclick="changeTab('backup')" id="btn-tab-backup" class="w-full text-left px-3.5 py-3 rounded-2xl text-xs font-bold text-slate-700 hover:bg-sky-50 hover:text-sky-600 flex items-center gap-3 transition-all cursor-pointer group">
+                            <span class="text-base group-hover:scale-110 transition-transform">☁️</span> Backup & Nuvem
+                        </button>
+                        <button onclick="changeTab('config')" id="btn-tab-config" class="w-full text-left px-3.5 py-3 rounded-2xl text-xs font-bold text-slate-700 hover:bg-sky-50 hover:text-sky-600 flex items-center gap-3 transition-all cursor-pointer group">
+                            <span class="text-base group-hover:scale-110 transition-transform">⚙️</span> Configurações
+                        </button>
+                    </div>
                 </div>
-                <div class="pt-4 border-t border-slate-100 px-3 text-[11px] text-slate-400 font-medium">EduFís Pro v8.6 • 2026</div>
+
+                <div class="pt-4 border-t border-slate-100 px-3 flex items-center justify-between text-[11px] text-slate-400 font-semibold">
+                    <span>EduFís Pro SaaS</span>
+                    <span class="bg-sky-50 text-sky-600 font-bold px-2 py-0.5 rounded-md text-[10px]">v8.6</span>
+                </div>
             </aside>
 
             <!-- CONTEÚDO PRINCIPAL -->
@@ -266,47 +299,77 @@
                 
                 <!-- ABA VISÃO GERAL -->
                 <div id="tab-home" class="space-y-6">
-                    <div class="bg-gradient-to-r from-slate-800 to-slate-900 text-white p-6 sm:p-8 rounded-3xl shadow-lg flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                        <div>
+                    <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-sky-950 text-white p-6 sm:p-8 rounded-3xl shadow-xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 relative overflow-hidden">
+                        <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-sky-500/10 rounded-full blur-2xl pointer-events-none"></div>
+                        <div class="space-y-2 relative z-10">
+                            <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-3 py-1 rounded-full text-[11px] font-semibold text-sky-300">
+                                <span class="w-2 h-2 rounded-full bg-sky-400 animate-ping"></span> Painel de Controlo Docente
+                            </div>
                             <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Bem-vindo ao EduFís Pro 🏋️</h2>
-                            <p class="text-slate-300 text-sm mt-1">Tecnologia e organização para transformar as suas aulas de Educação Física.</p>
+                            <p class="text-slate-300 text-xs sm:text-sm font-medium">Tecnologia e organização profissional para transformar as suas aulas de Educação Física.</p>
                         </div>
-                        <button onclick="changeTab('jogos')" class="bg-white hover:bg-slate-100 text-slate-900 font-bold px-5 py-3 rounded-2xl text-sm shadow-md transition-all cursor-pointer w-full sm:w-auto">🎮 Explorar Banco de Jogos</button>
+                        <button onclick="changeTab('jogos')" class="bg-white hover:bg-slate-100 text-slate-900 font-bold px-6 py-3.5 rounded-2xl text-xs shadow-lg transition-all cursor-pointer relative z-10 flex items-center gap-2">
+                            <span>🎮</span> Explorar Banco de Jogos
+                        </button>
                     </div>
                     
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                        <div class="bg-white border border-slate-200/80 p-5 rounded-3xl shadow-xs"><div class="text-3xl font-black text-theme-main text-emerald-600" id="stat-turmas">0</div><div class="text-xs font-bold text-slate-400 mt-1 uppercase tracking-wider">Turmas Ativas</div></div>
-                        <div class="bg-white border border-slate-200/80 p-5 rounded-3xl shadow-xs"><div class="text-3xl font-black text-theme-main text-emerald-600" id="stat-alunos">0</div><div class="text-xs font-bold text-slate-400 mt-1 uppercase tracking-wider">Alunos Matriculados</div></div>
-                        <div class="bg-white border border-slate-200/80 p-5 rounded-3xl shadow-xs"><div class="text-3xl font-black text-theme-main text-emerald-600" id="stat-documentos">0</div><div class="text-xs font-bold text-slate-400 mt-1 uppercase tracking-wider">Atividades Salvas</div></div>
-                        <div class="bg-white border border-slate-200/80 p-5 rounded-3xl shadow-xs"><div class="text-3xl font-black text-theme-main text-emerald-600" id="stat-pdfs">0</div><div class="text-xs font-bold text-slate-400 mt-1 uppercase tracking-wider">PDFs Anexados</div></div>
+                        <div class="bg-white border border-slate-200/80 p-5 rounded-3xl shadow-xs hover:shadow-md transition-shadow">
+                            <div class="text-3xl font-black text-theme-main text-sky-600" id="stat-turmas">0</div>
+                            <div class="text-[11px] font-bold text-slate-400 mt-1 uppercase tracking-wider">Turmas Ativas</div>
+                        </div>
+                        <div class="bg-white border border-slate-200/80 p-5 rounded-3xl shadow-xs hover:shadow-md transition-shadow">
+                            <div class="text-3xl font-black text-theme-main text-sky-600" id="stat-alunos">0</div>
+                            <div class="text-[11px] font-bold text-slate-400 mt-1 uppercase tracking-wider">Alunos Matriculados</div>
+                        </div>
+                        <div class="bg-white border border-slate-200/80 p-5 rounded-3xl shadow-xs hover:shadow-md transition-shadow">
+                            <div class="text-3xl font-black text-theme-main text-sky-600" id="stat-documentos">0</div>
+                            <div class="text-[11px] font-bold text-slate-400 mt-1 uppercase tracking-wider">Atividades Salvas</div>
+                        </div>
+                        <div class="bg-white border border-slate-200/80 p-5 rounded-3xl shadow-xs hover:shadow-md transition-shadow">
+                            <div class="text-3xl font-black text-theme-main text-sky-600" id="stat-pdfs">0</div>
+                            <div class="text-[11px] font-bold text-slate-400 mt-1 uppercase tracking-wider">PDFs Anexados</div>
+                        </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="bg-white border border-slate-200/80 p-6 rounded-3xl shadow-xs space-y-4">
-                            <h3 class="font-extrabold text-sm uppercase text-slate-700 tracking-wider">⚡ Atalhos Rápidos</h3>
+                            <h3 class="font-extrabold text-xs uppercase text-slate-500 tracking-wider flex items-center gap-2">
+                                <span>⚡</span> Atalhos Rápidos
+                            </h3>
                             <div class="grid grid-cols-2 gap-3">
-                                <button onclick="changeTab('jogos')" class="p-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 rounded-2xl font-bold text-xs text-left transition-colors cursor-pointer">🎮 Banco de Jogos</button>
-                                <button onclick="changeTab('turmas'); abrirModalTurma();" class="p-3 bg-slate-50 hover:bg-slate-100 text-slate-800 rounded-2xl font-bold text-xs text-left transition-colors cursor-pointer">+ Registar Turma</button>
-                                <button onclick="changeTab('chamada')" class="p-3 bg-slate-50 hover:bg-slate-100 text-slate-800 rounded-2xl font-bold text-xs text-left transition-colors cursor-pointer">📋 Fazer Chamada</button>
-                                <button onclick="changeTab('editor-word')" class="p-3 bg-slate-50 hover:bg-slate-100 text-slate-800 rounded-2xl font-bold text-xs text-left transition-colors cursor-pointer">📝 Nova Atividade</button>
+                                <button onclick="changeTab('jogos')" class="p-3.5 bg-sky-50/80 hover:bg-sky-100 text-sky-900 rounded-2xl font-bold text-xs text-left transition-all cursor-pointer flex items-center gap-2.5">
+                                    <span class="text-base">🎮</span> Banco de Jogos
+                                </button>
+                                <button onclick="changeTab('turmas'); abrirModalTurma();" class="p-3.5 bg-slate-50 hover:bg-slate-100 text-slate-800 rounded-2xl font-bold text-xs text-left transition-all cursor-pointer flex items-center gap-2.5">
+                                    <span class="text-base">🏫</span> + Registar Turma
+                                </button>
+                                <button onclick="changeTab('chamada')" class="p-3.5 bg-slate-50 hover:bg-slate-100 text-slate-800 rounded-2xl font-bold text-xs text-left transition-all cursor-pointer flex items-center gap-2.5">
+                                    <span class="text-base">📋</span> Fazer Chamada
+                                </button>
+                                <button onclick="changeTab('editor-word')" class="p-3.5 bg-slate-50 hover:bg-slate-100 text-slate-800 rounded-2xl font-bold text-xs text-left transition-all cursor-pointer flex items-center gap-2.5">
+                                    <span class="text-base">📝</span> Nova Atividade
+                                </button>
                             </div>
                         </div>
 
                         <div class="bg-white border border-slate-200/80 p-6 rounded-3xl shadow-xs space-y-4">
                             <div class="flex justify-between items-center">
-                                <h3 class="font-extrabold text-sm uppercase text-slate-700 tracking-wider">📅 Agenda de Hoje</h3>
-                                <span class="text-xs font-bold text-slate-400" id="agenda-data-hoje">--/--/----</span>
+                                <h3 class="font-extrabold text-xs uppercase text-slate-500 tracking-wider flex items-center gap-2">
+                                    <span>📅</span> Agenda de Hoje
+                                </h3>
+                                <span class="text-xs font-bold bg-slate-100 text-slate-600 px-3 py-1 rounded-xl" id="agenda-data-hoje">--/--/----</span>
                             </div>
                             <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 space-y-3">
                                 <div>
-                                    <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Turma Prevista para Hoje</label>
-                                    <select id="agenda-select-turma" onchange="salvarAgendaHoje()" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                    <label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Turma Prevista para Hoje</label>
+                                    <select id="agenda-select-turma" onchange="salvarAgendaHoje()" class="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs">
                                         <option value="">Selecione a turma...</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Conteúdo / Atividade do Dia</label>
-                                    <input type="text" id="agenda-input-conteudo" onchange="salvarAgendaHoje()" placeholder="Ex: Fundamentos do Futsal / Teste Físico" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                    <label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Conteúdo / Atividade do Dia</label>
+                                    <input type="text" id="agenda-input-conteudo" onchange="salvarAgendaHoje()" placeholder="Ex: Fundamentos do Futsal / Teste Físico" class="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs">
                                 </div>
                             </div>
                         </div>
@@ -318,15 +381,15 @@
                     <div class="flex justify-between items-center flex-wrap gap-3">
                         <div>
                             <h2 class="text-2xl font-black text-slate-900 tracking-tight">Banco de Jogos, Brincadeiras & Ideias 🎮</h2>
-                            <p class="text-slate-500 text-sm">Sugestões práticas para as suas aulas. Pode editar, adaptar ou criar novas dinâmicas.</p>
+                            <p class="text-slate-500 text-xs sm:text-sm">Sugestões práticas para as suas aulas. Pode editar, adaptar ou criar novas dinâmicas.</p>
                         </div>
-                        <button onclick="abrirModalJogo()" class="btn-primary-theme bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all cursor-pointer">+ Adicionar Nova Ideia</button>
+                        <button onclick="abrirModalJogo()" class="btn-primary-theme bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-md shadow-sky-600/20 transition-all cursor-pointer">+ Adicionar Nova Ideia</button>
                     </div>
 
                     <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
                         <div>
-                            <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Pesquisar Dinâmica / Jogo</label>
-                            <input type="text" id="search-jogos" oninput="renderizarBancoJogos()" placeholder="Pesquisar por título, objetivo ou categoria..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            <label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Pesquisar Dinâmica / Jogo</label>
+                            <input type="text" id="search-jogos" oninput="renderizarBancoJogos()" placeholder="Pesquisar por título, objetivo ou categoria..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs">
                         </div>
                     </div>
 
@@ -338,19 +401,19 @@
                     <div class="flex justify-between items-center flex-wrap gap-3">
                         <div>
                             <h2 class="text-2xl font-black text-slate-900 tracking-tight">Atlas de Anatomia & Cinesiologia 🦴</h2>
-                            <p class="text-slate-500 text-sm">Consulte músculos, ossos e a biomecânica dos exercícios para fundamentação pedagógica.</p>
+                            <p class="text-slate-500 text-xs sm:text-sm">Consulte músculos, ossos e a biomecânica dos exercícios para fundamentação pedagógica.</p>
                         </div>
                     </div>
 
                     <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                             <div class="sm:col-span-2">
-                                <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Buscar Estrutura Anatômica</label>
-                                <input type="text" id="search-anatomia" oninput="renderizarAtlasAnatomia()" placeholder="Ex: Quadríceps, Deltoide, Fêmur..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                <label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Buscar Estrutura Anatômica</label>
+                                <input type="text" id="search-anatomia" oninput="renderizarAtlasAnatomia()" placeholder="Ex: Quadríceps, Deltoide, Fêmur..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs">
                             </div>
                             <div>
-                                <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Região Corporal</label>
-                                <select id="filter-regiao-anatomia" onchange="renderizarAtlasAnatomia()" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                <label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Região Corporal</label>
+                                <select id="filter-regiao-anatomia" onchange="renderizarAtlasAnatomia()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs">
                                     <option value="Todas">Todas as Regiões</option>
                                     <option value="Inferiores">Membros Inferiores</option>
                                     <option value="Superiores">Membros Superiores</option>
@@ -366,19 +429,19 @@
 
                 <!-- ABA TURMAS -->
                 <div id="tab-turmas" class="hidden space-y-6">
-                    <div class="flex justify-between items-center">
+                    <div class="flex justify-between items-center flex-wrap gap-3">
                         <div>
                             <h2 class="text-2xl font-black text-slate-900 tracking-tight">Gestão de Turmas</h2>
-                            <p class="text-slate-500 text-sm">Crie, edite e organize as turmas da sua escola.</p>
+                            <p class="text-slate-500 text-xs sm:text-sm">Crie, edite e organize as turmas da sua escola.</p>
                         </div>
-                        <button onclick="abrirModalTurma()" class="btn-primary-theme bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all cursor-pointer">+ Nova Turma</button>
+                        <button onclick="abrirModalTurma()" class="btn-primary-theme bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-md shadow-sky-600/20 transition-all cursor-pointer">+ Nova Turma</button>
                     </div>
                     <div class="bg-white border border-slate-200/80 rounded-3xl overflow-x-auto shadow-xs">
-                        <table class="w-full text-left text-sm min-w-[500px]">
-                            <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 text-xs uppercase font-bold">
+                        <table class="w-full text-left text-xs min-w-[500px]">
+                            <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase font-extrabold tracking-wider">
                                 <tr><th class="p-4">Nome da Turma</th><th class="p-4">Ano / Série</th><th class="p-4">Turno</th><th class="p-4">Alunos</th><th class="p-4 text-right">Ações</th></tr>
                             </thead>
-                            <tbody id="tabela-turmas" class="divide-y divide-slate-100">
+                            <tbody id="tabela-turmas" class="divide-y divide-slate-100 font-medium">
                                 <tr><td colspan="5" class="p-8 text-center text-slate-400">Nenhuma turma registada.</td></tr>
                             </tbody>
                         </table>
@@ -387,19 +450,19 @@
 
                 <!-- ABA ALUNOS -->
                 <div id="tab-alunos" class="hidden space-y-6">
-                    <div class="flex justify-between items-center">
+                    <div class="flex justify-between items-center flex-wrap gap-3">
                         <div>
                             <h2 class="text-2xl font-black text-slate-900 tracking-tight">Matrícula de Alunos</h2>
-                            <p class="text-slate-500 text-sm">Gerencie os estudantes matriculados em cada turma.</p>
+                            <p class="text-slate-500 text-xs sm:text-sm">Gerencie os estudantes matriculados em cada turma.</p>
                         </div>
-                        <button onclick="abrirModalAluno()" class="btn-primary-theme bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all cursor-pointer">+ Novo Aluno</button>
+                        <button onclick="abrirModalAluno()" class="btn-primary-theme bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-md shadow-sky-600/20 transition-all cursor-pointer">+ Novo Aluno</button>
                     </div>
                     <div class="bg-white border border-slate-200/80 rounded-3xl overflow-x-auto shadow-xs">
-                        <table class="w-full text-left text-sm min-w-[500px]">
-                            <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 text-xs uppercase font-bold">
+                        <table class="w-full text-left text-xs min-w-[500px]">
+                            <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase font-extrabold tracking-wider">
                                 <tr><th class="p-4">Nome Completo</th><th class="p-4">Turma</th><th class="p-4 text-right">Ações</th></tr>
                             </thead>
-                            <tbody id="tabela-alunos" class="divide-y divide-slate-100">
+                            <tbody id="tabela-alunos" class="divide-y divide-slate-100 font-medium">
                                 <tr><td colspan="3" class="p-8 text-center text-slate-400">Nenhum aluno registado.</td></tr>
                             </tbody>
                         </table>
@@ -408,13 +471,17 @@
 
                 <!-- ABA CHAMADA -->
                 <div id="tab-chamada" class="hidden space-y-6">
-                    <h2 class="text-2xl font-black text-slate-900 tracking-tight">Chamada Rápida</h2>
-                    <div class="bg-white border border-slate-200/80 p-6 rounded-3xl max-w-xl space-y-4">
-                        <select id="select-turma-chamada" onchange="carregarChamadaTurma()" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm">
+                    <div>
+                        <h2 class="text-2xl font-black text-slate-900 tracking-tight">Chamada Rápida</h2>
+                        <p class="text-slate-500 text-xs sm:text-sm">Registe a presenças dos alunos por turma.</p>
+                    </div>
+                    <div class="bg-white border border-slate-200/80 p-6 rounded-3xl max-w-xl space-y-4 shadow-xs">
+                        <label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Selecionar Turma</label>
+                        <select id="select-turma-chamada" onchange="carregarChamadaTurma()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs">
                             <option value="">Escolha uma turma...</option>
                         </select>
                     </div>
-                    <div id="container-lista-chamada" class="hidden bg-white border border-slate-200/80 p-6 rounded-3xl max-w-2xl space-y-4">
+                    <div id="container-lista-chamada" class="hidden bg-white border border-slate-200/80 p-6 rounded-3xl max-w-2xl space-y-4 shadow-xs">
                         <div id="lista-alunos-chamada" class="space-y-3"></div>
                     </div>
                 </div>
@@ -424,32 +491,32 @@
                     <div class="flex justify-between items-center flex-wrap gap-3">
                         <div>
                             <h2 class="text-2xl font-black text-slate-900 tracking-tight">Editor de Atividades & Provas 📝</h2>
-                            <p class="text-slate-500 text-sm">Crie testes, planos de aula ou fichas formativas com formatação rica.</p>
+                            <p class="text-slate-500 text-xs sm:text-sm">Crie testes, planos de aula ou fichas formativas com formatação rica.</p>
                         </div>
                         <div class="flex gap-2">
-                            <button onclick="novoDocumentoWord()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-xs font-bold cursor-pointer">Novo</button>
-                            <button onclick="salvarDocumentoWord()" class="btn-primary-theme bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold cursor-pointer">💾 Guardar</button>
+                            <button onclick="novoDocumentoWord()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2.5 rounded-2xl text-xs font-bold cursor-pointer transition-colors">Novo</button>
+                            <button onclick="salvarDocumentoWord()" class="btn-primary-theme bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-md shadow-sky-600/20 cursor-pointer transition-all">💾 Guardar</button>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         <div class="bg-white border border-slate-200/80 p-5 rounded-3xl space-y-4 shadow-xs h-fit">
-                            <h3 class="font-extrabold text-sm uppercase text-slate-700">Atividades Guardadas</h3>
-                            <div id="lista-docs-word" class="space-y-2 max-h-[350px] overflow-y-auto"></div>
+                            <h3 class="font-extrabold text-xs uppercase text-slate-500 tracking-wider">Atividades Guardadas</h3>
+                            <div id="lista-docs-word" class="space-y-2 max-h-[350px] overflow-y-auto pr-1"></div>
                         </div>
 
                         <div class="lg:col-span-2 bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
-                            <input type="text" id="doc-word-titulo" placeholder="Título da Atividade / Ficha..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            <input type="text" id="doc-word-titulo" placeholder="Título da Atividade / Ficha..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs">
                             
                             <div class="flex items-center gap-1.5 p-2 bg-slate-50 border border-slate-200 rounded-xl flex-wrap">
-                                <button onclick="formatarEditorWord('bold')" class="px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold hover:bg-slate-100">B</button>
-                                <button onclick="formatarEditorWord('italic')" class="px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs italic hover:bg-slate-100">I</button>
-                                <button onclick="formatarEditorWord('underline')" class="px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs underline hover:bg-slate-100">U</button>
-                                <button onclick="formatarEditorWord('insertUnorderedList')" class="px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs hover:bg-slate-100">• Lista</button>
-                                <button onclick="inserirQuestaoQuizWord()" class="px-3 py-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg text-xs font-bold hover:bg-emerald-100">+ Questão Múltipla Escolha</button>
+                                <button onclick="formatarEditorWord('bold')" class="px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold hover:bg-slate-100 cursor-pointer shadow-xs">B</button>
+                                <button onclick="formatarEditorWord('italic')" class="px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs italic hover:bg-slate-100 cursor-pointer shadow-xs">I</button>
+                                <button onclick="formatarEditorWord('underline')" class="px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs underline hover:bg-slate-100 cursor-pointer shadow-xs">U</button>
+                                <button onclick="formatarEditorWord('insertUnorderedList')" class="px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs hover:bg-slate-100 cursor-pointer shadow-xs">• Lista</button>
+                                <button onclick="inserirQuestaoQuizWord()" class="px-3 py-1.5 bg-sky-50 text-sky-700 border border-sky-200 rounded-lg text-xs font-bold hover:bg-sky-100 cursor-pointer shadow-xs">+ Questão Múltipla Escolha</button>
                             </div>
 
-                            <div id="editor-word-area" contenteditable="true" class="w-full min-h-[300px] p-4 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 overflow-y-auto">Comece a escrever a sua atividade pedagógica aqui...</div>
+                            <div id="editor-word-area" contenteditable="true" class="w-full min-h-[300px] p-4 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 overflow-y-auto shadow-xs">Comece a escrever a sua atividade pedagógica aqui...</div>
                         </div>
                     </div>
                 </div>
@@ -459,33 +526,33 @@
                     <div class="flex justify-between items-center flex-wrap gap-3 no-print">
                         <div>
                             <h2 class="text-2xl font-black text-slate-900 tracking-tight">Planejamento Pedagógico & BNCC 📅</h2>
-                            <p class="text-slate-500 text-sm">Estruture o plano de ensino anual/mensal alinhado às diretrizes da BNCC.</p>
+                            <p class="text-slate-500 text-xs sm:text-sm">Estruture o plano de ensino anual/mensal alinhado às diretrizes da BNCC.</p>
                         </div>
                         <div class="flex gap-2">
-                            <button onclick="window.print()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-xs font-bold cursor-pointer">🖨️ Imprimir Plano</button>
-                            <button onclick="salvarPlanoGestao()" class="btn-primary-theme bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold cursor-pointer">💾 Guardar Plano</button>
+                            <button onclick="window.print()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2.5 rounded-2xl text-xs font-bold cursor-pointer transition-colors shadow-xs">🖨️ Imprimir Plano</button>
+                            <button onclick="salvarPlanoGestao()" class="btn-primary-theme bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-md shadow-sky-600/20 cursor-pointer transition-all">💾 Guardar Plano</button>
                         </div>
                     </div>
 
                     <div class="bg-white border border-slate-200/80 p-6 sm:p-8 rounded-3xl space-y-6 shadow-xs">
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                            <div><label class="block text-xs font-bold uppercase text-slate-600 mb-1">Unidade Escolar</label><input type="text" id="plano-escola" placeholder="Nome da Escola" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm font-semibold"></div>
-                            <div><label class="block text-xs font-bold uppercase text-slate-600 mb-1">Docente Responsável</label><input type="text" id="plano-professor" placeholder="Seu Nome" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm font-semibold"></div>
-                            <div><label class="block text-xs font-bold uppercase text-slate-600 mb-1">Período / Bimestre</label><input type="text" id="plano-periodo" placeholder="Ex: 1º Bimestre / 2026" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm font-semibold"></div>
+                            <div><label class="block text-[11px] font-bold uppercase text-slate-500 mb-1.5">Unidade Escolar</label><input type="text" id="plano-escola" placeholder="Nome da Escola" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-semibold shadow-xs"></div>
+                            <div><label class="block text-[11px] font-bold uppercase text-slate-500 mb-1.5">Docente Responsável</label><input type="text" id="plano-professor" placeholder="Seu Nome" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-semibold shadow-xs"></div>
+                            <div><label class="block text-[11px] font-bold uppercase text-slate-500 mb-1.5">Período / Bimestre</label><input type="text" id="plano-periodo" placeholder="Ex: 1º Bimestre / 2026" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-semibold shadow-xs"></div>
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div><label class="block text-xs font-bold uppercase text-slate-600 mb-1">Unidade Temática</label><input type="text" id="plano-unidade" placeholder="Ex: Esportes de Invasão / Jogos Tradicionais" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm"></div>
-                            <div><label class="block text-xs font-bold uppercase text-slate-600 mb-1">Objeto de Conhecimento / Conteúdo</label><input type="text" id="plano-conteudo" placeholder="Ex: Futsal, Basquetebol, Regras e Táticas" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm"></div>
+                            <div><label class="block text-[11px] font-bold uppercase text-slate-500 mb-1.5">Unidade Temática</label><input type="text" id="plano-unidade" placeholder="Ex: Esportes de Invasão / Jogos Tradicionais" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs shadow-xs"></div>
+                            <div><label class="block text-[11px] font-bold uppercase text-slate-500 mb-1.5">Objeto de Conhecimento / Conteúdo</label><input type="text" id="plano-conteudo" placeholder="Ex: Futsal, Basquetebol, Regras e Táticas" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs shadow-xs"></div>
                         </div>
 
                         <div>
-                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Objetivos de Aprendizagem & Metodologia</label>
-                            <textarea id="plano-objetivos" placeholder="Descreva os objetivos pedagógicos, estratégias de ensino e recursos que serão utilizados nas aulas..." class="w-full bg-slate-50 border border-slate-300 rounded-xl p-4 text-sm h-28 focus:outline-none focus:ring-2 focus:ring-emerald-500"></textarea>
+                            <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1.5">Objetivos de Aprendizagem & Metodologia</label>
+                            <textarea id="plano-objetivos" placeholder="Descreva os objetivos pedagógicos, estratégias de ensino e recursos que serão utilizados nas aulas..." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-4 text-xs h-28 focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs"></textarea>
                         </div>
 
                         <div class="space-y-3">
-                            <label class="block text-xs font-bold uppercase text-slate-600">Habilidades e Códigos BNCC para Seleção</label>
+                            <label class="block text-[11px] font-bold uppercase text-slate-500">Habilidades e Códigos BNCC para Seleção</label>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="bncc-container-checks"></div>
                         </div>
                     </div>
@@ -493,44 +560,47 @@
 
                 <!-- ABA DOCUMENTOS -->
                 <div id="tab-documentos" class="hidden space-y-6">
-                    <div class="flex justify-between items-center">
+                    <div class="flex justify-between items-center flex-wrap gap-3">
                         <div>
                             <h2 class="text-2xl font-black text-slate-900 tracking-tight">Gestor de Documentos 📄</h2>
-                            <p class="text-slate-500 text-sm">Guarde referências a PDFs, relatórios e testes externos.</p>
+                            <p class="text-slate-500 text-xs sm:text-sm">Guarde referências a PDFs, relatórios e testes externos.</p>
                         </div>
-                        <button onclick="abrirModalUploadPDF()" class="btn-primary-theme bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all cursor-pointer">+ Adicionar PDF / Documento</button>
+                        <button onclick="abrirModalUploadPDF()" class="btn-primary-theme bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-md shadow-sky-600/20 transition-all cursor-pointer">+ Adicionar PDF / Documento</button>
                     </div>
                     <div id="lista-provas-cards" class="grid grid-cols-1 sm:grid-cols-2 gap-5"></div>
                 </div>
 
                 <!-- ABA BACKUP -->
                 <div id="tab-backup" class="hidden space-y-6">
-                    <h2 class="text-2xl font-black text-slate-900 tracking-tight">Backup & Nuvem ☁️</h2>
+                    <div>
+                        <h2 class="text-2xl font-black text-slate-900 tracking-tight">Backup & Nuvem ☁️</h2>
+                        <p class="text-slate-500 text-xs sm:text-sm">Exporte ou restauros os seus dados pedagógicos com total segurança.</p>
+                    </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl">
                         
                         <!-- ENVIAR / EXPORTAR -->
                         <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
-                            <h3 class="font-extrabold text-sm uppercase text-slate-700">📤 Enviar / Descarregar Backup</h3>
+                            <h3 class="font-extrabold text-xs uppercase text-slate-500 tracking-wider">📤 Enviar / Descarregar Backup</h3>
                             <p class="text-xs text-slate-500">Gere e salve um arquivo com todos os seus dados (turmas, alunos, notas, jogos e planos).</p>
-                            <button onclick="descarregarBackupJSON()" class="btn-primary-theme w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-6 rounded-2xl text-sm shadow-sm cursor-pointer">📥 Baixar Backup (.json)</button>
+                            <button onclick="descarregarBackupJSON()" class="btn-primary-theme w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-3.5 px-6 rounded-2xl text-xs shadow-md shadow-sky-600/20 cursor-pointer transition-all">📥 Baixar Backup (.json)</button>
                         </div>
 
                         <!-- RECEBER / IMPORTAR -->
                         <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
-                            <h3 class="font-extrabold text-sm uppercase text-slate-700">📥 Receber / Restaurar Backup</h3>
-                            <p class="text-xs text-slate-500">Selecione um ficheiro `.json` salvo anteriormente para carregar seus dados nesta dispositivo.</p>
+                            <h3 class="font-extrabold text-xs uppercase text-slate-500 tracking-wider">📥 Receber / Restaurar Backup</h3>
+                            <p class="text-xs text-slate-500">Selecione um ficheiro `.json` salvo anteriormente para carregar seus dados neste dispositivo.</p>
                             <input type="file" id="input-restore-json" accept=".json" class="hidden" onchange="restaurarBackupJSON(event)">
-                            <button onclick="document.getElementById('input-restore-json').click()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-3.5 px-6 rounded-2xl text-sm shadow-sm cursor-pointer">📂 Selecionar Ficheiro (.json)</button>
+                            <button onclick="document.getElementById('input-restore-json').click()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-3.5 px-6 rounded-2xl text-xs shadow-md shadow-slate-900/20 cursor-pointer transition-all">📂 Selecionar Ficheiro (.json)</button>
                         </div>
 
                     </div>
                 </div>
 
-                <!-- ABA CONFIGURAÇÕES AVANÇADAS -->
+                <!-- ABA CONFIGURAÇÕES -->
                 <div id="tab-config" class="hidden space-y-6">
                     <div>
                         <h2 class="text-2xl font-black text-slate-900 tracking-tight">Configurações do Sistema ⚙️</h2>
-                        <p class="text-slate-500 text-sm">Personalize o perfil do professor, dados institucionais, preferências pedagógicas e a aparência do sistema.</p>
+                        <p class="text-slate-500 text-xs sm:text-sm">Personalize o perfil do professor, dados institucionais, preferências pedagógicas e a aparência do sistema.</p>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl">
@@ -538,17 +608,17 @@
                         <!-- CARD 1: PERFIL DO PROFESSOR -->
                         <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
                             <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
-                                <span class="text-xl">👤</span>
-                                <h3 class="font-extrabold text-sm uppercase text-slate-700">Perfil do Docente</h3>
+                                <span class="text-lg">👤</span>
+                                <h3 class="font-extrabold text-xs uppercase text-slate-500 tracking-wider">Perfil do Docente</h3>
                             </div>
                             <div class="space-y-3">
                                 <div>
-                                    <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Nome Completo</label>
-                                    <input type="text" id="cfg-nome-prof" placeholder="Ex: Prof. Carlos Silva" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                    <label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Nome Completo</label>
+                                    <input type="text" id="cfg-nome-prof" placeholder="Ex: Prof. Carlos Silva" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs">
                                 </div>
                                 <div>
-                                    <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Cargo / Especialidade</label>
-                                    <input type="text" id="cfg-cargo-prof" placeholder="Ex: Professor de Educação Física / Licenciado" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                    <label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Cargo / Especialidade</label>
+                                    <input type="text" id="cfg-cargo-prof" placeholder="Ex: Professor de Educação Física / Licenciado" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs">
                                 </div>
                             </div>
                         </div>
@@ -556,22 +626,22 @@
                         <!-- CARD 2: DADOS INSTITUCIONAIS -->
                         <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
                             <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
-                                <span class="text-xl">🏫</span>
-                                <h3 class="font-extrabold text-sm uppercase text-slate-700">Dados da Instituição</h3>
+                                <span class="text-lg">🏫</span>
+                                <h3 class="font-extrabold text-xs uppercase text-slate-500 tracking-wider">Dados da Instituição</h3>
                             </div>
                             <div class="space-y-3">
                                 <div>
-                                    <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Nome da Escola Padrão</label>
-                                    <input type="text" id="cfg-nome-escola" placeholder="Ex: EB 2,3 Dr. João de Barros" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                    <label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Nome da Escola Padrão</label>
+                                    <input type="text" id="cfg-nome-escola" placeholder="Ex: EB 2,3 Dr. João de Barros" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs">
                                 </div>
                                 <div class="grid grid-cols-2 gap-3">
                                     <div>
-                                        <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Concelho / Município</label>
-                                        <input type="text" id="cfg-municipio" placeholder="Ex: Lisboa" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                        <label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Concelho / Município</label>
+                                        <input type="text" id="cfg-municipio" placeholder="Ex: Lisboa" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs">
                                     </div>
                                     <div>
-                                        <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Ano Letivo</label>
-                                        <input type="text" id="cfg-ano-letivo" placeholder="Ex: 2025/2026" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                        <label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Ano Letivo</label>
+                                        <input type="text" id="cfg-ano-letivo" placeholder="Ex: 2025/2026" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs">
                                     </div>
                                 </div>
                             </div>
@@ -580,14 +650,14 @@
                         <!-- CARD 3: PREFERÊNCIAS PEDAGÓGICAS -->
                         <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
                             <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
-                                <span class="text-xl">⏱️</span>
-                                <h3 class="font-extrabold text-sm uppercase text-slate-700">Preferências Pedagógicas</h3>
+                                <span class="text-lg">⏱️</span>
+                                <h3 class="font-extrabold text-xs uppercase text-slate-500 tracking-wider">Preferências Pedagógicas</h3>
                             </div>
                             <div class="space-y-3">
                                 <div class="grid grid-cols-2 gap-3">
                                     <div>
-                                        <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Duração do Bloco (min)</label>
-                                        <select id="cfg-duracao-aula" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                        <label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Duração do Bloco (min)</label>
+                                        <select id="cfg-duracao-aula" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs">
                                             <option value="45">45 minutos</option>
                                             <option value="50">50 minutos</option>
                                             <option value="60">60 minutos</option>
@@ -595,8 +665,8 @@
                                         </select>
                                     </div>
                                     <div>
-                                        <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Período Padrão</label>
-                                        <select id="cfg-periodo-padrao" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                        <label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Período Padrão</label>
+                                        <select id="cfg-periodo-padrao" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs">
                                             <option value="1º Bimestre">1º Bimestre / 1º Período</option>
                                             <option value="2º Bimestre">2º Bimestre / 2º Período</option>
                                             <option value="3º Bimestre">3º Bimestre / 3º Período</option>
@@ -606,10 +676,10 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Nível de Ensino Predominante</label>
-                                    <select id="cfg-segmento" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
-                                        <option value="Ensino Fundamental I">Ensino Fundamental I / 1º Cobre</option>
-                                        <option value="Ensino Fundamental II">Ensino Fundamental II / 2º e 3º Cobre</option>
+                                    <label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Nível de Ensino Predominante</label>
+                                    <select id="cfg-segmento" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs">
+                                        <option value="Ensino Fundamental I">Ensino Fundamental I / 1º Ciclo</option>
+                                        <option value="Ensino Fundamental II">Ensino Fundamental II / 2º e 3º Ciclo</option>
                                         <option value="Ensino Médio">Ensino Médio / Secundário</option>
                                     </select>
                                 </div>
@@ -619,16 +689,16 @@
                         <!-- CARD 4: TEMA E APARÊNCIA -->
                         <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
                             <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
-                                <span class="text-xl">🎨</span>
-                                <h3 class="font-extrabold text-sm uppercase text-slate-700">Aparência do Sistema</h3>
+                                <span class="text-lg">🎨</span>
+                                <h3 class="font-extrabold text-xs uppercase text-slate-500 tracking-wider">Aparência do Sistema</h3>
                             </div>
                             <div>
-                                <label class="block text-xs uppercase font-bold text-slate-600 mb-2">Cor de Destaque da Interface</label>
+                                <label class="block text-[11px] uppercase font-bold text-slate-500 mb-2">Cor de Destaque da Interface</label>
                                 <div class="grid grid-cols-2 gap-3">
-                                    <button onclick="aplicarTemaCor('emerald')" class="p-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs cursor-pointer flex items-center justify-center gap-2 transition-all">🟢 Verde Esmeralda</button>
-                                    <button onclick="aplicarTemaCor('sky')" class="p-3 bg-sky-600 hover:bg-sky-700 text-white rounded-xl font-bold text-xs cursor-pointer flex items-center justify-center gap-2 transition-all">🔵 Azul Céu</button>
-                                    <button onclick="aplicarTemaCor('purple')" class="p-3 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-bold text-xs cursor-pointer flex items-center justify-center gap-2 transition-all">🟣 Roxo Real</button>
-                                    <button onclick="aplicarTemaCor('slate')" class="p-3 bg-slate-800 hover:bg-slate-900 text-white rounded-xl font-bold text-xs cursor-pointer flex items-center justify-center gap-2 transition-all">⚫ Grafite Elegante</button>
+                                    <button onclick="aplicarTemaCor('sky')" class="p-3 bg-sky-600 hover:bg-sky-700 text-white rounded-2xl font-bold text-xs cursor-pointer flex items-center justify-center gap-2 transition-all shadow-xs">🔵 Azul Elétrico</button>
+                                    <button onclick="aplicarTemaCor('emerald')" class="p-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-bold text-xs cursor-pointer flex items-center justify-center gap-2 transition-all shadow-xs">🟢 Verde Turquesa</button>
+                                    <button onclick="aplicarTemaCor('purple')" class="p-3 bg-purple-600 hover:bg-purple-700 text-white rounded-2xl font-bold text-xs cursor-pointer flex items-center justify-center gap-2 transition-all shadow-xs">🟣 Roxo Real</button>
+                                    <button onclick="aplicarTemaCor('slate')" class="p-3 bg-slate-900 hover:bg-black text-white rounded-2xl font-bold text-xs cursor-pointer flex items-center justify-center gap-2 transition-all shadow-xs">⚫ Azul-Marinho</button>
                                 </div>
                             </div>
                         </div>
@@ -637,14 +707,14 @@
 
                     <!-- BOTÃO GUARDAR TUDO -->
                     <div class="max-w-5xl flex justify-end gap-3 pt-2">
-                        <button onclick="salvarConfigPerfil()" class="btn-primary-theme bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold px-8 py-3.5 rounded-2xl text-sm shadow-md transition-all cursor-pointer">💾 Guardar Todas as Configurações</button>
+                        <button onclick="salvarConfigPerfil()" class="btn-primary-theme bg-sky-600 hover:bg-sky-700 text-white font-extrabold px-8 py-3.5 rounded-2xl text-xs shadow-lg shadow-sky-600/20 transition-all cursor-pointer">💾 Guardar Todas as Configurações</button>
                     </div>
 
                     <!-- ZONA DE PERIGO / RESET -->
-                    <div class="max-w-5xl bg-rose-50 border border-rose-200 p-6 rounded-3xl space-y-3 mt-8">
+                    <div class="max-w-5xl bg-rose-50 border border-rose-200/80 p-6 rounded-3xl space-y-3 mt-8 shadow-xs">
                         <h3 class="font-extrabold text-xs uppercase text-rose-800 tracking-wider">⚠️ Área de Segurança de Dados</h3>
-                        <p class="text-xs text-rose-700">Deseja reiniciar a sua conta ou limpar todos os dados locais armazenados neste navegador para começar um novo ano letivo?</p>
-                        <button onclick="resetarTodosDadosSistema()" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-4 py-2 rounded-xl text-xs cursor-pointer transition-colors">🗑️ Apagar Todos os Dados e Reiniciar</button>
+                        <p class="text-xs text-rose-700 font-medium">Deseja reiniciar a sua conta ou limpar todos os dados locais armazenados neste navegador para começar um novo ano letivo?</p>
+                        <button onclick="resetarTodosDadosSistema()" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-4 py-2.5 rounded-xl text-xs cursor-pointer transition-colors shadow-xs">🗑️ Apagar Todos os Dados e Reiniciar</button>
                     </div>
 
                 </div>
@@ -654,13 +724,13 @@
     </div>
 
     <!-- MODAL GENÉRICO -->
-    <div id="modal-app" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4 z-50 no-print">
+    <div id="modal-app" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 z-50 no-print">
         <div class="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 w-full max-w-md space-y-5 shadow-2xl">
-            <h3 id="modal-titulo" class="font-extrabold text-lg text-slate-900">Registar</h3>
+            <h3 id="modal-titulo" class="font-extrabold text-base text-slate-950">Registar</h3>
             <div id="modal-corpo" class="space-y-4"></div>
             <div class="flex justify-end gap-2.5 pt-2">
-                <button type="button" onclick="fecharModal()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-xs font-bold">Cancelar</button>
-                <button type="button" onclick="executarSalvarModal()" class="btn-primary-theme bg-emerald-600 text-white font-bold px-5 py-2 rounded-xl text-xs cursor-pointer">Guardar</button>
+                <button type="button" onclick="fecharModal()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2.5 rounded-2xl text-xs font-bold transition-colors">Cancelar</button>
+                <button type="button" onclick="executarSalvarModal()" class="btn-primary-theme bg-sky-600 text-white font-bold px-5 py-2.5 rounded-2xl text-xs cursor-pointer shadow-md shadow-sky-600/20 transition-all">Guardar</button>
             </div>
         </div>
     </div>
@@ -682,15 +752,15 @@
             const filtrados = bancoJogos.filter(j => j.titulo.toLowerCase().includes(busca) || j.categoria.toLowerCase().includes(busca) || j.objetivo.toLowerCase().includes(busca));
 
             container.innerHTML = filtrados.map((j, idx) => `
-                <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-xs flex flex-col justify-between space-y-4">
+                <div class="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-xs flex flex-col justify-between space-y-4 hover:shadow-md transition-shadow">
                     <div class="space-y-2">
-                        <div class="flex justify-between items-center"><h3 class="font-extrabold text-base">${j.titulo}</h3><span class="px-3 py-1 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-800">${j.categoria}</span></div>
+                        <div class="flex justify-between items-center"><h3 class="font-extrabold text-sm text-slate-900">${j.titulo}</h3><span class="px-3 py-1 rounded-full text-[10px] font-extrabold bg-sky-50 text-sky-700">${j.categoria}</span></div>
                         <p class="text-xs text-slate-600"><strong>🎯 Objetivo:</strong> ${j.objetivo}</p>
                         <p class="text-xs text-slate-600"><strong>🎒 Materiais:</strong> ${j.materiais}</p>
-                        <p class="text-xs text-emerald-700"><strong>📋 Regras:</strong> ${j.regras}</p>
+                        <p class="text-xs text-sky-700 font-medium"><strong>📋 Regras:</strong> ${j.regras}</p>
                     </div>
-                    <div class="flex justify-end gap-3 pt-2 border-t border-slate-100">
-                        <button onclick="editarJogo(${idx})" class="text-xs text-emerald-600 font-bold hover:underline cursor-pointer">Editar</button>
+                    <div class="flex justify-end gap-3 pt-3 border-t border-slate-100">
+                        <button onclick="editarJogo(${idx})" class="text-xs text-sky-600 font-bold hover:underline cursor-pointer">Editar</button>
                         <button onclick="removerJogo(${idx})" class="text-xs text-rose-600 font-bold hover:underline cursor-pointer">Excluir</button>
                     </div>
                 </div>
@@ -710,10 +780,10 @@
             });
 
             container.innerHTML = filtrados.map(a => `
-                <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-xs space-y-2">
-                    <div class="flex justify-between items-center"><h3 class="font-extrabold text-base">${a.nome}</h3><span class="px-3 py-1 rounded-full text-[10px] font-extrabold bg-slate-100 text-slate-700">${a.tipo} • ${a.regiao}</span></div>
+                <div class="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-xs space-y-2 hover:shadow-md transition-shadow">
+                    <div class="flex justify-between items-center"><h3 class="font-extrabold text-sm text-slate-900">${a.nome}</h3><span class="px-3 py-1 rounded-full text-[10px] font-extrabold bg-slate-100 text-slate-700">${a.tipo} • ${a.regiao}</span></div>
                     <p class="text-xs text-slate-600"><strong>Ação:</strong> ${a.acao}</p>
-                    <p class="text-xs text-emerald-700"><strong>Aplicações:</strong> ${a.exercicios}</p>
+                    <p class="text-xs text-sky-700 font-medium"><strong>Aplicações:</strong> ${a.exercicios}</p>
                 </div>
             `).join('');
         }
@@ -772,8 +842,16 @@
             ['home', 'jogos', 'anatomia', 'turmas', 'alunos', 'chamada', 'editor-word', 'gestao', 'documentos', 'backup', 'config'].forEach(t => {
                 const el = document.getElementById(`tab-${t}`);
                 if(el) el.classList.add('hidden');
+                const btn = document.getElementById(`btn-tab-${t}`);
+                if(btn) {
+                    btn.classList.remove('bg-sky-50', 'text-sky-600', 'font-extrabold');
+                }
             });
             document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`btn-tab-${tabId}`);
+            if(activeBtn) {
+                activeBtn.classList.add('bg-sky-50', 'text-sky-600', 'font-extrabold');
+            }
             if(tabId === 'jogos') renderizarBancoJogos();
             if(tabId === 'anatomia') renderizarAtlasAnatomia();
             if(tabId === 'config') carregarConfigNaTela();
@@ -792,6 +870,7 @@
             renderizarAtlasAnatomia();
             renderizarListaDocsWord();
             renderizarBNCCChecks();
+            changeTab('home');
         }
 
         function carregarConfigNaTela() {
@@ -860,9 +939,9 @@
             const t = idx >= 0 ? turmas[idx] : { nome: '', ano: '', turno: '' };
             document.getElementById('modal-titulo').textContent = idx >= 0 ? 'Editar Turma' : 'Registar Nova Turma';
             document.getElementById('modal-corpo').innerHTML = `
-                <div><label class="block text-xs uppercase font-bold mb-1">Nome da Turma</label><input type="text" id="m-t-nome" value="${t.nome}" placeholder="Ex: 8º Ano A" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
-                <div><label class="block text-xs uppercase font-bold mb-1">Ano / Série</label><input type="text" id="m-t-ano" value="${t.ano}" placeholder="Ex: 8º Ano" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
-                <div><label class="block text-xs uppercase font-bold mb-1">Turno</label><input type="text" id="m-t-turno" value="${t.turno}" placeholder="Ex: Manhã" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
+                <div><label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Nome da Turma</label><input type="text" id="m-t-nome" value="${t.nome}" placeholder="Ex: 8º Ano A" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs"></div>
+                <div><label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Ano / Série</label><input type="text" id="m-t-ano" value="${t.ano}" placeholder="Ex: 8º Ano" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs"></div>
+                <div><label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Turno</label><input type="text" id="m-t-turno" value="${t.turno}" placeholder="Ex: Manhã" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs"></div>
             `;
             document.getElementById('modal-app').classList.remove('hidden');
         }
@@ -876,8 +955,8 @@
             let turmasOpts = turmas.length ? turmas.map(t => `<option value="${t.nome}" ${t.nome === a.turma ? 'selected' : ''}>${t.nome}</option>`).join('') : '<option value="Geral">Sem turmas disponíveis</option>';
             document.getElementById('modal-titulo').textContent = idx >= 0 ? 'Editar Aluno' : 'Matricular Aluno';
             document.getElementById('modal-corpo').innerHTML = `
-                <div><label class="block text-xs uppercase font-bold mb-1">Nome do Aluno</label><input type="text" id="m-a-nome" value="${a.nome}" placeholder="Ex: João Silva" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
-                <div><label class="block text-xs uppercase font-bold mb-1">Turma</label><select id="m-a-turma" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm">${turmasOpts}</select></div>
+                <div><label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Nome do Aluno</label><input type="text" id="m-a-nome" value="${a.nome}" placeholder="Ex: João Silva" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs"></div>
+                <div><label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Turma</label><select id="m-a-turma" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs">${turmasOpts}</select></div>
             `;
             document.getElementById('modal-app').classList.remove('hidden');
         }
@@ -890,11 +969,11 @@
             const j = idx >= 0 ? bancoJogos[idx] : { titulo: '', categoria: '', objetivo: '', materiais: '', regras: '' };
             document.getElementById('modal-titulo').textContent = idx >= 0 ? 'Editar Ideia de Jogo' : 'Adicionar Nova Ideia de Jogo';
             document.getElementById('modal-corpo').innerHTML = `
-                <div><label class="block text-xs uppercase font-bold mb-1">Título</label><input type="text" id="m-j-titulo" value="${j.titulo}" placeholder="Nome do Jogo" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
-                <div><label class="block text-xs uppercase font-bold mb-1">Categoria</label><input type="text" id="m-j-cat" value="${j.categoria}" placeholder="Ex: Esportes, Lúdico" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
-                <div><label class="block text-xs uppercase font-bold mb-1">Objetivo</label><input type="text" id="m-j-obj" value="${j.objetivo}" placeholder="Objetivo pedagógico" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
-                <div><label class="block text-xs uppercase font-bold mb-1">Materiais</label><input type="text" id="m-j-mat" value="${j.materiais}" placeholder="Ex: Cones, bolas" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
-                <div><label class="block text-xs uppercase font-bold mb-1">Regras</label><textarea id="m-j-reg" placeholder="Explicação das regras..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm h-20">${j.regras}</textarea></div>
+                <div><label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Título</label><input type="text" id="m-j-titulo" value="${j.titulo}" placeholder="Nome do Jogo" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs"></div>
+                <div><label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Categoria</label><input type="text" id="m-j-cat" value="${j.categoria}" placeholder="Ex: Esportes, Lúdico" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs"></div>
+                <div><label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Objetivo</label><input type="text" id="m-j-obj" value="${j.objetivo}" placeholder="Objetivo pedagógico" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs"></div>
+                <div><label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Materiais</label><input type="text" id="m-j-mat" value="${j.materiais}" placeholder="Ex: Cones, bolas" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs"></div>
+                <div><label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Regras</label><textarea id="m-j-reg" placeholder="Explicação das regras..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs h-20 focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs">${j.regras}</textarea></div>
             `;
             document.getElementById('modal-app').classList.remove('hidden');
         }
@@ -957,13 +1036,13 @@
             tbody.innerHTML = turmas.length === 0 ? `<tr><td colspan="5" class="p-8 text-center text-slate-400">Nenhuma turma registada.</td></tr>` : turmas.map((t, idx) => {
                 const qtdAlunos = alunos.filter(a => a.turma === t.nome).length;
                 return `
-                    <tr>
-                        <td class="p-4 font-bold">${t.nome}</td>
-                        <td class="p-4">${t.ano}</td>
-                        <td class="p-4">${t.turno}</td>
-                        <td class="p-4">${qtdAlunos} alunos</td>
-                        <td class="p-4 text-right space-x-2">
-                            <button onclick="editarTurma(${idx})" class="text-emerald-600 font-bold cursor-pointer hover:underline">Editar</button>
+                    <tr class="hover:bg-slate-50/80 transition-colors">
+                        <td class="p-4 font-bold text-slate-900">${t.nome}</td>
+                        <td class="p-4 text-slate-600">${t.ano}</td>
+                        <td class="p-4 text-slate-600">${t.turno}</td>
+                        <td class="p-4 text-slate-600">${qtdAlunos} alunos</td>
+                        <td class="p-4 text-right space-x-3">
+                            <button onclick="editarTurma(${idx})" class="text-sky-600 font-bold cursor-pointer hover:underline">Editar</button>
                             <button onclick="turmas.splice(${idx},1);salvarDadosLocais();atualizarTabelaTurmas();atualizarSelectsTurmas();" class="text-rose-600 font-bold cursor-pointer hover:underline">Excluir</button>
                         </td>
                     </tr>
@@ -975,11 +1054,11 @@
             const tbody = document.getElementById('tabela-alunos');
             if(!tbody) return;
             tbody.innerHTML = alunos.length === 0 ? `<tr><td colspan="3" class="p-8 text-center text-slate-400">Nenhum aluno registado.</td></tr>` : alunos.map((a, idx) => `
-                <tr>
-                    <td class="p-4 font-bold">${a.nome}</td>
-                    <td class="p-4">${a.turma}</td>
-                    <td class="p-4 text-right space-x-2">
-                        <button onclick="editarAluno(${idx})" class="text-emerald-600 font-bold cursor-pointer hover:underline">Editar</button>
+                <tr class="hover:bg-slate-50/80 transition-colors">
+                    <td class="p-4 font-bold text-slate-900">${a.nome}</td>
+                    <td class="p-4 text-slate-600">${a.turma}</td>
+                    <td class="p-4 text-right space-x-3">
+                        <button onclick="editarAluno(${idx})" class="text-sky-600 font-bold cursor-pointer hover:underline">Editar</button>
                         <button onclick="alunos.splice(${idx},1);salvarDadosLocais();atualizarTabelaAlunos()" class="text-rose-600 font-bold cursor-pointer hover:underline">Excluir</button>
                     </td>
                 </tr>
@@ -997,11 +1076,11 @@
                 listaDiv.innerHTML = `<p class="text-xs text-slate-400">Nenhum aluno matriculado nesta turma.</p>`;
             } else {
                 listaDiv.innerHTML = alunosTurma.map((aluno, i) => `
-                    <div class="flex justify-between items-center p-3 bg-slate-50 rounded-xl border border-slate-100">
-                        <span class="text-sm font-bold text-slate-800">${i+1}. ${aluno.nome}</span>
+                    <div class="flex justify-between items-center p-3.5 bg-slate-50 rounded-2xl border border-slate-100 shadow-2xs">
+                        <span class="text-xs font-bold text-slate-800">${i+1}. ${aluno.nome}</span>
                         <div class="flex gap-2">
-                            <label class="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-lg cursor-pointer"><input type="radio" name="presenca_${i}" checked class="mr-1"> Presente</label>
-                            <label class="text-xs font-bold text-rose-700 bg-rose-50 px-3 py-1.5 rounded-lg cursor-pointer"><input type="radio" name="presenca_${i}" class="mr-1"> Ausente</label>
+                            <label class="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl cursor-pointer flex items-center gap-1 shadow-2xs"><input type="radio" name="presenca_${i}" checked class="accent-emerald-600"> Presente</label>
+                            <label class="text-[11px] font-bold text-rose-700 bg-rose-50 px-3 py-1.5 rounded-xl cursor-pointer flex items-center gap-1 shadow-2xs"><input type="radio" name="presenca_${i}" class="accent-rose-600"> Ausente</label>
                         </div>
                     </div>
                 `).join('');
@@ -1016,7 +1095,7 @@
 
         function inserirQuestaoQuizWord() {
             const area = document.getElementById('editor-word-area');
-            area.innerHTML += `<br><div style="border: 1px solid #cbd5e1; padding: 10px; border-radius: 8px; margin: 10px 0;"><strong>Questão:</strong> [Digite a pergunta aqui]<br>a) [Opção A]<br>b) [Opção B]<br>c) [Opção C]<br>d) [Opção D]</div><br>`;
+            area.innerHTML += `<br><div style="border: 1px solid #cbd5e1; padding: 12px; border-radius: 12px; margin: 10px 0; background: #f8fafc;"><strong>Questão:</strong> [Digite a pergunta aqui]<br>a) [Opção A]<br>b) [Opção B]<br>c) [Opção C]<br>d) [Opção D]</div><br>`;
         }
 
         function novoDocumentoWord() {
@@ -1047,7 +1126,7 @@
             const container = document.getElementById('lista-docs-word');
             if(!container) return;
             container.innerHTML = documentosWord.length === 0 ? `<p class="text-xs text-slate-400">Nenhuma atividade salva.</p>` : documentosWord.map(d => `
-                <div onclick="carregarDocumentoWord(${d.id})" class="p-3 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 cursor-pointer flex justify-between items-center">
+                <div onclick="carregarDocumentoWord(${d.id})" class="p-3 bg-slate-50 hover:bg-sky-50/50 rounded-2xl border border-slate-200/80 cursor-pointer flex justify-between items-center transition-colors">
                     <span class="text-xs font-bold text-slate-800 truncate">${d.titulo}</span>
                     <button onclick="event.stopPropagation(); excluirDocumentoWord(${d.id})" class="text-xs text-rose-600 font-bold hover:underline">Excluir</button>
                 </div>
@@ -1076,11 +1155,11 @@
             const container = document.getElementById('bncc-container-checks');
             if(!container) return;
             container.innerHTML = baseBNCC.map(b => `
-                <label class="flex items-start gap-3 p-3 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-100 bncc-item-wrapper" id="label-bncc-${b.codigo}">
-                    <input type="checkbox" value="${b.codigo}" class="mt-0.5 bncc-check" onchange="atualizarClasseCheckBNCC(this)">
+                <label class="flex items-start gap-3 p-3.5 bg-slate-50 border border-slate-200/80 rounded-2xl cursor-pointer hover:bg-sky-50/50 transition-colors bncc-item-wrapper shadow-2xs" id="label-bncc-${b.codigo}">
+                    <input type="checkbox" value="${b.codigo}" class="mt-0.5 bncc-check accent-sky-600" onchange="atualizarClasseCheckBNCC(this)">
                     <div>
-                        <strong class="text-xs text-emerald-700">${b.codigo} (${b.tema})</strong>
-                        <p class="text-xs text-slate-600">${b.desc}</p>
+                        <strong class="text-xs text-sky-700">${b.codigo} (${b.tema})</strong>
+                        <p class="text-xs text-slate-600 font-medium">${b.desc}</p>
                     </div>
                 </label>
             `).join('');
@@ -1143,8 +1222,8 @@
             const container = document.getElementById('lista-provas-cards');
             if(!container) return;
             container.innerHTML = documentosPDF.length === 0 ? `<p class="text-xs text-slate-400">Nenhum documento PDF registado.</p>` : documentosPDF.map((p, idx) => `
-                <div class="bg-white border border-slate-200 p-4 rounded-2xl flex justify-between items-center shadow-xs">
-                    <span class="text-sm font-bold text-slate-800">📄 ${p.nome}</span>
+                <div class="bg-white border border-slate-200/80 p-4 rounded-2xl flex justify-between items-center shadow-xs">
+                    <span class="text-xs font-bold text-slate-800">📄 ${p.nome}</span>
                     <button onclick="documentosPDF.splice(${idx},1);salvarDadosLocais();renderizarListaPDFs();atualizarEstatisticas();" class="text-xs text-rose-600 font-bold cursor-pointer">Excluir</button>
                 </div>
             `).join('');

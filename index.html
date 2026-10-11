@@ -86,7 +86,13 @@
         let configApp = JSON.parse(localStorage.getItem('edufis_config_v8')) || {
             temaCor: 'emerald',
             nomeProf: '',
-            nomeEscola: ''
+            cargoProf: 'Professor(a) de Educação Física',
+            nomeEscola: '',
+            municipioEscola: '',
+            anoLetivo: '2026',
+            duracaoAula: '50',
+            periodoPadrao: '1º Bimestre',
+            segmentoPadrao: 'Ensino Fundamental II'
         };
 
         const baseAnatomia = [
@@ -109,7 +115,7 @@
             { codigo: "EF67EF01", tema: "Esportes", desc: "Experimentar e fruir diferentes esportes de marca, precisão, invasão e técnico-combinatórios." },
             { codigo: "EF67EF03", tema: "Esportes", desc: "Praticar um ou mais esportes de marca, precisão, invasão e técnico-combinatórios oferecidos na escola." },
             { codigo: "EF89EF07", tema: "Esportes", desc: "Formular e propor estratégias para a resolução de desafios em jogos desportivos." },
-            { codigo: "EF67EF07", tema: "Ginástica", desc: "Propor e produzir alternativas para a prática da ginástica de conscientização corporal." },
+            { codigo: "EF67EF07", tema: "Ginástica", desc: "Propor e produzir alternatives para a prática da ginástica de conscientização corporal." },
             { codigo: "EF89EF09", tema: "Ginástica", desc: "Construir apresentações de ginástica geral, integrando diferentes elementos gimnásticos." },
             { codigo: "EF35EF01", tema: "Brincadeiras e Jogos", desc: "Experimentar e fruir brincadeiras e jogos populares do Brasil e do mundo." },
             { codigo: "EF35EF05", tema: "Lutas", desc: "Experimentar e fruir lutas presentes no contexto comunitário e regional." }
@@ -520,26 +526,127 @@
                     </div>
                 </div>
 
-                <!-- ABA CONFIGURAÇÕES -->
+                <!-- ABA CONFIGURAÇÕES AVANÇADAS -->
                 <div id="tab-config" class="hidden space-y-6">
-                    <h2 class="text-2xl font-black text-slate-900 tracking-tight">Configurações do Sistema ⚙️</h2>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl">
+                    <div>
+                        <h2 class="text-2xl font-black text-slate-900 tracking-tight">Configurações do Sistema ⚙️</h2>
+                        <p class="text-slate-500 text-sm">Personalize o perfil do professor, dados institucionais, preferências pedagógicas e a aparência do sistema.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl">
+                        
+                        <!-- CARD 1: PERFIL DO PROFESSOR -->
                         <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
-                            <h3 class="font-extrabold text-sm uppercase text-slate-700">👤 Perfil & Escola</h3>
-                            <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Nome do Professor</label><input type="text" id="cfg-nome-prof" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
-                            <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Escola Padrão</label><input type="text" id="cfg-nome-escola" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
-                            <button onclick="salvarConfigPerfil()" class="btn-primary-theme w-full bg-emerald-600 text-white font-bold py-2.5 rounded-xl text-xs cursor-pointer">Guardar Perfil</button>
-                        </div>
-                        <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
-                            <h3 class="font-extrabold text-sm uppercase text-slate-700">🎨 Cor da Interface</h3>
-                            <div class="grid grid-cols-2 gap-3 pt-1">
-                                <button onclick="aplicarTemaCor('emerald')" class="p-3 bg-emerald-600 text-white rounded-xl font-bold text-xs cursor-pointer">🟢 Verde</button>
-                                <button onclick="aplicarTemaCor('sky')" class="p-3 bg-sky-600 text-white rounded-xl font-bold text-xs cursor-pointer">🔵 Azul</button>
-                                <button onclick="aplicarTemaCor('purple')" class="p-3 bg-purple-600 text-white rounded-xl font-bold text-xs cursor-pointer">🟣 Roxo</button>
-                                <button onclick="aplicarTemaCor('slate')" class="p-3 bg-slate-800 text-white rounded-xl font-bold text-xs cursor-pointer">⚫ Preto</button>
+                            <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
+                                <span class="text-xl">👤</span>
+                                <h3 class="font-extrabold text-sm uppercase text-slate-700">Perfil do Docente</h3>
+                            </div>
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Nome Completo</label>
+                                    <input type="text" id="cfg-nome-prof" placeholder="Ex: Prof. Carlos Silva" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Cargo / Especialidade</label>
+                                    <input type="text" id="cfg-cargo-prof" placeholder="Ex: Professor de Educação Física / Licenciado" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                </div>
                             </div>
                         </div>
+
+                        <!-- CARD 2: DADOS INSTITUCIONAIS -->
+                        <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
+                            <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
+                                <span class="text-xl">🏫</span>
+                                <h3 class="font-extrabold text-sm uppercase text-slate-700">Dados da Instituição</h3>
+                            </div>
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Nome da Escola Padrão</label>
+                                    <input type="text" id="cfg-nome-escola" placeholder="Ex: EB 2,3 Dr. João de Barros" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                </div>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Concelho / Município</label>
+                                        <input type="text" id="cfg-municipio" placeholder="Ex: Lisboa" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Ano Letivo</label>
+                                        <input type="text" id="cfg-ano-letivo" placeholder="Ex: 2025/2026" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CARD 3: PREFERÊNCIAS PEDAGÓGICAS -->
+                        <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
+                            <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
+                                <span class="text-xl">⏱️</span>
+                                <h3 class="font-extrabold text-sm uppercase text-slate-700">Preferências Pedagógicas</h3>
+                            </div>
+                            <div class="space-y-3">
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Duração do Bloco (min)</label>
+                                        <select id="cfg-duracao-aula" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                            <option value="45">45 minutos</option>
+                                            <option value="50">50 minutos</option>
+                                            <option value="60">60 minutos</option>
+                                            <option value="90">90 minutos (Bloco Duplo)</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Período Padrão</label>
+                                        <select id="cfg-periodo-padrao" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                            <option value="1º Bimestre">1º Bimestre / 1º Período</option>
+                                            <option value="2º Bimestre">2º Bimestre / 2º Período</option>
+                                            <option value="3º Bimestre">3º Bimestre / 3º Período</option>
+                                            <option value="4º Bimestre">4º Bimestre</option>
+                                            <option value="Semestral">Semestral</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Nível de Ensino Predominante</label>
+                                    <select id="cfg-segmento" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                        <option value="Ensino Fundamental I">Ensino Fundamental I / 1º Cobre</option>
+                                        <option value="Ensino Fundamental II">Ensino Fundamental II / 2º e 3º Cobre</option>
+                                        <option value="Ensino Médio">Ensino Médio / Secundário</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CARD 4: TEMA E APARÊNCIA -->
+                        <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
+                            <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
+                                <span class="text-xl">🎨</span>
+                                <h3 class="font-extrabold text-sm uppercase text-slate-700">Aparência do Sistema</h3>
+                            </div>
+                            <div>
+                                <label class="block text-xs uppercase font-bold text-slate-600 mb-2">Cor de Destaque da Interface</label>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <button onclick="aplicarTemaCor('emerald')" class="p-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs cursor-pointer flex items-center justify-center gap-2 transition-all">🟢 Verde Esmeralda</button>
+                                    <button onclick="aplicarTemaCor('sky')" class="p-3 bg-sky-600 hover:bg-sky-700 text-white rounded-xl font-bold text-xs cursor-pointer flex items-center justify-center gap-2 transition-all">🔵 Azul Céu</button>
+                                    <button onclick="aplicarTemaCor('purple')" class="p-3 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-bold text-xs cursor-pointer flex items-center justify-center gap-2 transition-all">🟣 Roxo Real</button>
+                                    <button onclick="aplicarTemaCor('slate')" class="p-3 bg-slate-800 hover:bg-slate-900 text-white rounded-xl font-bold text-xs cursor-pointer flex items-center justify-center gap-2 transition-all">⚫ Grafite Elegante</button>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
+
+                    <!-- BOTÃO GUARDAR TUDO -->
+                    <div class="max-w-5xl flex justify-end gap-3 pt-2">
+                        <button onclick="salvarConfigPerfil()" class="btn-primary-theme bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold px-8 py-3.5 rounded-2xl text-sm shadow-md transition-all cursor-pointer">💾 Guardar Todas as Configurações</button>
+                    </div>
+
+                    <!-- ZONA DE PERIGO / RESET -->
+                    <div class="max-w-5xl bg-rose-50 border border-rose-200 p-6 rounded-3xl space-y-3 mt-8">
+                        <h3 class="font-extrabold text-xs uppercase text-rose-800 tracking-wider">⚠️ Área de Segurança de Dados</h3>
+                        <p class="text-xs text-rose-700">Deseja reiniciar a sua conta ou limpar todos os dados locais armazenados neste navegador para começar um novo ano letivo?</p>
+                        <button onclick="resetarTodosDadosSistema()" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-4 py-2 rounded-xl text-xs cursor-pointer transition-colors">🗑️ Apagar Todos os Dados e Reiniciar</button>
+                    </div>
+
                 </div>
 
             </main>
@@ -688,16 +795,37 @@
         }
 
         function carregarConfigNaTela() {
-            if(configApp.nomeProf) document.getElementById('cfg-nome-prof').value = configApp.nomeProf;
-            if(configApp.nomeEscola) document.getElementById('cfg-nome-escola').value = configApp.nomeEscola;
+            if(document.getElementById('cfg-nome-prof')) document.getElementById('cfg-nome-prof').value = configApp.nomeProf || '';
+            if(document.getElementById('cfg-cargo-prof')) document.getElementById('cfg-cargo-prof').value = configApp.cargoProf || '';
+            if(document.getElementById('cfg-nome-escola')) document.getElementById('cfg-nome-escola').value = configApp.nomeEscola || '';
+            if(document.getElementById('cfg-municipio')) document.getElementById('cfg-municipio').value = configApp.municipioEscola || '';
+            if(document.getElementById('cfg-ano-letivo')) document.getElementById('cfg-ano-letivo').value = configApp.anoLetivo || '';
+            if(document.getElementById('cfg-duracao-aula')) document.getElementById('cfg-duracao-aula').value = configApp.duracaoAula || '50';
+            if(document.getElementById('cfg-periodo-padrao')) document.getElementById('cfg-periodo-padrao').value = configApp.periodoPadrao || '1º Bimestre';
+            if(document.getElementById('cfg-segmento')) document.getElementById('cfg-segmento').value = configApp.segmentoPadrao || 'Ensino Fundamental II';
         }
 
         function salvarConfigPerfil() {
             configApp.nomeProf = document.getElementById('cfg-nome-prof').value.trim();
+            configApp.cargoProf = document.getElementById('cfg-cargo-prof').value.trim();
             configApp.nomeEscola = document.getElementById('cfg-nome-escola').value.trim();
+            configApp.municipioEscola = document.getElementById('cfg-municipio').value.trim();
+            configApp.anoLetivo = document.getElementById('cfg-ano-letivo').value.trim();
+            configApp.duracaoAula = document.getElementById('cfg-duracao-aula').value;
+            configApp.periodoPadrao = document.getElementById('cfg-periodo-padrao').value;
+            configApp.segmentoPadrao = document.getElementById('cfg-segmento').value;
+
             if(configApp.nomeProf) document.getElementById('header-user-nome').textContent = `👤 ${configApp.nomeProf}`;
             salvarDadosLocais();
-            alert('✅ Perfil guardado com sucesso!');
+            alert('✅ Todas as configurações foram salvas com sucesso!');
+        }
+
+        function resetarTodosDadosSistema() {
+            if(confirm("⚠️ Tem certeza que deseja apagar TODOS os dados (turmas, alunos, notas, planos e jogos) armazenados localmente? Esta ação não pode ser desfeita.")) {
+                localStorage.clear();
+                alert("🔄 Todos os dados foram redefinidos.");
+                location.reload();
+            }
         }
 
         function atualizarSelectsTurmas() {
@@ -987,7 +1115,7 @@
         function carregarPlanoGestaoNaTela() {
             if(document.getElementById('plano-escola')) document.getElementById('plano-escola').value = planoGestaoDados.escola || configApp.nomeEscola || '';
             if(document.getElementById('plano-professor')) document.getElementById('plano-professor').value = planoGestaoDados.professor || configApp.nomeProf || '';
-            if(document.getElementById('plano-periodo')) document.getElementById('plano-periodo').value = planoGestaoDados.periodo || '';
+            if(document.getElementById('plano-periodo')) document.getElementById('plano-periodo').value = planoGestaoDados.periodo || configApp.periodoPadrao || '';
             if(document.getElementById('plano-unidade')) document.getElementById('plano-unidade').value = planoGestaoDados.unidade || '';
             if(document.getElementById('plano-conteudo')) document.getElementById('plano-conteudo').value = planoGestaoDados.conteudo || '';
             if(document.getElementById('plano-objetivos')) document.getElementById('plano-objetivos').value = planoGestaoDados.objetivos || '';

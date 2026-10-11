@@ -734,12 +734,12 @@
         </div>
     </div>
 
-    <!-- MASCOTE FLUTUANTE & CHAT DO PROFESSOR EDU (IA) -->
+    <!-- MASCOTE FLUTUANTE & CHAT DO PROFESSOR EDU (IA) COM IMAGEM OFICIAL INTEGRADA -->
     <div id="professor-edu-container" class="fixed bottom-6 right-6 z-50 no-print">
-        <button onclick="toggleChatEdu()" class="w-14 h-14 bg-sky-600 hover:bg-sky-700 text-white rounded-full shadow-2xl flex items-center justify-center transition-transform hover:scale-110 cursor-pointer relative group">
-            <span class="text-2xl">🤖</span>
-            <span class="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full"></span>
-            <div class="absolute right-16 bg-slate-900 text-white text-[11px] font-bold px-3 py-1.5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-md pointer-events-none">
+        <button onclick="toggleChatEdu()" class="w-16 h-16 bg-sky-600 hover:bg-sky-700 text-white rounded-full shadow-2xl flex items-center justify-center transition-transform hover:scale-110 cursor-pointer relative group p-0.5 overflow-hidden border-2 border-white">
+            <img src="professor-edu.png" alt="Professor Edu" class="w-full h-full object-cover object-top rounded-full bg-sky-100">
+            <span class="absolute top-0 right-0 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full z-10"></span>
+            <div class="absolute right-20 bg-slate-900 text-white text-[11px] font-bold px-3 py-1.5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-md pointer-events-none">
                 Falar com Professor Edu 💡
             </div>
         </button>
@@ -747,7 +747,9 @@
         <div id="chat-edu-box" class="hidden absolute bottom-20 right-0 w-80 sm:w-96 bg-white border border-slate-200 rounded-3xl shadow-2xl flex flex-col overflow-hidden transition-all duration-300 max-h-[500px]">
             <div class="bg-slate-900 text-white p-4 flex items-center justify-between">
                 <div class="flex items-center gap-2.5">
-                    <div class="w-8 h-8 rounded-xl bg-sky-600 flex items-center justify-center text-base">🤖</div>
+                    <div class="w-10 h-10 rounded-xl bg-sky-600 overflow-hidden flex items-center justify-center border border-sky-400 shrink-0">
+                        <img src="professor-edu.png" alt="Professor Edu" class="w-full h-full object-cover object-top">
+                    </div>
                     <div>
                         <h4 class="text-xs font-extrabold tracking-wide">Professor Edu</h4>
                         <p class="text-[10px] text-sky-400 font-semibold">IA Especialista em Educação Física</p>
@@ -799,7 +801,6 @@
             }
         }
 
-        // FUNÇÃO DE COMUNICAÇÃO ROBUSTA COM TRATAMENTO DE ERROS E EXPONENTIAL BACKOFF (HTTP 503 / 429)
         async function enviarMensagemEdu() {
             const input = document.getElementById('chat-edu-input');
             const mensagensDiv = document.getElementById('chat-edu-messages');
@@ -874,7 +875,6 @@
                         }
 
                         if (res.status === 404) {
-                            // Tenta o próximo modelo da lista
                             break;
                         }
 
@@ -882,7 +882,6 @@
 
                         if (data.error) {
                             const errCode = data.error.code;
-                            // Se for erro 503 (alta demanda) ou 429 (limite excedido), aplica exponential backoff com jitter
                             if ((errCode === 503 || errCode === 429) && tentativas < maxTentativas) {
                                 tentativas++;
                                 const esperaMs = Math.pow(2, tentativas) * 1000 + Math.random() * 1000;

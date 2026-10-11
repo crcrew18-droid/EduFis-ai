@@ -791,7 +791,6 @@
             document.getElementById('sidebar-overlay').classList.toggle('hidden');
         }
 
-        // LÓGICA DO CHAT PROFESSOR EDU (IA DIRETA COM GEMINI API ATUALIZADA)
         function toggleChatEdu() {
             const box = document.getElementById('chat-edu-box');
             box.classList.toggle('hidden');
@@ -800,6 +799,7 @@
             }
         }
 
+        // FUNÇÃO DE COMUNICAÇÃO ROBUSTA COM TRATAMENTO DE ERROS E EXPONENTIAL BACKOFF (HTTP 503 / 429)
         async function enviarMensagemEdu() {
             const input = document.getElementById('chat-edu-input');
             const mensagensDiv = document.getElementById('chat-edu-messages');
@@ -835,55 +835,89 @@
             `;
             mensagensDiv.scrollTop = mensagensDiv.scrollHeight;
 
-            try {
-                // Modelo atualizado para gemini-3.8-flash
-                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${apiKey}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [
-                            {
-                                role: "user",
-                                parts: [
-                                    { text: "Você é o Professor Edu, um assistente de inteligência artificial especializado em Educação Física escolar, BNCC, anatomia, fisiologia do exercício, criação de planos de aula, circuitos motores e adaptações inclusivas. Responda de forma prática, profissional e objetiva aos professores." },
-                                    { text: texto }
+            const modelosParaTestar = ["gemini-3.8-flash", "gemini-3.6-flash", "gemini-2.5-flash"];
+            let sucesso = false;
+            let respostaTexto = null;
+            let erroUltimo = null;
+
+            for (const modelo of modelosParaTestar) {
+                let tentativas = 0;
+                const maxTentativas = 3;
+
+                while (tentativas <= maxTentativas) {
+                    try {
+                        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${modelo}:generateContent?key=${apiKey}`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                contents: [
+                                    {
+                                        role: "user",
+                                        parts: [
+                                            { text: "Você é o Professor Edu, um assistente de inteligência artificial especializado em Educação Física escolar, BNCC, anatomia, fisiologia do exercício, criação de planos de aula, circuitos motores e adaptações inclusivas. Responda de forma prática, profissional e objetiva aos professores." },
+                                            { text: texto }
+                                        ]
+                                    }
                                 ]
+                            })
+                        });
+
+                        if (res.status === 401 || res.status === 403) {
+                            if(document.getElementById(loadingId)) document.getElementById(loadingId).remove();
+                            mensagensDiv.innerHTML += `
+                                <div class="bg-rose-50 text-rose-700 p-3 rounded-2xl border border-rose-200 shadow-2xs">
+                                    Erro de Autenticação (${res.status}): A chave da API é inválida ou não tem permissão. Verifique nas Configurações.
+                                </div>
+                            `;
+                            mensagensDiv.scrollTop = mensagensDiv.scrollHeight;
+                            return;
+                        }
+
+                        if (res.status === 404) {
+                            // Tenta o próximo modelo da lista
+                            break;
+                        }
+
+                        const data = await res.json();
+
+                        if (data.error) {
+                            const errCode = data.error.code;
+                            // Se for erro 503 (alta demanda) ou 429 (limite excedido), aplica exponential backoff com jitter
+                            if ((errCode === 503 || errCode === 429) && tentativas < maxTentativas) {
+                                tentativas++;
+                                const esperaMs = Math.pow(2, tentativas) * 1000 + Math.random() * 1000;
+                                await new Promise(resolve => setTimeout(resolve, esperaMs));
+                                continue;
                             }
-                        ]
-                    })
-                });
+                            erroUltimo = `Erro (${errCode}): ${data.error.message}`;
+                            break;
+                        }
 
-                const data = await res.json();
-                if(document.getElementById(loadingId)) document.getElementById(loadingId).remove();
-
-                if (data.error) {
-                    mensagensDiv.innerHTML += `
-                        <div class="bg-rose-50 text-rose-700 p-3 rounded-2xl border border-rose-200 shadow-2xs">
-                            Erro da API (${data.error.code}): ${escapeHtmlEdu(data.error.message)}
-                        </div>
-                    `;
-                } else {
-                    const respostaTexto = data.candidates?.[0]?.content?.parts?.[0]?.text;
-
-                    if (respostaTexto) {
-                        mensagensDiv.innerHTML += `
-                            <div class="bg-white p-3 rounded-2xl border border-slate-200/80 text-slate-700 shadow-2xs whitespace-pre-wrap">
-                                ${escapeHtmlEdu(respostaTexto)}
-                            </div>
-                        `;
-                    } else {
-                        mensagensDiv.innerHTML += `
-                            <div class="bg-rose-50 text-rose-700 p-3 rounded-2xl border border-rose-200 shadow-2xs">
-                                Erro ao obter resposta da IA. Verifique se a sua chave do Gemini está correta nas Configurações.
-                            </div>
-                        `;
+                        respostaTexto = data.candidates?.[0]?.content?.parts?.[0]?.text;
+                        if (respostaTexto) {
+                            sucesso = true;
+                            break;
+                        }
+                    } catch (netErr) {
+                        erroUltimo = "Erro de conexão de rede com o Google Gemini.";
                     }
+                    break;
                 }
-            } catch (err) {
-                if(document.getElementById(loadingId)) document.getElementById(loadingId).remove();
+                if (sucesso) break;
+            }
+
+            if(document.getElementById(loadingId)) document.getElementById(loadingId).remove();
+
+            if (sucesso && respostaTexto) {
                 mensagensDiv.innerHTML += `
-                    <div class="bg-rose-50 text-rose-700 p-3 rounded-2xl border border-rose-200 shadow-2xs">
-                        Erro de conexão com a API do Google Gemini.
+                    <div class="bg-white p-3 rounded-2xl border border-slate-200/80 text-slate-700 shadow-2xs whitespace-pre-wrap">
+                        ${escapeHtmlEdu(respostaTexto)}
+                    </div>
+                `;
+            } else {
+                mensagensDiv.innerHTML += `
+                    <div class="bg-amber-50 text-amber-800 p-3 rounded-2xl border border-amber-200 shadow-2xs">
+                        ⚠️ O serviço de IA está temporariamente sobrecarregado (Alta demanda / 503). Por favor, aguarde alguns instantes e tente novamente. (${escapeHtmlEdu(erroUltimo || 'Indisponível')})
                     </div>
                 `;
             }

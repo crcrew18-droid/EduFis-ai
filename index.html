@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%23059669'/><path d='M30 35 v30 M70 35 v30 M20 40 v20 M80 40 v20 M30 50 h40' stroke='white' stroke-width='8' stroke-linecap='round'/></svg>">
-    <title>EduFís Pro v8.7 - Plataforma de Gestão Pedagógica</title>
+    <title>EduFís Pro v8.6 - Plataforma de Gestão Pedagógica</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
@@ -42,18 +42,7 @@
 <body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col antialiased">
 
     <script>
-        // Dados Padrão Expandidos (Esportes e Jogos)
-        const bancoJogosPadrao = [
-            { id: 1, titulo: "Queimada Cooperativa", categoria: "Jogos Tradicionais", objetivo: "Estimular a agilidade, mira e cooperação em equipa.", materiais: "1 Bola de borracha, cones para delimitar o campo.", regras: "Quem for queimado vai para a 'cadeia' adversária, mas pode voltar se apanhar uma bola no ar ou se um colega acertar um alvo específico." },
-            { id: 2, titulo: "Futsal Reduzido com Toques Limitados", categoria: "Futsal / Futebol", objetivo: "Desenvolver o passe rápido, a visão de jogo e a ocupação racional do espaço.", materiais: "Bolas de futsal, coletes, balizas móveis ou cones.", regras: "Cada jogador só pode dar no máximo 2 toques na bola antes de passar. Prioriza a triangulação e o trabalho coletivo." },
-            { id: 3, titulo: "Racha de Futsal / Futebol Recreativo", categoria: "Futsal / Futebol", objetivo: "Estimular a prática lúdica e o fair-play em situação real de jogo.", materiais: "Bola, coletes.", regras: "Partida com equipas reduzidas (4x4 ou 5x5). Sem árbitro oficial; as faltas são marcadas por consenso. Golos de primeira valem duplo." },
-            { id: 4, titulo: "Desafio de Condução e Drible no Futsal", categoria: "Futsal / Futebol", objetivo: "Aperfeiçoar o domínio de bola, mudança de direção e agilidade com os pés.", materiais: "Cones, bolas de futsal.", regras: "Percurso ziguezagueando entre cones conduzindo a bola, terminando com remate certeiro à baliza." },
-            { id: 5, titulo: "Futebol de Tabela na Parede", categoria: "Futsal / Futebol", objetivo: "Treinar a reação rápida, domínio orientado e passe de primeira.", materiais: "Bolas de futebol/futsal, parede ou rebatedor.", regras: "Os alunos jogam em duplas alternando toques na parede. A bola só pode dar um toque no chão." },
-            { id: 6, titulo: "Handebol: Ataque Rápido e 3x2", categoria: "Handebol", objetivo: "Trabalhar superioridade numérica ofensiva e eficácia no remate.", materiais: "Bolas de handebol, balizas.", regras: "3 atacantes contra 2 defensores mais o guarda-redes. O ataque deve rodar a bola rapidamente para criar espaço." },
-            { id: 7, titulo: "Voleibol: Jogo de 3 Toques Obrigatórios", categoria: "Voleibol", objetivo: "Fixar a mecânica da manchete, toque de dedos e remate regulamentar.", materiais: "Bola de vólei, rede.", regras: "Obrigatório passar por Manobra de Recepção ➔ Distribuição ➔ Ataque antes de enviar para o campo contrário." },
-            { id: 8, titulo: "Basquetebol: Estafeta de Lançamentos", categoria: "Basquetebol", objetivo: "Melhorar a precisão no cesto e a transição rápida.", materiais: "Bolas de basquetebol, tabelas.", regras: "Equipas em linha realizam lançamentos rápidos. Cada cesto convertido pontua de acordo com a distância." },
-            { id: 9, titulo: "Circuito Funcional de Habilidades", categoria: "Aptidão Física", objetivo: "Desenvolver força, velocidade, equilíbrio e coordenação motora.", materiais: "Cones, cordas, arcos e colchonetes.", regras: "Os alunos dividem-se em grupos e revezam-se nas estações a cada 45 segundos, focando na execução correta dos movimentos." }
-        ];
+        const URL_GOOGLE_SCRIPT = "https://script.google.com/macros/s/AKfycbyTUXPXMwt_qEjteIef1pfSDs1kgzc_ck3QJkLpGzHygB8nOq03zANVHAfvDC1vKfrvKA/exec";
 
         let usuarios = JSON.parse(localStorage.getItem('edufis_usuarios_v8')) || [];
         let usuarioLogado = JSON.parse(localStorage.getItem('edufis_sessao_v8')) || null;
@@ -65,15 +54,11 @@
         let planoGestaoDados = JSON.parse(localStorage.getItem('edufis_plano_v8')) || {};
         let agendaHojeDados = JSON.parse(localStorage.getItem('edufis_agenda_v8')) || { turma: '', conteudo: '' };
         
-        // Forçar a atualização dos jogos para conter as novas opções de esportes
-        let bancoJogosSalvo = JSON.parse(localStorage.getItem('edufis_jogos_v8')) || [];
-        let bancoJogos = (bancoJogosSalvo.length < 6) ? bancoJogosPadrao : bancoJogosSalvo;
-
-        let baseSocorros = JSON.parse(localStorage.getItem('edufis_socorros_v8')) || [
-            { id: 1, titulo: "Entorse / Torção no Tornozelo ou Joelho", categoria: "Traumas e Lesões", oqfazer: "1. Parar a atividade imediatamente.\n2. Aplicar gelo enrolado num pano (15-20 min).\n3. Elevar o membro afetado.\n4. NÃO forçar nem tentar colocar no sítio se houver deformidade.", alerta: "Se houver dor insuportável ou incapacidade total de apoiar o pé, encaminhar para o hospital." },
-            { id: 2, titulo: "Pancada na Cabeça (Concussão Leve)", categoria: "Traumas e Lesões", oqfazer: "1. Afastar o aluno da atividade e mantê-lo sentado.\n2. Avaliar sintomas: tontura, confusão, vómitos ou visão turva.\n3. Aplicar compressa fria no galo/inchaço.\n4. Vigiar atentamente nas horas seguintes.", alerta: "Se houver perda de consciência, desorientação ou sonolência excessiva, ligar imediatamente para o 112." },
-            { id: 3, titulo: "Sangramento Nasal (Epistaxe)", categoria: "Emergências Comuns", oqfazer: "1. Sentar o aluno com a cabeça ligeiramente inclinada para a **frente** (nunca para trás para evitar engasgamento).\n2. Apertar a parte mole do nariz com os dedos durante 10 minutos.\n3. Respirar pela boca.", alerta: "Se o sangramento durar mais de 20 minutos, procurar assistência médica." },
-            { id: 4, titulo: "Desmaio ou Lipotimia", categoria: "Emergências Comuns", oqfazer: "1. Deitar a pessoa de costas e elevar as pernas cerca de 30 cm.\n2. Desapertar roupas apertadas (golas, cintos).\n3. Garantir circulação de ar fresco.\n4. Assim que acordar, não levantar bruscamente.", alerta: "Se não recuperar a consciência em 1-2 minutos, verificar respiração e chamar o 112." }
+        let bancoJogos = JSON.parse(localStorage.getItem('edufis_jogos_v8')) || [
+            { id: 1, titulo: "Queimada Cooperativa", categoria: "Jogos Tradicionais", objetivo: "Estimular a agilidade, mira e cooperação em equipa.", materiais: "1 Bola de borracha, cones para delimitar o campo.", regras: "Quem for queimado vai para a 'cadeia' adversária, mas pode voltar se apanhar uma bola no ar ou se um colega acertar um alvo específico." },
+            { id: 2, titulo: "Circuito Funcional de Habilidades", categoria: "Aptidão Física", objetivo: "Desenvolver força, velocidade, equilíbrio e coordenação motora.", materiais: "Cones, cordas, arcos e colchonetes.", regras: "Os alunos dividem-se em grupos e revezam-se nas estações a cada 45 segundos, focando na execução correta dos movimentos." },
+            { id: 3, titulo: "Bandeirinha (Rouba Bandeira Adaptado)", categoria: "Esportes Coletivos", objetivo: "Trabalhar estratégia, tomada de decisão rápida e velocidade de reação.", materiais: "2 coletes ou bandeiras, cones.", regras: "Duas equipas tentam roubar a bandeira no campo adversário sem serem apanhados (tocados) no campo inimigo." },
+            { id: 4, titulo: "Estafeta das Cores e Formas", categoria: "Coordenação", objetivo: "Trabalhar locomoção, agilidade e raciocínio rápido sob esforço físico.", materiais: "Bolas coloridas, baldes, cartões de tarefas.", regras: "Cada elemento do grupo deve correr até ao centro, recolher um objeto com a cor solicitada e regressar para passar a vez." }
         ];
 
         let configApp = JSON.parse(localStorage.getItem('edufis_config_v8')) || {
@@ -83,15 +68,27 @@
         };
 
         const baseAnatomia = [
-            { id: "m1", nome: "Quadríceps Femoral", tipo: "Músculo", regiao: "Inferiores", acao: "Extensão do joelho e flexão do quadril (reto femoral).", exercicios: "Agachamento, Avanço, Salto Vertical, Chute no Futebol/Futsal." },
-            { id: "m2", nome: "Isquiotibiais", tipo: "Músculo", regiao: "Inferiores", acao: "Flexão do joelho e extensão do quadril.", exercicios: "Corrida/Sprints, Stiff, Salto em Distância." },
+            { id: "m1", nome: "Quadríceps Femoral", tipo: "Músculo", regiao: "Inferiores", acao: "Extensão do joelho e flexão do quadril (reto femoral).", exercicios: "Agachamento, Avanço, Salto Vertical, Chute no Futebol." },
+            { id: "m2", nome: "Isquiotibiais (Bíceps Femoral, Semitendíneo, Semimembranoso)", tipo: "Músculo", regiao: "Inferiores", acao: "Flexão do joelho e extensão do quadril.", exercicios: "Corrida/Sprints, Stiff, Salto em Distância." },
             { id: "m3", nome: "Tríceps Sural (Gastrocnêmio e Sóleo)", tipo: "Músculo", regiao: "Inferiores", acao: "Flexão plantar do tornozelo (impulsão).", exercicios: "Elevação de calcanhar, Corridas, Saltos de corda." },
             { id: "m4", nome: "Glúteo Máximo", tipo: "Músculo", regiao: "Inferiores", acao: "Extensão e rotação lateral do quadril.", exercicios: "Elevação pélvica, Agachamento profundo, Corridas de velocidade." },
             { id: "m5", nome: "Peitoral Maior", tipo: "Músculo", regiao: "Tronco", acao: "Adução e rotação medial do ombro, flexão do braço.", exercicios: "Flexão de braços (apoio), Arremesso no Basquete/Handebol." },
             { id: "m6", nome: "Latíssimo do Dorso (Grande Dorsal)", tipo: "Músculo", regiao: "Tronco", acao: "Extensão, adução e rotação medial do ombro.", exercicios: "Puxada alta, Natação (Crawl/Borboleta), Escalada." },
-            { id: "m7", nome: "Deltoide", tipo: "Músculo", regiao: "Superiores", acao: "Abdução e elevação do braço nos três planos.", exercicios: "Desenvolvimento, Arremessos, Saque no Vôlei." },
+            { id: "m7", nome: "Deltoide (Anterior, Lateral, Posterior)", tipo: "Músculo", regiao: "Superiores", acao: "Abdução e elevação do braço nos três planos.", exercicios: "Desenvolvimento, Arremessos, Saque no Vôlei." },
             { id: "m8", nome: "Bíceps Braquial", tipo: "Músculo", regiao: "Superiores", acao: "Flexão do cotovelo e supinação do antebraço.", exercicios: "Barra fixa (supinada), Remo na ginástica." },
-            { id: "m9", nome: "Tríceps Braquial", tipo: "Músculo", regiao: "Superiores", acao: "Extensão do cotovelo.", exercicios: "Flexão no solo, Passe de peito no basquete, Cortada no Vôlei." }
+            { id: "m9", nome: "Tríceps Braquial", tipo: "Músculo", regiao: "Superiores", acao: "Extensão do cotovelo.", exercicios: "Flexão no solo, Passe de peito no basquete, Cortada no Vôlei." },
+            { id: "m10", nome: "Reto Abdominal e Oblíquos", tipo: "Músculo", regiao: "Tronco", acao: "Flexão e rotação do tronco, estabilização do Core.", exercicios: "Prancha abdominal, Rotações com bola medicinal." },
+            { id: "o1", nome: "Fêmur", tipo: "Osso", regiao: "Esqueleto", acao: "Maior osso do corpo humano; suporta o peso corporal e articula no quadril e joelho.", exercicios: "Suporte de carga, Corridas, Saltos." },
+            { id: "o2", nome: "Tíbia e Fíbula", tipo: "Osso", regiao: "Esqueleto", acao: "Ossos da perna; sustentação e fixação muscular para tornozelo/joelho.", exercicios: "Impacto controlado, Treino de agilidade e mudança de direção." },
+            { id: "o3", nome: "Escápula e Clavícula", tipo: "Osso", regiao: "Esqueleto", acao: "Cinto escapular; dão mobilidade e amplitude de movimento aos ombros.", exercicios: "Movimentos de arremesso, natação e ginástica artística." }
+        ];
+
+        const baseBNCC = [
+            { codigo: "EF67EF01", tema: "Esportes", desc: "Experimentar e fruir diferentes esportes de marca, precisão, invasão e técnico-combinatórios." },
+            { codigo: "EF67EF03", tema: "Esportes", desc: "Praticar um ou mais esportes de marca, precisão, invasão e técnico-combinatórios oferecidos na escola." },
+            { codigo: "EF89EF07", tema: "Esportes", desc: "Formular e propor estratégias para o resolução de desafios em jogos desportivos." },
+            { codigo: "EF67EF07", tema: "Ginástica", desc: "Propor e produzir alternativas para a prática da ginástica de conscientização corporal." },
+            { codigo: "EF89EF09", tema: "Ginástica", desc: "Construir apresentações de ginástica geral, integrando diferentes elementos gimnásticos." }
         ];
 
         function salvarDadosLocais() {
@@ -104,35 +101,31 @@
             localStorage.setItem('edufis_plano_v8', JSON.stringify(planoGestaoDados));
             localStorage.setItem('edufis_agenda_v8', JSON.stringify(agendaHojeDados));
             localStorage.setItem('edufis_jogos_v8', JSON.stringify(bancoJogos));
-            localStorage.setItem('edufis_socorros_v8', JSON.stringify(baseSocorros));
             localStorage.setItem('edufis_config_v8', JSON.stringify(configApp));
         }
 
         function aplicarTemaCor(cor) {
             configApp.temaCor = cor;
             salvarDadosLocais();
-            
-            const coresMap = {
-                emerald: '#059669',
-                sky: '#0284c7',
-                purple: '#7c3aed',
-                slate: '#1e293b'
-            };
-            const hex = coresMap[cor] || '#059669';
-            
-            document.querySelectorAll('.brand-icon-bg, .btn-primary-theme').forEach(el => {
-                if(el.tagName === 'BUTTON' || el.classList.contains('brand-icon-bg')) {
-                    el.style.backgroundColor = hex;
-                }
-            });
-            alert('✅ Tema alterado com sucesso!');
-        }
 
-        function resetarBancoJogosParaPadrao() {
-            bancoJogos = Array.from(bancoJogosPadrao);
-            salvarDadosLocais();
-            renderizarBancoJogos();
-            alert('✅ Banco de Jogos restaurado com todas as opções de Futebol, Futsal e Esportes!');
+            const mapaCores = {
+                emerald: { main: 'bg-emerald-600', hover: 'hover:bg-emerald-700', text: 'text-emerald-600' },
+                sky: { main: 'bg-sky-600', hover: 'hover:bg-sky-700', text: 'text-sky-600' },
+                purple: { main: 'bg-purple-600', hover: 'hover:bg-purple-700', text: 'text-purple-600' },
+                slate: { main: 'bg-slate-800', hover: 'hover:bg-slate-900', text: 'text-slate-800' }
+            };
+
+            const c = mapaCores[cor] || mapaCores.emerald;
+
+            document.querySelectorAll('.btn-primary-theme').forEach(el => {
+                el.className = el.className.replace(/bg-\w+-\d+/g, c.main).replace(/hover:bg-\w+-\d+/g, c.hover);
+            });
+            document.querySelectorAll('.text-theme-main').forEach(el => {
+                el.className = el.className.replace(/text-\w+-\d+/g, c.text);
+            });
+            document.querySelectorAll('.brand-icon-bg').forEach(el => {
+                el.className = el.className.replace(/bg-\w+-\d+/g, c.main);
+            });
         }
     </script>
 
@@ -140,7 +133,7 @@
     <div id="view-login" class="flex flex-col items-center justify-center flex-1 p-4 bg-slate-100">
         <div class="w-full max-w-md bg-white border border-slate-200 rounded-3xl p-8 shadow-xl space-y-6">
             <div class="text-center space-y-2">
-                <div class="w-16 h-16 brand-icon-bg bg-emerald-600 rounded-2xl flex items-center justify-center mx-auto shadow-md p-3.5 text-white">
+                <div class="w-16 h-16 brand-icon-bg bg-emerald-600 rounded-2xl flex items-center justify-center mx-auto shadow-md p-3.5">
                     <svg class="w-full h-full text-white" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round">
                         <path d="M30 35 v30 M70 35 v30 M20 40 v20 M80 40 v20 M30 50 h40"/>
                     </svg>
@@ -195,14 +188,14 @@
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                 </button>
                 <div class="flex items-center gap-2.5">
-                    <div class="w-9 h-9 brand-icon-bg bg-emerald-600 rounded-xl flex items-center justify-center p-2 shadow-sm text-white">
+                    <div class="w-9 h-9 brand-icon-bg bg-emerald-600 rounded-xl flex items-center justify-center p-2 shadow-sm">
                         <svg class="w-full h-full text-white" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round">
                             <path d="M30 35 v30 M70 35 v30 M20 40 v20 M80 40 v20 M30 50 h40"/>
                         </svg>
                     </div>
                     <div>
                         <span class="text-base font-extrabold text-slate-900 leading-none block">EduFís</span>
-                        <span class="text-[10px] uppercase tracking-wider text-emerald-600 font-extrabold">Pro v8.7</span>
+                        <span class="text-[10px] uppercase tracking-wider text-theme-main text-emerald-600 font-extrabold">Pro v8.6</span>
                     </div>
                 </div>
             </div>
@@ -225,8 +218,7 @@
                     <button onclick="changeTab('chamada')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">📋 Chamada Rápida</button>
                     
                     <div class="text-[10px] uppercase font-bold text-slate-400 px-3 pt-4 pb-1">Pedagógico</div>
-                    <button onclick="changeTab('socorros')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-bold text-rose-700 bg-rose-50 hover:bg-rose-100 flex items-center gap-3 transition-colors cursor-pointer">🚑 Primeiros Socorros</button>
-                    <button onclick="changeTab('jogos')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">⚽ Banco de Jogos & Desportos</button>
+                    <button onclick="changeTab('jogos')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 flex items-center gap-3 transition-colors cursor-pointer">🎮 Banco de Jogos & Ideias</button>
                     <button onclick="changeTab('anatomia')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">🦴 Atlas de Anatomia</button>
                     <button onclick="changeTab('editor-word')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">📝 Editor de Atividades</button>
                     <button onclick="changeTab('gestao')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">📅 Planejamento & BNCC</button>
@@ -236,7 +228,7 @@
                     <button onclick="changeTab('backup')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">☁️ Backup & Nuvem</button>
                     <button onclick="changeTab('config')" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 flex items-center gap-3 transition-colors cursor-pointer">⚙️ Configurações</button>
                 </div>
-                <div class="pt-4 border-t border-slate-100 px-3 text-[11px] text-slate-400 font-medium">EduFís Pro v8.7 • 2026</div>
+                <div class="pt-4 border-t border-slate-100 px-3 text-[11px] text-slate-400 font-medium">EduFís Pro v8.6 • 2026</div>
             </aside>
 
             <!-- CONTEÚDO PRINCIPAL -->
@@ -249,53 +241,96 @@
                             <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Bem-vindo ao EduFís Pro 🏋️</h2>
                             <p class="text-slate-300 text-sm mt-1">Tecnologia e organização para transformar as suas aulas de Educação Física.</p>
                         </div>
-                        <button onclick="changeTab('socorros')" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-5 py-3 rounded-2xl text-sm shadow-md transition-all cursor-pointer">🚑 Guia de Primeiros Socorros</button>
+                        <button onclick="changeTab('jogos')" class="bg-white hover:bg-slate-100 text-slate-900 font-bold px-5 py-3 rounded-2xl text-sm shadow-md transition-all cursor-pointer w-full sm:w-auto">🎮 Explorar Banco de Jogos</button>
                     </div>
                     
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                        <div class="bg-white border border-slate-200/80 p-5 rounded-3xl shadow-xs"><div class="text-3xl font-black text-emerald-600" id="stat-turmas">0</div><div class="text-xs font-bold text-slate-400 mt-1 uppercase tracking-wider">Turmas Ativas</div></div>
-                        <div class="bg-white border border-slate-200/80 p-5 rounded-3xl shadow-xs"><div class="text-3xl font-black text-emerald-600" id="stat-alunos">0</div><div class="text-xs font-bold text-slate-400 mt-1 uppercase tracking-wider">Alunos Matriculados</div></div>
-                        <div class="bg-white border border-slate-200/80 p-5 rounded-3xl shadow-xs"><div class="text-3xl font-black text-emerald-600" id="stat-documentos">0</div><div class="text-xs font-bold text-slate-400 mt-1 uppercase tracking-wider">Atividades Salvas</div></div>
-                        <div class="bg-white border border-slate-200/80 p-5 rounded-3xl shadow-xs"><div class="text-3xl font-black text-emerald-600" id="stat-pdfs">0</div><div class="text-xs font-bold text-slate-400 mt-1 uppercase tracking-wider">PDFs Anexados</div></div>
+                        <div class="bg-white border border-slate-200/80 p-5 rounded-3xl shadow-xs"><div class="text-3xl font-black text-theme-main text-emerald-600" id="stat-turmas">0</div><div class="text-xs font-bold text-slate-400 mt-1 uppercase tracking-wider">Turmas Ativas</div></div>
+                        <div class="bg-white border border-slate-200/80 p-5 rounded-3xl shadow-xs"><div class="text-3xl font-black text-theme-main text-emerald-600" id="stat-alunos">0</div><div class="text-xs font-bold text-slate-400 mt-1 uppercase tracking-wider">Alunos Matriculados</div></div>
+                        <div class="bg-white border border-slate-200/80 p-5 rounded-3xl shadow-xs"><div class="text-3xl font-black text-theme-main text-emerald-600" id="stat-documentos">0</div><div class="text-xs font-bold text-slate-400 mt-1 uppercase tracking-wider">Atividades Salvas</div></div>
+                        <div class="bg-white border border-slate-200/80 p-5 rounded-3xl shadow-xs"><div class="text-3xl font-black text-theme-main text-emerald-600" id="stat-pdfs">0</div><div class="text-xs font-bold text-slate-400 mt-1 uppercase tracking-wider">PDFs Anexados</div></div>
                     </div>
-                </div>
 
-                <!-- ABA: PRIMEIROS SOCORROS -->
-                <div id="tab-socorros" class="hidden space-y-6">
-                    <div class="flex justify-between items-center flex-wrap gap-3">
-                        <div>
-                            <h2 class="text-2xl font-black text-slate-900 tracking-tight">Guia de Primeiros Socorros no Desporto 🚑</h2>
-                            <p class="text-slate-500 text-sm">Procedimentos de atendimento rápido para lesões e emergências escolares.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-white border border-slate-200/80 p-6 rounded-3xl shadow-xs space-y-4">
+                            <h3 class="font-extrabold text-sm uppercase text-slate-700 tracking-wider">⚡ Atalhos Rápidos</h3>
+                            <div class="grid grid-cols-2 gap-3">
+                                <button onclick="changeTab('jogos')" class="p-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 rounded-2xl font-bold text-xs text-left transition-colors cursor-pointer">🎮 Banco de Jogos</button>
+                                <button onclick="changeTab('turmas'); abrirModalTurma();" class="p-3 bg-slate-50 hover:bg-slate-100 text-slate-800 rounded-2xl font-bold text-xs text-left transition-colors cursor-pointer">+ Registar Turma</button>
+                                <button onclick="changeTab('chamada')" class="p-3 bg-slate-50 hover:bg-slate-100 text-slate-800 rounded-2xl font-bold text-xs text-left transition-colors cursor-pointer">📋 Fazer Chamada</button>
+                                <button onclick="changeTab('editor-word')" class="p-3 bg-slate-50 hover:bg-slate-100 text-slate-800 rounded-2xl font-bold text-xs text-left transition-colors cursor-pointer">📝 Nova Atividade</button>
+                            </div>
                         </div>
-                        <button onclick="abrirModalSocorros()" class="bg-rose-600 hover:bg-rose-700 text-white px-4 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all cursor-pointer">+ Adicionar Procedimento</button>
+
+                        <div class="bg-white border border-slate-200/80 p-6 rounded-3xl shadow-xs space-y-4">
+                            <div class="flex justify-between items-center">
+                                <h3 class="font-extrabold text-sm uppercase text-slate-700 tracking-wider">📅 Agenda de Hoje</h3>
+                                <span class="text-xs font-bold text-slate-400" id="agenda-data-hoje">--/--/----</span>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 space-y-3">
+                                <div>
+                                    <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Turma Prevista para Hoje</label>
+                                    <select id="agenda-select-turma" onchange="salvarAgendaHoje()" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                        <option value="">Selecione a turma...</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Conteúdo / Atividade do Dia</label>
+                                    <input type="text" id="agenda-input-conteudo" onchange="salvarAgendaHoje()" placeholder="Ex: Fundamentos do Futsal / Teste Físico" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div id="grid-socorros" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
                 </div>
 
-                <!-- ABA: BANCO DE JOGOS & DESPORTOS -->
+                <!-- ABA: BANCO DE JOGOS & IDEIAS EDITÁVEIS -->
                 <div id="tab-jogos" class="hidden space-y-6">
                     <div class="flex justify-between items-center flex-wrap gap-3">
                         <div>
-                            <h2 class="text-2xl font-black text-slate-900 tracking-tight">Banco de Jogos & Desportos Coletivos ⚽</h2>
-                            <p class="text-slate-500 text-sm">Futebol, Futsal, Basquetebol, Voleibol, Andebol e dinâmicas lúdicas.</p>
+                            <h2 class="text-2xl font-black text-slate-900 tracking-tight">Banco de Jogos, Brincadeiras & Ideias 🎮</h2>
+                            <p class="text-slate-500 text-sm">Sugestões práticas para as suas aulas. Pode editar, adaptar ou criar novas dinâmicas.</p>
                         </div>
-                        <div class="flex gap-2">
-                            <button onclick="resetarBancoJogosParaPadrao()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2.5 rounded-xl text-xs font-bold transition-colors cursor-pointer">🔄 Recarregar Esportes</button>
-                            <button onclick="abrirModalJogo()" class="btn-primary-theme bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all cursor-pointer">+ Criar Nova Ideia</button>
-                        </div>
+                        <button onclick="abrirModalJogo()" class="btn-primary-theme bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all cursor-pointer">+ Adicionar Nova Ideia</button>
                     </div>
+
                     <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
-                        <input type="text" id="search-jogos" oninput="renderizarBancoJogos()" placeholder="Pesquisar por futsal, basquete, objetivo..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        <div>
+                            <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Pesquisar Dinâmica / Jogo</label>
+                            <input type="text" id="search-jogos" oninput="renderizarBancoJogos()" placeholder="Pesquisar por título, objetivo ou categoria..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        </div>
                     </div>
+
                     <div id="grid-jogos" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
                 </div>
 
-                <!-- ABA: ATLAS DE ANATOMIA -->
+                <!-- ABA: ATLAS DE ANATOMIA & CINESIOLOGIA -->
                 <div id="tab-anatomia" class="hidden space-y-6">
-                    <div>
-                        <h2 class="text-2xl font-black text-slate-900 tracking-tight">Atlas de Anatomia & Cinesiologia 🦴</h2>
-                        <p class="text-slate-500 text-sm">Consulte músculos, ossos e a biomecânica dos exercícios.</p>
+                    <div class="flex justify-between items-center flex-wrap gap-3">
+                        <div>
+                            <h2 class="text-2xl font-black text-slate-900 tracking-tight">Atlas de Anatomia & Cinesiologia 🦴</h2>
+                            <p class="text-slate-500 text-sm">Consulte músculos, ossos e a biomecânica dos exercícios para fundamentação pedagógica.</p>
+                        </div>
                     </div>
+
+                    <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div class="sm:col-span-2">
+                                <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Buscar Estrutura Anatômica</label>
+                                <input type="text" id="search-anatomia" oninput="renderizarAtlasAnatomia()" placeholder="Ex: Quadríceps, Deltoide, Fêmur..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Região Corporal</label>
+                                <select id="filter-regiao-anatomia" onchange="renderizarAtlasAnatomia()" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                    <option value="Todas">Todas as Regiões</option>
+                                    <option value="Inferiores">Membros Inferiores</option>
+                                    <option value="Superiores">Membros Superiores</option>
+                                    <option value="Tronco">Tronco & Core</option>
+                                    <option value="Esqueleto">Sistema Esquelético</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
                     <div id="grid-anatomia" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
                 </div>
 
@@ -311,10 +346,10 @@
                     <div class="bg-white border border-slate-200/80 rounded-3xl overflow-x-auto shadow-xs">
                         <table class="w-full text-left text-sm min-w-[500px]">
                             <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 text-xs uppercase font-bold">
-                                <tr><th class="p-4">Nome da Turma</th><th class="p-4">Ano / Série</th><th class="p-4">Turno</th><th class="p-4 text-right">Ações</th></tr>
+                                <tr><th class="p-4">Nome da Turma</th><th class="p-4">Ano / Série</th><th class="p-4">Turno</th><th class="p-4">Alunos</th><th class="p-4 text-right">Ações</th></tr>
                             </thead>
                             <tbody id="tabela-turmas" class="divide-y divide-slate-100">
-                                <tr><td colspan="4" class="p-8 text-center text-slate-400">Nenhuma turma registada.</td></tr>
+                                <tr><td colspan="5" class="p-8 text-center text-slate-400">Nenhuma turma registada.</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -332,87 +367,236 @@
                     <div class="bg-white border border-slate-200/80 rounded-3xl overflow-x-auto shadow-xs">
                         <table class="w-full text-left text-sm min-w-[500px]">
                             <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 text-xs uppercase font-bold">
-                                <tr><th class="p-4">Nome Completo</th><th class="p-4">Turma</th><th class="p-4 text-right">Ações</th></tr>
+                                <tr><th class="p-4">Nome Completo</th><th class="p-4">E-mail</th><th class="p-4">Turma</th><th class="p-4 text-right">Ações</th></tr>
                             </thead>
                             <tbody id="tabela-alunos" class="divide-y divide-slate-100">
-                                <tr><td colspan="3" class="p-8 text-center text-slate-400">Nenhum aluno registado.</td></tr>
+                                <tr><td colspan="4" class="p-8 text-center text-slate-400">Nenhum aluno registado.</td></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                <!-- ABA CHAMADA -->
+                <!-- ABA CHAMADA RÁPIDA -->
                 <div id="tab-chamada" class="hidden space-y-6">
-                    <h2 class="text-2xl font-black text-slate-900 tracking-tight">Chamada Rápida</h2>
-                    <div class="bg-white border border-slate-200/80 p-6 rounded-3xl max-w-xl space-y-4">
-                        <select id="select-turma-chamada" onchange="carregarChamadaTurma()" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm">
-                            <option value="">Escolha uma turma...</option>
-                        </select>
+                    <div>
+                        <h2 class="text-2xl font-black text-slate-900 tracking-tight">Chamada Rápida</h2>
+                        <p class="text-slate-500 text-sm">Registe a presença dos alunos com poucos cliques.</p>
                     </div>
-                    <div id="container-lista-chamada" class="hidden bg-white border border-slate-200/80 p-6 rounded-3xl max-w-2xl space-y-4">
+                    <div class="bg-white border border-slate-200/80 p-6 rounded-3xl max-w-xl space-y-4 shadow-xs">
+                        <div>
+                            <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Selecionar Turma</label>
+                            <select id="select-turma-chamada" onchange="carregarChamadaTurma()" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                <option value="">Escolha uma turma...</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Data da Aula</label>
+                            <input type="date" id="data-chamada" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        </div>
+                    </div>
+                    <div id="container-lista-chamada" class="hidden bg-white border border-slate-200/80 p-6 rounded-3xl max-w-2xl space-y-4 shadow-xs">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-base font-extrabold text-theme-main text-emerald-700">Lista de Presença</h3>
+                            <button onclick="salvarChamada()" class="btn-primary-theme bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer">💾 Guardar Chamada</button>
+                        </div>
                         <div id="lista-alunos-chamada" class="space-y-3"></div>
                     </div>
                 </div>
 
-                <!-- ABA EDITOR -->
+                <!-- ABA EDITOR DE ATIVIDADES -->
                 <div id="tab-editor-word" class="hidden space-y-6">
-                    <div class="flex justify-between items-center">
-                        <h2 class="text-2xl font-black text-slate-900 tracking-tight">Editor de Atividades</h2>
-                        <button onclick="salvarDocumentoWord()" class="btn-primary-theme bg-emerald-600 text-white px-5 py-2.5 rounded-xl text-sm font-bold">💾 Guardar</button>
+                    <div class="flex justify-between items-center flex-wrap gap-3">
+                        <div>
+                            <h2 class="text-2xl font-black text-slate-900 tracking-tight">Editor de Atividades</h2>
+                            <p class="text-slate-500 text-sm">Crie planos de aula e tarefas com formatação avançada.</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="novoDocumentoWord()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2.5 rounded-xl text-sm font-bold transition-colors cursor-pointer">+ Limpar</button>
+                            <button onclick="salvarDocumentoWord()" class="btn-primary-theme bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all cursor-pointer">💾 Guardar</button>
+                        </div>
                     </div>
-                    <div class="bg-white border border-slate-200/80 rounded-3xl p-6 space-y-4">
-                        <input type="text" id="doc-word-titulo" placeholder="Título da Atividade" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm">
-                        <div id="editor-word-area" contenteditable="true" class="min-h-[250px] p-4 bg-slate-50 border border-slate-300 rounded-xl text-sm">Descreva a atividade...</div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="md:col-span-2 bg-white border border-slate-200/80 rounded-3xl p-6 space-y-4 shadow-xs">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Título da Atividade</label>
+                                    <input type="text" id="doc-word-titulo" placeholder="Ex: Circuito de Habilidades Motoras" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Turma Destino</label>
+                                    <select id="doc-word-turma" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></select>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-1.5 p-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold">
+                                <button type="button" onclick="execCmd('bold')" class="px-3 py-1.5 bg-white border rounded-lg hover:bg-slate-100 shadow-2xs">B</button>
+                                <button type="button" onclick="execCmd('italic')" class="px-3 py-1.5 bg-white border rounded-lg hover:bg-slate-100 italic shadow-2xs">I</button>
+                                <button type="button" onclick="execCmd('underline')" class="px-3 py-1.5 bg-white border rounded-lg hover:bg-slate-100 underline shadow-2xs">U</button>
+                                <div class="h-4 w-px bg-slate-300 mx-1"></div>
+                                <button type="button" onclick="execCmd('insertUnorderedList')" class="px-2.5 py-1.5 bg-white border rounded-lg hover:bg-slate-100 shadow-2xs">• Lista</button>
+                                <button type="button" onclick="execCmd('insertOrderedList')" class="px-2.5 py-1.5 bg-white border rounded-lg hover:bg-slate-100 shadow-2xs">1. Lista</button>
+                            </div>
+                            <div id="editor-word-area" contenteditable="true" class="min-h-[350px] p-6 bg-slate-50/50 border border-slate-300 rounded-2xl focus:outline-none focus:border-emerald-500 leading-relaxed text-sm">
+                                <p>Descreva os objetivos, materiais e etapas da atividade aqui...</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white border border-slate-200/80 rounded-3xl p-6 space-y-4 shadow-xs">
+                            <h3 class="font-extrabold text-sm uppercase text-slate-700 tracking-wider">📚 Atividades Salvas</h3>
+                            <div id="lista-docs-word" class="space-y-3 max-h-[420px] overflow-y-auto pr-1">
+                                <p class="text-xs text-slate-400">Nenhum documento guardado.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- ABA PLANEJAMENTO & BNCC -->
                 <div id="tab-gestao" class="hidden space-y-6">
-                    <h2 class="text-2xl font-black text-slate-900 tracking-tight">Planejamento Pedagógico & BNCC</h2>
-                    <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 max-w-4xl">
-                        <div><label class="block text-xs font-bold uppercase mb-1">Escola</label><input type="text" id="plano-escola" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm"></div>
-                        <div><label class="block text-xs font-bold uppercase mb-1">Professor</label><input type="text" id="plano-professor" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm"></div>
-                        <button onclick="salvarPlanoGestao()" class="btn-primary-theme bg-emerald-600 text-white px-5 py-2.5 rounded-xl text-sm font-bold">💾 Guardar Plano</button>
+                    <div class="flex justify-between items-center flex-wrap gap-3 no-print">
+                        <div>
+                            <h2 class="text-2xl font-black text-slate-900 tracking-tight">Planejamento Pedagógico & BNCC</h2>
+                            <p class="text-slate-500 text-sm">Consulte habilidades oficiais e estruture o seu plano.</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="salvarPlanoGestao()" class="btn-primary-theme bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all cursor-pointer">💾 Guardar Plano</button>
+                            <button onclick="window.print()" class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-colors cursor-pointer">🖨️ Imprimir / Gerar PDF</button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-3 shadow-xs no-print">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-extrabold text-xs uppercase tracking-wider text-theme-main text-emerald-700">🔍 Repositório de Habilidades BNCC</h3>
+                            <span class="text-xs text-slate-400">Clique em <b>＋ Inserir</b> para adicionar ao plano</span>
+                        </div>
+                        <input type="text" oninput="filtrarBNCC(this.value)" placeholder="Pesquisar por código (ex: EF67EF01), esporte, dança..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        <div id="resultado-busca-bncc" class="space-y-2 max-h-48 overflow-y-auto pr-1"></div>
+                    </div>
+
+                    <div class="bg-white border border-slate-200/80 p-8 rounded-3xl shadow-xs space-y-6 max-w-4xl">
+                        <div class="border-b border-slate-200 pb-5 space-y-4">
+                            <h3 class="text-xs font-black uppercase text-slate-400 tracking-widest no-print">🏫 Cabeçalho da Escola</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="sm:col-span-2">
+                                    <label class="block text-xs uppercase font-bold text-slate-700 mb-1">Nome da Escola / Instituição</label>
+                                    <input type="text" id="plano-escola" placeholder="Ex: Escola Municipal Professor Silva" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2 text-sm font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs uppercase font-bold text-slate-700 mb-1">Professor(a)</label>
+                                    <input type="text" id="plano-professor" placeholder="Ex: Prof. Carlos Eduardo" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs uppercase font-bold text-slate-700 mb-1">Componente Curricular</label>
+                                    <input type="text" id="plano-disciplina" value="Educação Física" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs uppercase font-bold text-slate-700 mb-1">Turma / Ano Alvo</label>
+                                    <select id="plano-turma-select" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs uppercase font-bold text-slate-700 mb-1">Ano Letivo / Período</label>
+                                    <input type="text" id="plano-periodo" placeholder="Ex: 2026 - 1º Bimestre" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-5">
+                            <div>
+                                <label class="block text-xs uppercase font-bold text-slate-700 mb-1">1. Objetivos Estratégicos & Geral da Disciplina</label>
+                                <textarea id="plano-objetivos" rows="3" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Desenvolver competências motoras e socioemocionais..."></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-xs uppercase font-bold text-slate-700 mb-1">2. Habilidades da BNCC Selecionadas</label>
+                                <textarea id="plano-bncc-texto" rows="4" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3.5 text-sm font-mono text-emerald-800 focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="As habilidades BNCC selecionadas aparecerão aqui..."></textarea>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- ABA GESTOR DE DOCUMENTOS -->
+                <!-- ABA GESTOR DE DOCUMENTOS & PDFS -->
                 <div id="tab-documentos" class="hidden space-y-6">
-                    <h2 class="text-2xl font-black text-slate-900 tracking-tight">Gestor de Documentos & PDFs</h2>
-                    <button onclick="abrirModalUploadPDF()" class="btn-primary-theme bg-emerald-600 text-white px-4 py-2.5 rounded-xl text-sm font-bold">+ Adicionar PDF</button>
-                    <div id="lista-provas-cards" class="grid grid-cols-1 sm:grid-cols-2 gap-5"></div>
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h2 class="text-2xl font-black text-slate-900 tracking-tight">Gestor de Documentos & PDFs</h2>
+                            <p class="text-slate-500 text-sm">Anexe relatórios, regras oficiais e testes em PDF.</p>
+                        </div>
+                        <button onclick="abrirModalUploadPDF()" class="btn-primary-theme bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all cursor-pointer">+ Adicionar PDF</button>
+                    </div>
+                    <div id="lista-provas-cards" class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        <div class="bg-white border border-slate-200/80 p-8 rounded-3xl text-slate-400 text-sm col-span-2 text-center shadow-xs">Nenhum ficheiro PDF anexado.</div>
+                    </div>
                 </div>
 
-                <!-- ABA BACKUP -->
+                <!-- ABA BACKUP GOOGLE DRIVE -->
                 <div id="tab-backup" class="hidden space-y-6">
-                    <h2 class="text-2xl font-black text-slate-900 tracking-tight">Sincronização & Backup</h2>
-                    <button onclick="descarregarBackupJSON()" class="btn-primary-theme bg-emerald-600 text-white font-bold py-3 px-6 rounded-2xl text-sm">📥 Descarregar Backup (.json)</button>
+                    <div>
+                        <h2 class="text-2xl font-black text-slate-900 tracking-tight">Sincronização & Backup</h2>
+                        <p class="text-slate-500 text-sm">Faça backups seguros ou restaure dados anteriores.</p>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl">
+                        <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
+                            <h3 class="font-extrabold text-base text-slate-900">Backup na Nuvem</h3>
+                            <button onclick="salvarAutomaticoNoGoogleDrive()" class="btn-primary-theme w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-2xl cursor-pointer text-sm shadow-sm transition-all">☁️ Salvar no Drive</button>
+                            <span id="status-drive-txt" class="text-xs text-slate-500 block text-center font-medium">Pronto para sincronizar</span>
+                        </div>
+                        <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
+                            <h3 class="font-extrabold text-base text-slate-900">Restaurar Ficheiro (.json)</h3>
+                            <label class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-2xl cursor-pointer text-sm text-center block shadow-sm transition-colors">
+                                Selecionar Ficheiro
+                                <input type="file" accept=".json" onchange="importarBackupDrive(event)" class="hidden">
+                            </label>
+                            <span class="text-xs text-slate-500 block text-center font-medium">Carregue um backup guardado</span>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- ABA CONFIGURAÇÕES (TOTALMENTE CORRIGIDA) -->
+                <!-- ABA DE CONFIGURAÇÕES -->
                 <div id="tab-config" class="hidden space-y-6">
-                    <h2 class="text-2xl font-black text-slate-900 tracking-tight">Configurações do Sistema</h2>
+                    <div>
+                        <h2 class="text-2xl font-black text-slate-900 tracking-tight">Configurações do Sistema</h2>
+                        <p class="text-slate-500 text-sm">Personalize a aparência, perfil e credenciais do EduFís Pro.</p>
+                    </div>
+
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl">
                         <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
-                            <h3 class="font-extrabold text-sm uppercase text-slate-700">👤 Perfil & Escola Padrão</h3>
+                            <h3 class="font-extrabold text-sm uppercase tracking-wider text-slate-700">👤 Perfil & Escola Padrão</h3>
                             <div>
                                 <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Nome do Professor(a)</label>
                                 <input type="text" id="cfg-nome-prof" placeholder="Ex: Prof. Carlos Eduardo" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
                             </div>
                             <div>
-                                <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Escola Padrão</label>
+                                <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Escola / Instituição Principal</label>
                                 <input type="text" id="cfg-nome-escola" placeholder="Ex: Escola Municipal Silva" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
                             </div>
-                            <button onclick="salvarConfigPerfil()" class="btn-primary-theme w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl text-xs cursor-pointer shadow-sm">Guardar Alterações do Perfil</button>
+                            <button onclick="salvarConfigPerfil()" class="btn-primary-theme w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl text-xs shadow-sm transition-all cursor-pointer">Guardar Perfil</button>
                         </div>
+
                         <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
-                            <h3 class="font-extrabold text-sm uppercase text-slate-700">🎨 Cor da Interface</h3>
-                            <div class="grid grid-cols-2 gap-3 pt-1">
-                                <button onclick="aplicarTemaCor('emerald')" class="p-3 bg-emerald-600 text-white rounded-xl font-bold text-xs cursor-pointer shadow-xs">🟢 Verde-Esmeralda</button>
-                                <button onclick="aplicarTemaCor('sky')" class="p-3 bg-sky-600 text-white rounded-xl font-bold text-xs cursor-pointer shadow-xs">🔵 Azul-Marinho</button>
-                                <button onclick="aplicarTemaCor('purple')" class="p-3 bg-purple-600 text-white rounded-xl font-bold text-xs cursor-pointer shadow-xs">🟣 Violeta</button>
-                                <button onclick="aplicarTemaCor('slate')" class="p-3 bg-slate-800 text-white rounded-xl font-bold text-xs cursor-pointer shadow-xs">⚫ Neutro / Escuro</button>
+                            <h3 class="font-extrabold text-sm uppercase tracking-wider text-slate-700">🔒 Redefinir Palavra-passe</h3>
+                            <div>
+                                <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Palavra-passe Atual</label>
+                                <input type="password" id="cfg-senha-atual" placeholder="••••••••" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
                             </div>
+                            <div>
+                                <label class="block text-xs uppercase font-bold text-slate-600 mb-1">Nova Palavra-passe</label>
+                                <input type="password" id="cfg-senha-nova" placeholder="••••••••" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            </div>
+                            <button onclick="redefinirSenha()" class="bg-slate-900 hover:bg-slate-800 text-white font-bold w-full py-2.5 rounded-xl text-xs shadow-sm transition-all cursor-pointer">Alterar Palavra-passe</button>
+                        </div>
+
+                        <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs sm:col-span-2">
+                            <h3 class="font-extrabold text-sm uppercase tracking-wider text-slate-700">🎨 Cor da Interface</h3>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1">
+                                <button onclick="aplicarTemaCor('emerald')" class="p-3 bg-emerald-600 text-white rounded-xl font-bold text-xs text-center hover:opacity-95 transition-opacity cursor-pointer">🟢 Verde-Esmeralda</button>
+                                <button onclick="aplicarTemaCor('sky')" class="p-3 bg-sky-600 text-white rounded-xl font-bold text-xs text-center hover:opacity-95 transition-opacity cursor-pointer">🔵 Azul-Marinho</button>
+                                <button onclick="aplicarTemaCor('purple')" class="p-3 bg-purple-600 text-white rounded-xl font-bold text-xs text-center hover:opacity-95 transition-opacity cursor-pointer">🟣 Violeta</button>
+                                <button onclick="aplicarTemaCor('slate')" class="p-3 bg-slate-800 text-white rounded-xl font-bold text-xs text-center hover:opacity-95 transition-opacity cursor-pointer">⚫ Neutro / Escuro</button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white border border-rose-200 p-6 rounded-3xl space-y-3 shadow-xs sm:col-span-2">
+                            <h3 class="font-extrabold text-sm uppercase tracking-wider text-rose-600">⚠️ Zona de Perigo</h3>
+                            <p class="text-xs text-slate-500">Ao clicar no botão abaixo, todos os dados locais serão apagados permanentemente deste navegador.</p>
+                            <button onclick="limparTodosDadosLocais()" class="bg-rose-50 text-rose-600 hover:bg-rose-100 border border-rose-200 font-bold px-4 py-2.5 rounded-xl text-xs transition-colors cursor-pointer">Limpar Todos os Dados Locais</button>
                         </div>
                     </div>
                 </div>
@@ -427,8 +611,8 @@
             <h3 id="modal-titulo" class="font-extrabold text-lg text-slate-900">Registar</h3>
             <div id="modal-corpo" class="space-y-4"></div>
             <div class="flex justify-end gap-2.5 pt-2">
-                <button type="button" onclick="fecharModal()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-xs font-bold">Cancelar</button>
-                <button type="button" onclick="executarSalvarModal()" class="btn-primary-theme bg-emerald-600 text-white font-bold px-5 py-2 rounded-xl text-xs cursor-pointer">Guardar</button>
+                <button type="button" onclick="fecharModal()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2.5 rounded-xl text-xs font-bold transition-colors">Cancelar</button>
+                <button type="button" onclick="executarSalvarModal()" class="btn-primary-theme bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-5 py-2.5 rounded-xl text-xs shadow-sm transition-all cursor-pointer">Guardar</button>
             </div>
         </div>
     </div>
@@ -438,59 +622,127 @@
         let editandoIndex = -1;
 
         function toggleSidebarMobile() {
-            document.getElementById('sidebar-menu').classList.toggle('-translate-x-full');
-            document.getElementById('sidebar-overlay').classList.toggle('hidden');
+            const sidebar = document.getElementById('sidebar-menu');
+            const overlay = document.getElementById('sidebar-overlay');
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
         }
 
         function renderizarBancoJogos() {
             const container = document.getElementById('grid-jogos');
             if (!container) return;
             const busca = document.getElementById('search-jogos').value.toLowerCase().trim();
-            const filtrados = bancoJogos.filter(j => j.titulo.toLowerCase().includes(busca) || j.categoria.toLowerCase().includes(busca) || j.objetivo.toLowerCase().includes(busca));
 
-            container.innerHTML = filtrados.map((j) => `
-                <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-xs flex flex-col justify-between space-y-4">
-                    <div class="space-y-2">
-                        <div class="flex justify-between items-center"><h3 class="font-extrabold text-base text-slate-900">${j.titulo}</h3><span class="px-3 py-1 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-800">${j.categoria}</span></div>
-                        <p class="text-xs text-slate-600"><strong>🎯 Objetivo:</strong> ${j.objetivo}</p>
-                        <p class="text-xs text-slate-600"><strong>🎒 Materiais:</strong> ${j.materiais}</p>
-                        <p class="text-xs text-emerald-700"><strong>📋 Regras:</strong> ${j.regras}</p>
+            const filtrados = bancoJogos.filter(j => 
+                j.titulo.toLowerCase().includes(busca) || 
+                j.categoria.toLowerCase().includes(busca) || 
+                j.objetivo.toLowerCase().includes(busca) ||
+                j.materiais.toLowerCase().includes(busca)
+            );
+
+            if (filtrados.length === 0) {
+                container.innerHTML = `<div class="col-span-2 bg-white border border-slate-200 rounded-3xl p-8 text-center text-slate-400 text-sm">Nenhum jogo ou ideia encontrada.</div>`;
+                return;
+            }
+
+            container.innerHTML = filtrados.map((j) => {
+                const realIndex = bancoJogos.findIndex(item => item.id === j.id);
+                return `
+                    <div class="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-xs flex flex-col justify-between space-y-4">
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <h3 class="font-extrabold text-base text-slate-900">${j.titulo}</h3>
+                                <span class="px-3 py-1 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-800">${j.categoria}</span>
+                            </div>
+                            <div class="space-y-2 text-xs text-slate-600">
+                                <div><strong class="text-slate-800 font-bold uppercase text-[10px] block">🎯 Objetivo Pedagógico:</strong> ${j.objetivo}</div>
+                                <div><strong class="text-slate-800 font-bold uppercase text-[10px] block">🎒 Materiais Necessários:</strong> ${j.materiais}</div>
+                                <div><strong class="text-emerald-700 font-bold uppercase text-[10px] block">📋 Regras & Dinâmica Adaptável:</strong> ${j.regras}</div>
+                            </div>
+                        </div>
+                        <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
+                            <button onclick="abrirModalJogo(${realIndex})" class="text-emerald-600 hover:text-emerald-800 text-xs font-bold cursor-pointer px-3 py-1 bg-emerald-50 rounded-lg">Editar</button>
+                            <button onclick="removerJogo(${realIndex})" class="text-rose-600 hover:text-rose-800 text-xs font-bold cursor-pointer px-3 py-1 bg-rose-50 rounded-lg">Excluir</button>
+                        </div>
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
-        function renderizarBancoSocorros() {
-            const container = document.getElementById('grid-socorros');
-            if (!container) return;
-            container.innerHTML = baseSocorros.map(s => `
-                <div class="bg-white border border-rose-100 rounded-3xl p-6 shadow-xs space-y-2">
-                    <div class="flex justify-between items-center"><h3 class="font-extrabold text-base">${s.titulo}</h3><span class="px-3 py-1 rounded-full text-[10px] font-extrabold bg-rose-100 text-rose-800">${s.categoria}</span></div>
-                    <p class="text-xs text-slate-600 whitespace-pre-line"><strong>⚡ O Que Fazer:</strong>\n${s.oqfazer}</p>
-                    <p class="text-xs text-rose-700 bg-rose-50 p-2 rounded-xl"><strong>🚨 Alerta:</strong> ${s.alerta}</p>
-                </div>
-            `).join('');
+        function abrirModalJogo(idx = -1) {
+            modalTipo = 'jogo';
+            editandoIndex = idx;
+            document.getElementById('modal-titulo').textContent = idx === -1 ? 'Adicionar Nova Ideia / Jogo' : 'Editar Jogo ou Brincadeira';
+            
+            const j = idx !== -1 ? bancoJogos[idx] : { titulo: '', categoria: '', objetivo: '', materiais: '', regras: '' };
+            
+            document.getElementById('modal-corpo').innerHTML = `
+                <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Título da Atividade</label><input type="text" id="m-j-titulo" value="${j.titulo}" placeholder="Ex: Corrida do Saco Adaptada" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></div>
+                <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Categoria</label><input type="text" id="m-j-categoria" value="${j.categoria}" placeholder="Ex: Jogos Tradicionais / Aptidão" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></div>
+                <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Objetivo Pedagógico</label><input type="text" id="m-j-objetivo" value="${j.objetivo}" placeholder="O que se pretende desenvolver..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></div>
+                <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Materiais Necessários</label><input type="text" id="m-j-materiais" value="${j.materiais}" placeholder="Ex: Cones, bolas, cordas..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></div>
+                <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Regras & Adaptações</label><textarea id="m-j-regras" rows="3" placeholder="Como funciona a dinâmica..." class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">${j.regras}</textarea></div>
+            `;
+            document.getElementById('modal-app').classList.remove('hidden');
+        }
+
+        function removerJogo(idx) {
+            if(confirm('Tem certeza que deseja excluir esta ideia/jogo do banco?')) {
+                bancoJogos.splice(idx, 1);
+                salvarDadosLocais();
+                renderizarBancoJogos();
+            }
         }
 
         function renderizarAtlasAnatomia() {
             const container = document.getElementById('grid-anatomia');
             if (!container) return;
-            container.innerHTML = baseAnatomia.map(a => `
-                <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-xs space-y-2">
-                    <div class="flex justify-between items-center"><h3 class="font-extrabold text-base">${a.nome}</h3><span class="px-3 py-1 rounded-full text-[10px] font-extrabold bg-slate-100 text-slate-700">${a.tipo} • ${a.regiao}</span></div>
-                    <p class="text-xs text-slate-600"><strong>Ação:</strong> ${a.acao}</p>
-                    <p class="text-xs text-emerald-700"><strong>Aplicações:</strong> ${a.exercicios}</p>
+
+            const busca = document.getElementById('search-anatomia').value.toLowerCase().trim();
+            const regiao = document.getElementById('filter-regiao-anatomia').value;
+
+            const itensFiltrados = baseAnatomia.filter(item => {
+                const matchBusca = item.nome.toLowerCase().includes(busca) || 
+                                   item.acao.toLowerCase().includes(busca) || 
+                                   item.exercicios.toLowerCase().includes(busca);
+                const matchRegiao = (regiao === 'Todas') || (item.regiao === regiao);
+                return matchBusca && matchRegiao;
+            });
+
+            if (itensFiltrados.length === 0) {
+                container.innerHTML = `<div class="col-span-2 bg-white border border-slate-200 rounded-3xl p-8 text-center text-slate-400 text-sm">Nenhuma estrutura anatómica encontrada.</div>`;
+                return;
+            }
+
+            container.innerHTML = itensFiltrados.map(item => `
+                <div class="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-xs flex flex-col justify-between space-y-4">
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-extrabold text-base text-slate-900">${item.nome}</h3>
+                            <span class="px-3 py-1 rounded-full text-[10px] font-extrabold ${item.tipo === 'Músculo' ? 'bg-rose-100 text-rose-700' : 'bg-slate-100 text-slate-700'}">${item.tipo} • ${item.regiao}</span>
+                        </div>
+                        <div class="space-y-2 text-xs text-slate-600">
+                            <div><strong class="text-slate-800 font-bold uppercase text-[10px] block">Ação / Descrição:</strong> ${item.acao}</div>
+                            <div><strong class="text-emerald-700 font-bold uppercase text-[10px] block">Aplicações na Ed. Física:</strong> ${item.exercicios}</div>
+                        </div>
+                    </div>
                 </div>
             `).join('');
         }
 
         function alternarTelaAuth(modo) {
+            const fLogin = document.getElementById('form-login');
+            const fReg = document.getElementById('form-registrar');
+            const sub = document.getElementById('auth-box-sub');
+
             if (modo === 'registrar') {
-                document.getElementById('form-login').classList.add('hidden');
-                document.getElementById('form-registrar').classList.remove('hidden');
+                fLogin.classList.add('hidden');
+                fReg.classList.remove('hidden');
+                sub.textContent = 'Crie a sua conta de utilizador para aceder';
             } else {
-                document.getElementById('form-registrar').classList.add('hidden');
-                document.getElementById('form-login').classList.remove('hidden');
+                fReg.classList.add('hidden');
+                fLogin.classList.remove('hidden');
+                sub.textContent = 'Aceda à sua conta de Gestão Pedagógica';
             }
         }
 
@@ -499,10 +751,18 @@
             const nome = document.getElementById('reg-nome').value.trim();
             const email = document.getElementById('reg-email').value.trim().toLowerCase();
             const senha = document.getElementById('reg-senha').value;
+
+            if (usuarios.some(u => u.email === email)) {
+                alert('❌ Este e-mail já está registado!');
+                return;
+            }
+
             usuarios.push({ nome, email, senha });
             usuarioLogado = { nome, email };
             configApp.nomeProf = nome;
+
             salvarDadosLocais();
+            alert('✅ Conta criada com sucesso!');
             switchView('dashboard');
         }
 
@@ -510,9 +770,16 @@
             e.preventDefault();
             const email = document.getElementById('login-email').value.trim().toLowerCase();
             const senha = document.getElementById('login-senha').value;
-            const user = usuarios.find(u => u.email === email && u.senha === senha) || { nome: 'Professor(a)', email };
-            usuarioLogado = { nome: user.nome, email: user.email };
-            if(!configApp.nomeProf) configApp.nomeProf = user.nome;
+
+            const userEncontrado = usuarios.find(u => u.email === email && u.senha === senha);
+            if (!userEncontrado) {
+                alert('❌ E-mail ou palavra-passe incorretos!');
+                return;
+            }
+
+            usuarioLogado = { nome: userEncontrado.nome, email: userEncontrado.email };
+            if(!configApp.nomeProf) configApp.nomeProf = userEncontrado.nome;
+            
             salvarDadosLocais();
             switchView('dashboard');
         }
@@ -523,135 +790,500 @@
             switchView('login');
         }
 
+        function redefinirSenha() {
+            const senhaAtual = document.getElementById('cfg-senha-atual').value;
+            const senhaNova = document.getElementById('cfg-senha-nova').value;
+
+            if (!usuarioLogado) return;
+
+            const userIndex = usuarios.findIndex(u => u.email === usuarioLogado.email);
+            if (userIndex === -1 || usuarios[userIndex].senha !== senhaAtual) {
+                alert('❌ Palavra-passe atual incorreta!');
+                return;
+            }
+
+            if (!senhaNova || senhaNova.length < 4) {
+                alert('❌ A nova palavra-passe deve ter pelo menos 4 caracteres.');
+                return;
+            }
+
+            usuarios[userIndex].senha = senhaNova;
+            salvarDadosLocais();
+            document.getElementById('cfg-senha-atual').value = '';
+            document.getElementById('cfg-senha-nova').value = '';
+            alert('✅ Palavra-passe alterada com sucesso!');
+        }
+
         function switchView(view) {
             document.getElementById('view-login').classList.add('hidden');
             document.getElementById('view-dashboard').classList.add('hidden');
-            if (view === 'login') document.getElementById('view-login').classList.remove('hidden');
+
+            if (view === 'login') {
+                document.getElementById('view-login').classList.remove('hidden');
+            }
             if (view === 'dashboard') {
+                if (!usuarioLogado) {
+                    switchView('login');
+                    return;
+                }
                 document.getElementById('view-dashboard').classList.remove('hidden');
                 carregarTudoNaTela();
-                if(configApp.temaCor) aplicarTemaCor(configApp.temaCor);
+                aplicarTemaCor(configApp.temaCor || 'emerald');
             }
         }
 
         function changeTab(tabId) {
-            ['home', 'socorros', 'jogos', 'anatomia', 'turmas', 'alunos', 'chamada', 'editor-word', 'gestao', 'documentos', 'backup', 'config'].forEach(t => {
+            ['home', 'jogos', 'anatomia', 'turmas', 'alunos', 'chamada', 'editor-word', 'gestao', 'documentos', 'backup', 'config'].forEach(t => {
                 const el = document.getElementById(`tab-${t}`);
                 if(el) el.classList.add('hidden');
             });
-            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            const abaAlvo = document.getElementById(`tab-${tabId}`);
+            if(abaAlvo) abaAlvo.classList.remove('hidden');
+
+            const sidebar = document.getElementById('sidebar-menu');
+            const overlay = document.getElementById('sidebar-overlay');
+            if(sidebar && !sidebar.classList.contains('-translate-x-full') && window.innerWidth < 1024) {
+                sidebar.classList.add('-translate-x-full');
+                if(overlay) overlay.classList.add('hidden');
+            }
+
             if(tabId === 'jogos') renderizarBancoJogos();
-            if(tabId === 'socorros') renderizarBancoSocorros();
             if(tabId === 'anatomia') renderizarAtlasAnatomia();
+            if(tabId === 'chamada') {
+                atualizarSelectTurmasChamada();
+                const dataInput = document.getElementById('data-chamada');
+                if(dataInput && !dataInput.value) dataInput.value = new Date().toISOString().split('T')[0];
+            }
+            if(tabId === 'editor-word') atualizarSelectTurmasWord();
+            if(tabId === 'gestao') {
+                filtrarBNCC('');
+                atualizarSelectTurmasPlano();
+            }
+            if(tabId === 'documentos') atualizarTabelaPDFs();
             if(tabId === 'config') carregarConfigNaTela();
         }
 
         function carregarTudoNaTela() {
-            if(usuarioLogado) document.getElementById('header-user-nome').textContent = `👤 ${configApp.nomeProf || usuarioLogado.nome}`;
+            if(usuarioLogado) {
+                document.getElementById('header-user-nome').textContent = `👤 ${usuarioLogado.nome}`;
+            }
             atualizarTabelaTurmas();
             atualizarTabelaAlunos();
             atualizarEstatisticas();
+            atualizarSelectTurmasChamada();
+            atualizarSelectTurmasWord();
+            atualizarSelectTurmasPlano();
+            carregarPlanoGestao();
+            atualizarListaDocsWord();
+            atualizarAgendaHoje();
             renderizarBancoJogos();
-            renderizarBancoSocorros();
             renderizarAtlasAnatomia();
         }
 
         function carregarConfigNaTela() {
-            if(configApp.nomeProf) document.getElementById('cfg-nome-prof').value = configApp.nomeProf;
-            if(configApp.nomeEscola) document.getElementById('cfg-nome-escola').value = configApp.nomeEscola;
+            if(configApp.nomeProf || (usuarioLogado && usuarioLogado.nome)) {
+                const nomeExibir = configApp.nomeProf || usuarioLogado.nome;
+                document.getElementById('cfg-nome-prof').value = nomeExibir;
+                document.getElementById('header-user-nome').textContent = `👤 ${nomeExibir}`;
+            }
+            if(configApp.nomeEscola) {
+                document.getElementById('cfg-nome-escola').value = configApp.nomeEscola;
+            }
         }
 
         function salvarConfigPerfil() {
-            const nomeProf = document.getElementById('cfg-nome-prof').value.trim();
-            const nomeEscola = document.getElementById('cfg-nome-escola').value.trim();
+            configApp.nomeProf = document.getElementById('cfg-nome-prof').value.trim();
+            configApp.nomeEscola = document.getElementById('cfg-nome-escola').value.trim();
             
-            if(nomeProf) {
-                configApp.nomeProf = nomeProf;
-                document.getElementById('header-user-nome').textContent = `👤 ${nomeProf}`;
+            if(configApp.nomeProf) {
+                document.getElementById('header-user-nome').textContent = `👤 ${configApp.nomeProf}`;
+                document.getElementById('plano-professor').value = configApp.nomeProf;
+                if(usuarioLogado) usuarioLogado.nome = configApp.nomeProf;
             }
-            if(nomeEscola) {
-                configApp.nomeEscola = nomeEscola;
+            if(configApp.nomeEscola) {
+                document.getElementById('plano-escola').value = configApp.nomeEscola;
             }
-            
+
             salvarDadosLocais();
             alert('✅ Perfil guardado com sucesso!');
         }
 
-        function abrirModalTurma() {
+        function limparTodosDadosLocais() {
+            if(confirm('🚨 Tem certeza que deseja apagar TODOS os dados salvos neste navegador?')) {
+                localStorage.clear();
+                alert('Os dados foram apagados. A página será recarregada.');
+                location.reload();
+            }
+        }
+
+        function atualizarAgendaHoje() {
+            const dataEl = document.getElementById('agenda-data-hoje');
+            const selectTurma = document.getElementById('agenda-select-turma');
+            const inputConteudo = document.getElementById('agenda-input-conteudo');
+
+            if(dataEl) {
+                const hoje = new Date();
+                dataEl.textContent = hoje.toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            }
+
+            if(selectTurma) {
+                selectTurma.innerHTML = '<option value="">Selecione a turma...</option>' + turmas.map(t => `<option value="${t.nome}">${t.nome} (${t.ano})</option>`).join('');
+                if(agendaHojeDados.turma) selectTurma.value = agendaHojeDados.turma;
+            }
+
+            if(inputConteudo && agendaHojeDados.conteudo) {
+                inputConteudo.value = agendaHojeDados.conteudo;
+            }
+        }
+
+        function salvarAgendaHoje() {
+            agendaHojeDados = {
+                turma: document.getElementById('agenda-select-turma').value,
+                conteudo: document.getElementById('agenda-input-conteudo').value
+            };
+            salvarDadosLocais();
+        }
+
+        function abrirModalTurma(idx = -1) {
             modalTipo = 'turma';
-            document.getElementById('modal-titulo').textContent = 'Registar Nova Turma';
+            editandoIndex = idx;
+            document.getElementById('modal-titulo').textContent = idx === -1 ? 'Registar Nova Turma' : 'Editar Turma';
+            
+            const t = idx !== -1 ? turmas[idx] : { nome: '', ano: '', turno: '' };
+            
             document.getElementById('modal-corpo').innerHTML = `
-                <div><label class="block text-xs uppercase font-bold mb-1">Nome da Turma</label><input type="text" id="m-t-nome" placeholder="Ex: 8º Ano A" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
-                <div><label class="block text-xs uppercase font-bold mb-1">Ano / Série</label><input type="text" id="m-t-ano" placeholder="Ex: Ensino Fundamental" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
-                <div><label class="block text-xs uppercase font-bold mb-1">Turno</label><input type="text" id="m-t-turno" placeholder="Ex: Manhã" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
+                <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Nome da Turma</label><input type="text" id="m-t-nome" value="${t.nome}" placeholder="Ex: 8º Ano A" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></div>
+                <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Ano / Série</label><input type="text" id="m-t-ano" value="${t.ano}" placeholder="Ex: Ensino Fundamental" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></div>
+                <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Turno</label><input type="text" id="m-t-turno" value="${t.turno}" placeholder="Ex: Manhã" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></div>
             `;
             document.getElementById('modal-app').classList.remove('hidden');
         }
 
-        function abrirModalAluno() {
+        function abrirModalAluno(idx = -1) {
             modalTipo = 'aluno';
-            let turmasOpts = turmas.length ? turmas.map(t => `<option value="${t.nome}">${t.nome}</option>`).join('') : '<option value="Geral">Sem turmas</option>';
-            document.getElementById('modal-titulo').textContent = 'Matricular Aluno';
+            editandoIndex = idx;
+            document.getElementById('modal-titulo').textContent = idx === -1 ? 'Matricular Novo Aluno' : 'Editar Aluno';
+            
+            const a = idx !== -1 ? alunos[idx] : { nome: '', email: '', turma: '' };
+            let turmasOpts = turmas.length ? turmas.map(t => `<option value="${t.nome}" ${a.turma === t.nome ? 'selected' : ''}>${t.nome}</option>`).join('') : '<option value="Geral">Sem turmas disponíveis</option>';
+            
             document.getElementById('modal-corpo').innerHTML = `
-                <div><label class="block text-xs uppercase font-bold mb-1">Nome do Aluno</label><input type="text" id="m-a-nome" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm"></div>
-                <div><label class="block text-xs uppercase font-bold mb-1">Turma</label><select id="m-a-turma" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm">${turmasOpts}</select></div>
+                <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Nome Completo</label><input type="text" id="m-a-nome" value="${a.nome}" placeholder="Nome do aluno" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></div>
+                <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">E-mail</label><input type="email" id="m-a-email" value="${a.email || ''}" placeholder="aluno@escola.pt" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></div>
+                <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Turma</label><select id="m-a-turma" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">${turmasOpts}</select></div>
             `;
             document.getElementById('modal-app').classList.remove('hidden');
         }
 
-        function fecharModal() { document.getElementById('modal-app').classList.add('hidden'); }
+        function fecharModal() { document.getElementById('modal-app').classList.add('hidden'); editandoIndex = -1; }
 
         function executarSalvarModal() {
             if(modalTipo === 'turma') {
                 const nome = document.getElementById('m-t-nome').value.trim();
                 const ano = document.getElementById('m-t-ano').value.trim();
                 const turno = document.getElementById('m-t-turno').value.trim();
-                if(!nome) return;
-                turmas.push({ nome, ano: ano || 'N/A', turno: turno || 'N/A' });
+                if(!nome) { alert('Insira o nome da turma.'); return; }
+                
+                if(editandoIndex === -1) {
+                    turmas.push({ nome, ano: ano || 'N/A', turno: turno || 'N/A' });
+                } else {
+                    turmas[editandoIndex] = { nome, ano: ano || 'N/A', turno: turno || 'N/A' };
+                }
                 atualizarTabelaTurmas();
+                atualizarSelectTurmasChamada();
+                atualizarSelectTurmasWord();
+                atualizarSelectTurmasPlano();
             } else if(modalTipo === 'aluno') {
                 const nome = document.getElementById('m-a-nome').value.trim();
+                const email = document.getElementById('m-a-email').value.trim();
                 const turma = document.getElementById('m-a-turma').value;
-                if(!nome) return;
-                alunos.push({ nome, turma });
+                if(!nome) { alert('Insira o nome do aluno.'); return; }
+                
+                if(editandoIndex === -1) {
+                    alunos.push({ nome, email, turma });
+                } else {
+                    alunos[editandoIndex] = { nome, email, turma };
+                }
                 atualizarTabelaAlunos();
+            } else if(modalTipo === 'jogo') {
+                const titulo = document.getElementById('m-j-titulo').value.trim();
+                const categoria = document.getElementById('m-j-categoria').value.trim();
+                const objetivo = document.getElementById('m-j-objetivo').value.trim();
+                const materiais = document.getElementById('m-j-materiais').value.trim();
+                const regras = document.getElementById('m-j-regras').value.trim();
+                if(!titulo) { alert('Insira o título da atividade.'); return; }
+
+                if(editandoIndex === -1) {
+                    bancoJogos.push({ id: Date.now(), titulo, categoria: categoria || 'Geral', objetivo, materiais, regras });
+                } else {
+                    bancoJogos[editandoIndex] = { ...bancoJogos[editandoIndex], titulo, categoria: categoria || 'Geral', objetivo, materiais, regras };
+                }
+                renderizarBancoJogos();
             }
             salvarDadosLocais();
             atualizarEstatisticas();
+            atualizarAgendaHoje();
             fecharModal();
         }
 
         function atualizarTabelaTurmas() {
             const tbody = document.getElementById('tabela-turmas');
             if(!tbody) return;
-            tbody.innerHTML = turmas.length === 0 ? `<tr><td colspan="4" class="p-8 text-center text-slate-400">Nenhuma turma registada.</td></tr>` : turmas.map((t, idx) => `
-                <tr><td class="p-4 font-bold">${t.nome}</td><td class="p-4">${t.ano}</td><td class="p-4">${t.turno}</td><td class="p-4 text-right"><button onclick="turmas.splice(${idx},1);salvarDadosLocais();atualizarTabelaTurmas()" class="text-rose-600 font-bold">Excluir</button></td></tr>
+            tbody.innerHTML = turmas.length === 0 ? `<tr><td colspan="5" class="p-8 text-center text-slate-400">Nenhuma turma registada.</td></tr>` : turmas.map((t, idx) => `
+                <tr class="hover:bg-slate-50/85 transition-colors">
+                    <td class="p-4 font-bold text-slate-900">${t.nome}</td>
+                    <td class="p-4 text-slate-600">${t.ano}</td>
+                    <td class="p-4 text-slate-600">${t.turno}</td>
+                    <td class="p-4"><span class="bg-slate-100 text-slate-700 px-3 py-1 rounded-full text-xs font-extrabold">${alunos.filter(a => a.turma === t.nome).length} aluno(s)</span></td>
+                    <td class="p-4 text-right space-x-2">
+                        <button onclick="abrirModalTurma(${idx})" class="text-emerald-600 hover:text-emerald-800 text-xs font-bold cursor-pointer">Editar</button>
+                        <button onclick="removerTurma(${idx})" class="text-rose-600 hover:text-rose-800 text-xs font-bold cursor-pointer">Excluir</button>
+                    </td>
+                </tr>
             `).join('');
         }
 
         function atualizarTabelaAlunos() {
             const tbody = document.getElementById('tabela-alunos');
             if(!tbody) return;
-            tbody.innerHTML = alunos.length === 0 ? `<tr><td colspan="3" class="p-8 text-center text-slate-400">Nenhum aluno registado.</td></tr>` : alunos.map((a, idx) => `
-                <tr><td class="p-4 font-bold">${a.nome}</td><td class="p-4">${a.turma}</td><td class="p-4 text-right"><button onclick="alunos.splice(${idx},1);salvarDadosLocais();atualizarTabelaAlunos()" class="text-rose-600 font-bold">Excluir</button></td></tr>
+            tbody.innerHTML = alunos.length === 0 ? `<tr><td colspan="4" class="p-8 text-center text-slate-400">Nenhum aluno registado.</td></tr>` : alunos.map((a, idx) => `
+                <tr class="hover:bg-slate-50/85 transition-colors">
+                    <td class="p-4 font-bold text-slate-900">${a.nome}</td>
+                    <td class="p-4 text-slate-600">${a.email || '-'}</td>
+                    <td class="p-4"><span class="bg-slate-100 text-slate-700 px-3 py-1 rounded-md text-xs font-bold">${a.turma}</span></td>
+                    <td class="p-4 text-right space-x-2">
+                        <button onclick="abrirModalAluno(${idx})" class="text-emerald-600 hover:text-emerald-800 text-xs font-bold cursor-pointer">Editar</button>
+                        <button onclick="removerAluno(${idx})" class="text-rose-600 hover:text-rose-800 text-xs font-bold cursor-pointer">Excluir</button>
+                    </td>
+                </tr>
             `).join('');
         }
 
-        function atualizarEstatisticas() {
-            if(document.getElementById('stat-turmas')) document.getElementById('stat-turmas').textContent = turmas.length;
-            if(document.getElementById('stat-alunos')) document.getElementById('stat-alunos').textContent = alunos.length;
-            if(document.getElementById('stat-documentos')) document.getElementById('stat-documentos').textContent = documentosWord.length;
-            if(document.getElementById('stat-pdfs')) document.getElementById('stat-pdfs').textContent = documentosPDF.length;
+        function removerTurma(idx) {
+            if(confirm('Tem certeza que deseja excluir esta turma?')) {
+                turmas.splice(idx, 1);
+                salvarDadosLocais();
+                atualizarTabelaTurmas();
+                atualizarEstatisticas();
+                atualizarSelectTurmasChamada();
+                atualizarSelectTurmasPlano();
+                atualizarAgendaHoje();
+            }
         }
 
-        function descarregarBackupJSON() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ turmas, alunos, bancoJogos, configApp }, null, 2));
-            const dl = document.createElement('a');
-            dl.setAttribute("href", dataStr);
-            dl.setAttribute("download", `EduFis_Backup.json`);
-            document.body.appendChild(dl);
-            dl.click();
-            dl.remove();
+        function removerAluno(idx) {
+            if(confirm('Tem certeza que deseja excluir este aluno?')) {
+                alunos.splice(idx, 1);
+                salvarDadosLocais();
+                atualizarTabelaAlunos();
+                atualizarEstatisticas();
+            }
+        }
+
+        function atualizarSelectTurmasChamada() {
+            const select = document.getElementById('select-turma-chamada');
+            if(!select) return;
+            select.innerHTML = '<option value="">Escolha uma turma...</option>' + turmas.map(t => `<option value="${t.nome}">${t.nome} (${t.ano})</option>`).join('');
+        }
+
+        function carregarChamadaTurma() {
+            const turmaNome = document.getElementById('select-turma-chamada').value;
+            const container = document.getElementById('container-lista-chamada');
+            const listaDiv = document.getElementById('lista-alunos-chamada');
+            if(!turmaNome) { container.classList.add('hidden'); return; }
+            const alunosTurma = alunos.filter(a => a.turma === turmaNome);
+            container.classList.remove('hidden');
+            if(alunosTurma.length === 0) { listaDiv.innerHTML = `<p class="text-xs text-slate-400">Nenhum aluno matriculado nesta turma.</p>`; return; }
+            
+            listaDiv.innerHTML = alunosTurma.map((a, idx) => `
+                <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200/80 flex justify-between items-center text-xs">
+                    <span class="font-bold text-slate-900">${a.nome}</span>
+                    <div class="flex gap-2" id="aluno-row-${idx}">
+                        <button type="button" onclick="marcarPresenca(${idx}, 'P')" class="btn-primary-theme px-3 py-1.5 rounded-xl font-bold bg-emerald-600 text-white shadow-xs cursor-pointer btn-status-${idx}">Presente</button>
+                        <button type="button" onclick="marcarPresenca(${idx}, 'F')" class="px-3 py-1.5 rounded-xl font-bold bg-slate-200 text-slate-700 hover:bg-slate-300 cursor-pointer btn-status-${idx}">Falta</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function marcarPresenca(idx, tipo) {
+            const row = document.getElementById(`aluno-row-${idx}`);
+            const buttons = row.querySelectorAll('button');
+            buttons.forEach(b => {
+                b.className = "px-3 py-1.5 rounded-xl font-bold bg-slate-200 text-slate-700 hover:bg-slate-300 cursor-pointer";
+            });
+            const clicked = row.querySelector(`button:nth-child(${tipo === 'P' ? 1 : 2})`);
+            clicked.className = tipo === 'P' ? "btn-primary-theme px-3 py-1.5 rounded-xl font-bold bg-emerald-600 text-white shadow-xs cursor-pointer" : "px-3 py-1.5 rounded-xl font-bold bg-rose-600 text-white shadow-xs cursor-pointer";
+        }
+
+        function salvarChamada() { alert('✅ Frequência guardada com sucesso!'); }
+
+        function atualizarSelectTurmasWord() {
+            const select = document.getElementById('doc-word-turma');
+            if(!select) return;
+            select.innerHTML = turmas.length === 0 ? '<option value="Geral">Geral</option>' : turmas.map(t => `<option value="${t.nome}">${t.nome}</option>`).join('');
+        }
+
+        function atualizarSelectTurmasPlano() {
+            const select = document.getElementById('plano-turma-select');
+            if(!select) return;
+            select.innerHTML = turmas.length === 0 ? '<option value="Geral">Todas as Turmas</option>' : turmas.map(t => `<option value="${t.nome}">${t.nome} (${t.ano})</option>`).join('');
+        }
+
+        function execCmd(command, value = null) { document.execCommand(command, false, value); }
+        function novoDocumentoWord() { document.getElementById('doc-word-titulo').value = ''; document.getElementById('editor-word-area').innerHTML = '<p>Descreva os objetivos, materiais e etapas da atividade aqui...</p>'; }
+
+        function salvarDocumentoWord() {
+            const titulo = document.getElementById('doc-word-titulo').value.trim();
+            const turma = document.getElementById('doc-word-turma').value;
+            const conteudo = document.getElementById('editor-word-area').innerHTML;
+            if(!titulo) { alert('Insira um título para a atividade.'); return; }
+            documentosWord.push({ titulo, turma, conteudo, data: new Date().toLocaleDateString('pt-PT') });
+            salvarDadosLocais();
+            atualizarListaDocsWord();
+            atualizarEstatisticas();
+            alert('✅ Atividade guardada com sucesso!');
+        }
+
+        function atualizarListaDocsWord() {
+            const container = document.getElementById('lista-docs-word');
+            if(!container) return;
+            container.innerHTML = documentosWord.length === 0 ? `<p class="text-xs text-slate-400">Nenhum documento guardado.</p>` : documentosWord.map((d, idx) => `
+                <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200/85 flex justify-between items-center text-xs">
+                    <div><strong class="text-slate-900 block font-bold">${d.titulo}</strong><span class="text-slate-500 text-[11px]">🏫 ${d.turma} • ${d.data}</span></div>
+                    <button onclick="removerDocWord(${idx})" class="text-rose-600 hover:text-rose-800 font-bold cursor-pointer">Excluir</button>
+                </div>
+            `).join('');
+        }
+
+        function removerDocWord(idx) {
+            documentosWord.splice(idx, 1);
+            salvarDadosLocais();
+            atualizarListaDocsWord();
+            atualizarEstatisticas();
+        }
+
+        function filtrarBNCC(termo) {
+            const container = document.getElementById('resultado-busca-bncc');
+            if(!container) return;
+            const termoLimpo = termo.trim().toLowerCase();
+            const filtradas = baseBNCC.filter(b => b.codigo.toLowerCase().includes(termoLimpo) || b.tema.toLowerCase().includes(termoLimpo) || b.desc.toLowerCase().includes(termoLimpo));
+            container.innerHTML = filtradas.map(b => `
+                <div onclick="inserirBNCCNoPlano('${b.codigo}', '${b.desc.replace(/'/g, "\\'")}')" class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs text-slate-700 hover:border-slate-400 cursor-pointer flex justify-between items-center transition-colors">
+                    <div><strong class="text-theme-main text-emerald-700 font-extrabold">[${b.codigo}]</strong> <span class="text-slate-600">${b.desc}</span></div>
+                    <button type="button" class="btn-primary-theme bg-emerald-600 text-white font-bold px-3 py-1 rounded-lg text-xs">＋ Inserir</button>
+                </div>
+            `).join('');
+        }
+
+        function inserirBNCCNoPlano(codigo, desc) {
+            const campo = document.getElementById('plano-bncc-texto');
+            campo.value += (campo.value ? '\n' : '') + `• [${codigo}] - ${desc}`;
+            alert(`✅ Habilidade ${codigo} adicionada ao planejamento!`);
+        }
+
+        function salvarPlanoGestao() {
+            planoGestaoDados = {
+                escola: document.getElementById('plano-escola').value,
+                professor: document.getElementById('plano-professor').value,
+                disciplina: document.getElementById('plano-disciplina').value,
+                turma: document.getElementById('plano-turma-select').value,
+                periodo: document.getElementById('plano-periodo').value,
+                objetivos: document.getElementById('plano-objetivos').value,
+                bncc: document.getElementById('plano-bncc-texto').value
+            };
+            salvarDadosLocais();
+            alert('✅ Plano guardado com sucesso!');
+        }
+
+        function carregarPlanoGestao() {
+            if(planoGestaoDados.escola) document.getElementById('plano-escola').value = planoGestaoDados.escola;
+            else if(configApp.nomeEscola) document.getElementById('plano-escola').value = configApp.nomeEscola;
+
+            if(planoGestaoDados.professor) document.getElementById('plano-professor').value = planoGestaoDados.professor;
+            else if(configApp.nomeProf) document.getElementById('plano-professor').value = configApp.nomeProf;
+
+            if(planoGestaoDados.disciplina) document.getElementById('plano-disciplina').value = planoGestaoDados.disciplina;
+            if(planoGestaoDados.periodo) document.getElementById('plano-periodo').value = planoGestaoDados.periodo;
+            if(planoGestaoDados.turma) document.getElementById('plano-turma-select').value = planoGestaoDados.turma;
+            if(planoGestaoDados.objetivos) document.getElementById('plano-objetivos').value = planoGestaoDados.objetivos;
+            if(planoGestaoDados.bncc) document.getElementById('plano-bncc-texto').value = planoGestaoDados.bncc;
+        }
+
+        function abrirModalUploadPDF() {
+            let turmasOpts = turmas.length ? turmas.map(t => `<option value="${t.nome}">${t.nome}</option>`).join('') : '<option value="Geral">Geral</option>';
+            modalTipo = 'pdf';
+            document.getElementById('modal-titulo').textContent = 'Anexar Ficheiro PDF';
+            document.getElementById('modal-corpo').innerHTML = `
+                <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Título do Documento</label><input type="text" id="pdf-titulo" placeholder="Ex: Regulamento de Jogos" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></div>
+                <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Turma Destino</label><select id="pdf-turma" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">${turmasOpts}</select></div>
+                <div><label class="block text-xs uppercase font-bold text-slate-600 mb-1">Ficheiro PDF</label><input type="file" id="pdf-file-input" accept="application/pdf" class="w-full text-xs"></div>
+            `;
+            document.querySelector('#modal-app button.btn-primary-theme').setAttribute('onclick', 'salvarPDFDirecto()');
+            document.getElementById('modal-app').classList.remove('hidden');
+        }
+
+        function salvarPDFDirecto() {
+            const titulo = document.getElementById('pdf-titulo').value.trim();
+            const turma = document.getElementById('pdf-turma').value;
+            const fileInput = document.getElementById('pdf-file-input');
+            if(!titulo || !fileInput.files[0]) { alert('Preencha o título e selecione um PDF.'); return; }
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                documentosPDF.push({ titulo, turma, nomeFicheiro: file.name, pdfData: e.target.result, data: new Date().toLocaleDateString('pt-PT') });
+                salvarDadosLocais();
+                atualizarTabelaPDFs();
+                atualizarEstatisticas();
+                fecharModal();
+                document.querySelector('#modal-app button.btn-primary-theme').setAttribute('onclick', 'executarSalvarModal()');
+                alert('✅ PDF anexado com sucesso!');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function atualizarTabelaPDFs() {
+            const container = document.getElementById('lista-provas-cards');
+            if(!container) return;
+            if(documentosPDF.length === 0) { container.innerHTML = `<div class="bg-white border border-slate-200/80 p-8 rounded-3xl text-slate-400 text-sm col-span-2 text-center shadow-xs">Nenhum ficheiro PDF anexado.</div>`; return; }
+            container.innerHTML = documentosPDF.map((pt, idx) => `
+                <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-3 shadow-xs">
+                    <div class="flex justify-between items-start">
+                        <span class="bg-slate-100 text-slate-700 font-bold px-2.5 py-0.5 rounded-full text-[10px]">🏫 ${pt.turma}</span>
+                        <span class="text-[10px] text-slate-400 font-medium">${pt.data}</span>
+                    </div>
+                    <h3 class="font-extrabold text-sm text-slate-900">${pt.titulo}</h3>
+                    <p class="text-xs text-slate-500">📎 ${pt.nomeFicheiro}</p>
+                    <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
+                        <button onclick="visualizarPDF(${idx})" class="btn-primary-theme bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl text-xs font-bold transition-colors cursor-pointer">Abrir</button>
+                        <button onclick="removerPDF(${idx})" class="bg-rose-50 text-rose-600 hover:bg-rose-100 px-3 py-1.5 rounded-xl text-xs font-bold transition-colors cursor-pointer">Excluir</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function visualizarPDF(idx) {
+            const pdf = documentosPDF[idx];
+            const win = window.open();
+            win.document.write(`<iframe src="${pdf.pdfData}" frameborder="0" style="border:0; width:100%; height:100%;" allowfullscreen></iframe>`);
+        }
+
+        function removerPDF(idx) {
+            documentosPDF.splice(idx, 1);
+            salvarDadosLocais();
+            atualizarTabelaPDFs();
+            atualizarEstatisticas();
+        }
+
+        function atualizarEstatisticas() {
+            const elTurmas = document.getElementById('stat-turmas');
+            const elAlunos = document.getElementById('stat-alunos');
+            const elDocs = document.getElementById('stat-documentos');
+            const elPdfs = document.getElementById('stat-pdfs');
+            if(elTurmas) elTurmas.textContent = turmas.length;
+            if(elAlunos) elAlunos.textContent = alunos.length;
+            if(elDocs) elDocs.textContent = documentosWord.length;
+            if(elPdfs) elPdfs.textContent = documentosPDF.length;
         }
 
         if (usuarioLogado) {

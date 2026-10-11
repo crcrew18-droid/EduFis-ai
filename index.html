@@ -42,6 +42,8 @@
 <body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col antialiased">
 
     <script>
+        const URL_GOOGLE_SCRIPT = "https://script.google.com/macros/s/AKfycbyTUXPXMwt_qEjteIef1pfSDs1kgzc_ck3QJkLpGzHygB8nOq03zANVHAfvDC1vKfrvKA/exec";
+
         let usuarios = JSON.parse(localStorage.getItem('edufis_usuarios_v8')) || [];
         let usuarioLogado = JSON.parse(localStorage.getItem('edufis_sessao_v8')) || null;
 
@@ -416,14 +418,10 @@
                     <div id="lista-provas-cards" class="grid grid-cols-1 sm:grid-cols-2 gap-5"></div>
                 </div>
 
-                <!-- ABA BACKUP (TOTALMENTE CORRIGIDA) -->
+                <!-- ABA BACKUP (COM DESCARGA CORRIGIDA E SEGURA) -->
                 <div id="tab-backup" class="hidden space-y-6">
                     <h2 class="text-2xl font-black text-slate-900 tracking-tight">Backup & Nuvem</h2>
-                    <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 max-w-xl shadow-xs">
-                        <h3 class="font-extrabold text-sm uppercase text-slate-700">💾 Cópia de Segurança Local</h3>
-                        <p class="text-xs text-slate-500">Descarregue um ficheiro com todos os seus dados (turmas, alunos, notas, jogos e configurações) para salvaguarda.</p>
-                        <button onclick="descarregarBackupJSON()" class="btn-primary-theme w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-6 rounded-2xl text-sm shadow-sm cursor-pointer">📥 Descarregar Backup Completo (.json)</button>
-                    </div>
+                    <button onclick="descarregarBackupJSON()" class="btn-primary-theme bg-emerald-600 text-white font-bold py-3 px-6 rounded-2xl text-sm cursor-pointer">📥 Descarregar Backup (.json)</button>
                 </div>
 
                 <!-- ABA CONFIGURAÇÕES -->
@@ -794,32 +792,27 @@
             renderizarListaPDFs();
         }
 
-        // FUNÇÃO DE BACKUP CORRIGIDA COM BLOB SEGURO
+        // Função de backup corrigida apenas para garantir que a transferência do JSON ocorra corretamente sem travar
         function descarregarBackupJSON() {
             const dadosCompletos = {
                 versao: "8.6",
-                dataBackup: new Date().toISOString(),
-                configuracoes: configApp,
                 turmas: turmas,
                 alunos: alunos,
                 bancoJogos: bancoJogos,
                 documentosWord: documentosWord,
                 documentosPDF: documentosPDF,
                 planoGestao: planoGestaoDados,
-                agendaHoje: agendaHojeDados
+                agendaHoje: agendaHojeDados,
+                configApp: configApp
             };
 
-            const jsonString = JSON.stringify(dadosCompletos, null, 2);
-            const blob = new Blob([jsonString], { type: "application/json" });
-            const url = URL.createObjectURL(blob);
-            
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dadosCompletos, null, 2));
             const dl = document.createElement('a');
-            dl.href = url;
-            dl.download = `EduFis_Backup_${new Date().toISOString().slice(0,10)}.json`;
+            dl.setAttribute("href", dataStr);
+            dl.setAttribute("download", `EduFis_Backup.json`);
             document.body.appendChild(dl);
             dl.click();
-            document.body.removeChild(dl);
-            URL.revokeObjectURL(url);
+            dl.remove();
         }
 
         if (usuarioLogado) {

@@ -111,7 +111,7 @@
             { codigo: "EF67EF01", tema: "Esportes", desc: "Experimentar e fruir diferentes esportes de marca, precisão, invasão e técnico-combinatórios." },
             { codigo: "EF67EF03", tema: "Esportes", desc: "Praticar um ou mais esportes de marca, precisão, invasão e técnico-combinatórios oferecidos na escola." },
             { codigo: "EF89EF07", tema: "Esportes", desc: "Formular e propor estratégias para a resolução de desafios em jogos desportivos." },
-            { codigo: "EF67EF07", tema: "Ginástica", desc: "Propor e produzir alternatives para a prática da ginástica de conscientização corporal." },
+            { codigo: "EF67EF07", tema: "Ginástica", desc: "Propor e produzir alternativas para a prática da ginástica de conscientização corporal." },
             { codigo: "EF89EF09", tema: "Ginástica", desc: "Construir apresentações de ginástica geral, integrando diferentes elementos gimnásticos." },
             { codigo: "EF35EF01", tema: "Brincadeiras e Jogos", desc: "Experimentar e fruir brincadeiras e jogos populares do Brasil e do mundo." },
             { codigo: "EF35EF05", tema: "Lutas", desc: "Experimentar e fruir lutas presentes no contexto comunitário e regional." }
@@ -734,43 +734,12 @@
         </div>
     </div>
 
-    <!-- MASCOTE FLUTUANTE & CHAT DO PROFESSOR EDU (DESIGN VETORIAL VIBRANTE HD) -->
+    <!-- MASCOTE FLUTUANTE & CHAT DO PROFESSOR EDU (IA) -->
     <div id="professor-edu-container" class="fixed bottom-6 right-6 z-50 no-print">
-        <button onclick="toggleChatEdu()" class="w-16 h-16 bg-sky-600 hover:bg-sky-700 text-white rounded-full shadow-2xl flex items-center justify-center transition-transform hover:scale-110 cursor-pointer relative group p-0.5 overflow-hidden border-2 border-white">
-            <!-- AVATAR MODERNO PROFESSOR DE EDUCAÇÃO FÍSICA -->
-            <svg class="w-full h-full rounded-full bg-slate-900" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <!-- Fundo gradiente suave -->
-                <circle cx="50" cy="50" r="50" fill="#0EA5E9"/>
-                <!-- Polo Desportiva Azul Escuro -->
-                <path d="M18 95 C 18 68, 82 68, 82 95 Z" fill="#0F172A"/>
-                <path d="M38 70 L 50 85 L 62 70 Z" fill="#1E293B"/>
-                <!-- Gola Amarela Desportiva -->
-                <path d="M32 70 L 42 78 L 50 72 L 58 78 L 68 70 L 50 86 Z" fill="#F59E0B"/>
-                <!-- Cordão e Apito de Treinador -->
-                <path d="M46 64 C 46 75, 54 75, 54 64 Z" stroke="#E2E8F0" stroke-width="2.5" fill="none"/>
-                <rect x="46" y="74" width="8" height="10" rx="2" fill="#CBD5E1"/>
-                <circle cx="50" cy="81" r="2" fill="#0F172A"/>
-                <!-- Cabeça / Pele -->
-                <ellipse cx="50" cy="46" rx="21" ry="23" fill="#F87171" opacity="0.15"/>
-                <ellipse cx="50" cy="45" rx="20" ry="22" fill="#FBCFE8"/>
-                <ellipse cx="50" cy="45" rx="20" ry="22" fill="#FED7AA"/>
-                <!-- Cabelo Moderno Castanho com Volume -->
-                <path d="M28 42 C 26 25, 38 18, 50 18 C 64 18, 74 26, 72 42 C 67 28, 33 28, 28 42 Z" fill="#451A03"/>
-                <!-- Olhos Expressivos Sorridentes -->
-                <ellipse cx="42" cy="43" rx="2.5" ry="3" fill="#0F172A"/>
-                <ellipse cx="58" cy="43" rx="2.5" ry="3" fill="#0F172A"/>
-                <circle cx="43" cy="42" r="1" fill="white"/>
-                <circle cx="59" cy="42" r="1" fill="white"/>
-                <!-- Sobrancelhas Amigáveis -->
-                <path d="M37 38 Q 42 35 46 38" stroke="#451A03" stroke-width="2" stroke-linecap="round"/>
-                <path d="M54 38 Q 58 35 63 38" stroke="#451A03" stroke-width="2" stroke-linecap="round"/>
-                <!-- Sorriso Amplo & Confiante -->
-                <path d="M38 52 Q 50 62 62 52" fill="white" stroke="#0F172A" stroke-width="2"/>
-                <!-- Aparelho / Brilho dos Dentes -->
-                <path d="M40 54 H 60" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="2 2"/>
-            </svg>
-            <span class="absolute top-0 right-0 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full z-10"></span>
-            <div class="absolute right-20 bg-slate-900 text-white text-[11px] font-bold px-3 py-1.5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-md pointer-events-none">
+        <button onclick="toggleChatEdu()" class="w-14 h-14 bg-sky-600 hover:bg-sky-700 text-white rounded-full shadow-2xl flex items-center justify-center transition-transform hover:scale-110 cursor-pointer relative group">
+            <span class="text-2xl">🤖</span>
+            <span class="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full"></span>
+            <div class="absolute right-16 bg-slate-900 text-white text-[11px] font-bold px-3 py-1.5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-md pointer-events-none">
                 Falar com Professor Edu 💡
             </div>
         </button>
@@ -778,17 +747,7 @@
         <div id="chat-edu-box" class="hidden absolute bottom-20 right-0 w-80 sm:w-96 bg-white border border-slate-200 rounded-3xl shadow-2xl flex flex-col overflow-hidden transition-all duration-300 max-h-[500px]">
             <div class="bg-slate-900 text-white p-4 flex items-center justify-between">
                 <div class="flex items-center gap-2.5">
-                    <div class="w-10 h-10 rounded-xl bg-sky-600 overflow-hidden flex items-center justify-center border border-sky-400 shrink-0">
-                        <svg class="w-full h-full bg-slate-900" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="50" cy="50" r="50" fill="#0EA5E9"/>
-                            <path d="M18 95 C 18 68, 82 68, 82 95 Z" fill="#0F172A"/>
-                            <ellipse cx="50" cy="45" rx="20" ry="22" fill="#FED7AA"/>
-                            <path d="M28 42 C 26 25, 38 18, 50 18 C 64 18, 74 26, 72 42 C 67 28, 33 28, 28 42 Z" fill="#451A03"/>
-                            <circle cx="42" cy="43" r="2.5" fill="#0F172A"/>
-                            <circle cx="58" cy="43" r="2.5" fill="#0F172A"/>
-                            <path d="M38 52 Q 50 62 62 52" fill="white" stroke="#0F172A" stroke-width="2"/>
-                        </svg>
-                    </div>
+                    <div class="w-8 h-8 rounded-xl bg-sky-600 flex items-center justify-center text-base">🤖</div>
                     <div>
                         <h4 class="text-xs font-extrabold tracking-wide">Professor Edu</h4>
                         <p class="text-[10px] text-sky-400 font-semibold">IA Especialista em Educação Física</p>
@@ -840,6 +799,7 @@
             }
         }
 
+        // FUNÇÃO DE COMUNICAÇÃO ROBUSTA COM TRATAMENTO DE ERROS E EXPONENTIAL BACKOFF (HTTP 503 / 429)
         async function enviarMensagemEdu() {
             const input = document.getElementById('chat-edu-input');
             const mensagensDiv = document.getElementById('chat-edu-messages');
@@ -914,6 +874,7 @@
                         }
 
                         if (res.status === 404) {
+                            // Tenta o próximo modelo da lista
                             break;
                         }
 
@@ -921,6 +882,7 @@
 
                         if (data.error) {
                             const errCode = data.error.code;
+                            // Se for erro 503 (alta demanda) ou 429 (limite excedido), aplica exponential backoff com jitter
                             if ((errCode === 503 || errCode === 429) && tentativas < maxTentativas) {
                                 tentativas++;
                                 const esperaMs = Math.pow(2, tentativas) * 1000 + Math.random() * 1000;

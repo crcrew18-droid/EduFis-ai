@@ -734,10 +734,30 @@
         </div>
     </div>
 
-    <!-- MASCOTE FLUTUANTE & CHAT DO PROFESSOR EDU (IA) COM IMAGEM OFICIAL INTEGRADA -->
+    <!-- MASCOTE FLUTUANTE & CHAT DO PROFESSOR EDU (ILUSTRAÇÃO AUTO-CONTIDA EM SVG) -->
     <div id="professor-edu-container" class="fixed bottom-6 right-6 z-50 no-print">
         <button onclick="toggleChatEdu()" class="w-16 h-16 bg-sky-600 hover:bg-sky-700 text-white rounded-full shadow-2xl flex items-center justify-center transition-transform hover:scale-110 cursor-pointer relative group p-0.5 overflow-hidden border-2 border-white">
-            <img src="professor-edu.png" alt="Professor Edu" class="w-full h-full object-cover object-top rounded-full bg-sky-100">
+            <!-- AVATAR ILUSTRADO INTEGRADO DO PROFESSOR EDU -->
+            <svg class="w-full h-full rounded-full bg-sky-100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="100" height="100" fill="#0EA5E9"/>
+                <!-- Corpo / Camiseta Polo Azul -->
+                <path d="M20 90 C 20 65, 80 65, 80 90 Z" fill="#0284C7"/>
+                <path d="M42 65 L 50 78 L 58 65 Z" fill="#0369A1"/>
+                <!-- Apito no Pescoço -->
+                <path d="M48 62 C 48 70, 52 70, 52 62 Z" stroke="#F59E0B" stroke-width="2"/>
+                <circle cx="50" cy="72" r="3" fill="#D97706"/>
+                <!-- Cabeça / Rosto -->
+                <ellipse cx="50" cy="45" rx="22" ry="24" fill="#F3D2B3"/>
+                <!-- Cabelo Castanho Moderno -->
+                <path d="M26 40 C 26 22, 74 22, 74 40 C 68 28, 32 28, 26 40 Z" fill="#451A03"/>
+                <!-- Olhos e Aparelho / Sorriso -->
+                <circle cx="41" cy="42" r="2.5" fill="#1E293B"/>
+                <circle cx="59" cy="42" r="2.5" fill="#1E293B"/>
+                <path d="M40 52 Q 50 60 60 52" stroke="#94A3B8" stroke-width="2" fill="none"/>
+                <path d="M43 54 H 57" stroke="#CBD5E1" stroke-width="1.5"/>
+                <!-- Bigode Leve -->
+                <path d="M44 49 C 47 48, 53 48, 56 49" stroke="#78350F" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
             <span class="absolute top-0 right-0 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full z-10"></span>
             <div class="absolute right-20 bg-slate-900 text-white text-[11px] font-bold px-3 py-1.5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-md pointer-events-none">
                 Falar com Professor Edu 💡
@@ -748,7 +768,15 @@
             <div class="bg-slate-900 text-white p-4 flex items-center justify-between">
                 <div class="flex items-center gap-2.5">
                     <div class="w-10 h-10 rounded-xl bg-sky-600 overflow-hidden flex items-center justify-center border border-sky-400 shrink-0">
-                        <img src="professor-edu.png" alt="Professor Edu" class="w-full h-full object-cover object-top">
+                        <svg class="w-full h-full bg-sky-100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="100" height="100" fill="#0EA5E9"/>
+                            <path d="M20 90 C 20 65, 80 65, 80 90 Z" fill="#0284C7"/>
+                            <ellipse cx="50" cy="45" rx="22" ry="24" fill="#F3D2B3"/>
+                            <path d="M26 40 C 26 22, 74 22, 74 40 C 68 28, 32 28, 26 40 Z" fill="#451A03"/>
+                            <circle cx="41" cy="42" r="2.5" fill="#1E293B"/>
+                            <circle cx="59" cy="42" r="2.5" fill="#1E293B"/>
+                            <path d="M40 52 Q 50 60 60 52" stroke="#94A3B8" stroke-width="2" fill="none"/>
+                        </svg>
                     </div>
                     <div>
                         <h4 class="text-xs font-extrabold tracking-wide">Professor Edu</h4>

@@ -739,9 +739,9 @@
         </div>
     </div>
 
-    <!-- MASCOTE FLUTUANTE & CHAT DO ATLAS IA (ROBOZINHO MAIOR) -->
+    <!-- MASCOTE FLUTUANTE & CHAT DO ATLAS IA (AGORA EM FORMATO HORIZONTAL OTIMIZADO) -->
     <div id="professor-edu-container" class="fixed bottom-6 right-6 z-50 no-print">
-        <button onclick="toggleChatEdu()" class="w-20 h-20 bg-sky-600 hover:bg-sky-700 text-white rounded-full shadow-2xl flex items-center justify-center transition-transform hover:scale-110 cursor-pointer relative group p-2 overflow-hidden border-2 border-white">
+        <button onclick="toggleChatEdu()" class="w-16 h-16 bg-sky-600 hover:bg-sky-700 text-white rounded-full shadow-2xl flex items-center justify-center transition-transform hover:scale-110 cursor-pointer relative group p-2 overflow-hidden border-2 border-white">
             <svg class="w-full h-full rounded-full bg-slate-900" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="50" cy="50" r="50" fill="#0EA5E9"/>
                 <line x1="50" y1="22" x2="50" y2="30" stroke="#E2E8F0" stroke-width="4" stroke-linecap="round"/>
@@ -757,15 +757,16 @@
                 <circle cx="50" cy="80" r="3" fill="#F59E0B"/>
             </svg>
             <span class="absolute top-0 right-0 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full z-10"></span>
-            <div class="absolute right-24 bg-slate-900 text-white text-xs font-bold px-3.5 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-md pointer-events-none">
+            <div class="absolute right-20 bg-slate-900 text-white text-xs font-bold px-3.5 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-md pointer-events-none">
                 Falar com Atlas IA 💡
             </div>
         </button>
 
-        <div id="chat-edu-box" class="hidden absolute bottom-24 right-0 w-96 sm:w-[420px] bg-white border border-slate-200 rounded-3xl shadow-2xl flex flex-col overflow-hidden transition-all duration-300 max-h-[600px]">
-            <div class="bg-slate-900 text-white p-4 flex items-center justify-between">
-                <div class="flex items-center gap-2.5">
-                    <div class="w-10 h-10 rounded-xl bg-sky-600 overflow-hidden flex items-center justify-center border border-sky-400 shrink-0">
+        <!-- CAIXA DE CHAT HORIZONTAL E COMPACTA -->
+        <div id="chat-edu-box" class="hidden absolute bottom-20 right-0 w-[92vw] sm:w-[540px] bg-white border border-slate-200 rounded-3xl shadow-2xl flex flex-col overflow-hidden transition-all duration-300 max-h-[480px]">
+            <div class="bg-slate-900 text-white p-3 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-xl bg-sky-600 overflow-hidden flex items-center justify-center border border-sky-400 shrink-0">
                         <svg class="w-full h-full bg-slate-900" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="50" cy="50" r="50" fill="#0EA5E9"/>
                             <line x1="50" y1="22" x2="50" y2="30" stroke="#E2E8F0" stroke-width="4" stroke-linecap="round"/>
@@ -779,35 +780,36 @@
                     </div>
                     <div>
                         <h4 class="text-xs font-extrabold tracking-wide">Atlas IA</h4>
-                        <p class="text-[10px] text-sky-400 font-semibold">Atlas IA — seu assistente inteligente de Educação Física</p>
+                        <p class="text-[9px] text-sky-400 font-semibold">Assistente inteligente de Educação Física</p>
                     </div>
                 </div>
                 <button onclick="toggleChatEdu()" class="text-slate-400 hover:text-white text-sm font-bold cursor-pointer p-1">✕</button>
             </div>
 
-            <div id="chat-edu-messages" class="flex-1 p-4 overflow-y-auto space-y-3 bg-slate-50 min-h-[320px] max-h-[380px] text-xs">
-                <div class="bg-white p-3 rounded-2xl border border-slate-200/80 text-slate-700 shadow-2xs">
+            <!-- ÁREA DE MENSAGENS COM ALTURA OTIMIZADA -->
+            <div id="chat-edu-messages" class="flex-1 p-3 overflow-y-auto space-y-2.5 bg-slate-50 min-h-[220px] max-h-[280px] text-xs">
+                <div class="bg-white p-2.5 rounded-2xl border border-slate-200/80 text-slate-700 shadow-2xs">
                     Olá! Sou o <strong>Atlas IA</strong>. Escolha um comando rápido abaixo ou digite sua dúvida pedagógica! 🚀
                 </div>
             </div>
 
             <!-- ATALHOS DE PROMPTS PRONTOS EM 1 CLIQUE -->
-            <div class="px-3 py-2 bg-slate-100 border-t border-slate-200 flex gap-1.5 overflow-x-auto text-[10px] whitespace-nowrap scrollbar-none">
-                <button onclick="usarPromptPronto('Crie um circuito motor completo de 4 estações utilizando materiais recicláveis ou simples (cones, garrafas, cabos de vassoura).')" class="px-2.5 py-1 bg-white hover:bg-sky-50 text-slate-700 hover:text-sky-700 border border-slate-200 rounded-xl font-bold cursor-pointer transition-colors shrink-0">
+            <div class="px-2.5 py-1.5 bg-slate-100 border-t border-slate-200 flex gap-1.5 overflow-x-auto text-[10px] whitespace-nowrap scrollbar-none">
+                <button onclick="usarPromptPronto('Crie um circuito motor completo de 4 estações utilizando materiais simples.')" class="px-2 py-1 bg-white hover:bg-sky-50 text-slate-700 hover:text-sky-700 border border-slate-200 rounded-xl font-bold cursor-pointer transition-colors shrink-0">
                     🔄 Circuito Motor
                 </button>
-                <button onclick="usarPromptPronto('Crie 5 questões objetivas de múltipla escolha com gabarito sobre os fundamentos básicos do Voleibol para o Ensino Fundamental II.')" class="px-2.5 py-1 bg-white hover:bg-sky-50 text-slate-700 hover:text-sky-700 border border-slate-200 rounded-xl font-bold cursor-pointer transition-colors shrink-0">
+                <button onclick="usarPromptPronto('Crie 5 questões objetivas com gabarito sobre os fundamentos básicos do Voleibol.')" class="px-2 py-1 bg-white hover:bg-sky-50 text-slate-700 hover:text-sky-700 border border-slate-200 rounded-xl font-bold cursor-pointer transition-colors shrink-0">
                     📝 Prova de Vôlei
                 </button>
-                <button onclick="usarPromptPronto('Como posso adaptar uma aula prática de futsal para incluir um aluno com mobilidade reduzida de forma segura e participativa?')" class="px-2.5 py-1 bg-white hover:bg-sky-50 text-slate-700 hover:text-sky-700 border border-slate-200 rounded-xl font-bold cursor-pointer transition-colors shrink-0">
+                <button onclick="usarPromptPronto('Como posso adaptar uma aula de futsal para incluir um aluno com mobilidade reduzida?')" class="px-2 py-1 bg-white hover:bg-sky-50 text-slate-700 hover:text-sky-700 border border-slate-200 rounded-xl font-bold cursor-pointer transition-colors shrink-0">
                     ♿ Inclusão Prática
                 </button>
-                <button onclick="usarPromptPronto('Monte um plano de aula de 50 minutos sobre Danças Urbanas alinhado à habilidade da BNCC para o 8º ano.')" class="px-2.5 py-1 bg-white hover:bg-sky-50 text-slate-700 hover:text-sky-700 border border-slate-200 rounded-xl font-bold cursor-pointer transition-colors shrink-0">
-                    💃 Plano Danças BNCC
+                <button onclick="usarPromptPronto('Monte um plano de aula de 50 minutos sobre Danças Urbanas alinhado à BNCC.')" class="px-2 py-1 bg-white hover:bg-sky-50 text-slate-700 hover:text-sky-700 border border-slate-200 rounded-xl font-bold cursor-pointer transition-colors shrink-0">
+                    💃 Plano Danças
                 </button>
             </div>
 
-            <div class="p-3 bg-white border-t border-slate-200 flex gap-2">
+            <div class="p-2.5 bg-white border-t border-slate-200 flex gap-2">
                 <input type="text" id="chat-edu-input" placeholder="Digite sua dúvida..." onkeypress="if(event.key==='Enter') enviarMensagemEdu()" class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500">
                 <button onclick="enviarMensagemEdu()" class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer shadow-xs">Enviar</button>
             </div>
@@ -860,7 +862,7 @@
 
             if (!apiKey) {
                 mensagensDiv.innerHTML += `
-                    <div class="bg-rose-50 text-rose-700 p-3 rounded-2xl border border-rose-200 shadow-2xs">
+                    <div class="bg-rose-50 text-rose-700 p-2.5 rounded-2xl border border-rose-200 shadow-2xs">
                         ⚠️ Chave da API do Gemini não configurada. Vá a <strong>Configurações</strong> no menu lateral, cole a sua chave da API e clique no botão <strong>Guardar Todas as Configurações</strong>.
                     </div>
                 `;
@@ -869,7 +871,7 @@
             }
 
             mensagensDiv.innerHTML += `
-                <div class="bg-sky-600 text-white p-3 rounded-2xl ml-8 shadow-2xs">
+                <div class="bg-sky-600 text-white p-2.5 rounded-2xl ml-8 shadow-2xs">
                     ${escapeHtmlEdu(texto)}
                 </div>
             `;
@@ -878,7 +880,7 @@
 
             const loadingId = 'loading_' + Date.now();
             mensagensDiv.innerHTML += `
-                <div id="${loadingId}" class="bg-white p-3 rounded-2xl border border-slate-200 text-slate-500 shadow-2xs italic">
+                <div id="${loadingId}" class="bg-white p-2.5 rounded-2xl border border-slate-200 text-slate-500 shadow-2xs italic">
                     Atlas IA está a elaborar a resposta... ⏳
                 </div>
             `;
@@ -914,7 +916,7 @@
                         if (res.status === 401 || res.status === 403) {
                             if(document.getElementById(loadingId)) document.getElementById(loadingId).remove();
                             mensagensDiv.innerHTML += `
-                                <div class="bg-rose-50 text-rose-700 p-3 rounded-2xl border border-rose-200 shadow-2xs">
+                                <div class="bg-rose-50 text-rose-700 p-2.5 rounded-2xl border border-rose-200 shadow-2xs">
                                     Erro de Autenticação (${res.status}): A chave da API é inválida ou não tem permissão. Verifique nas Configurações.
                                 </div>
                             `;
@@ -957,13 +959,13 @@
 
             if (sucesso && respostaTexto) {
                 mensagensDiv.innerHTML += `
-                    <div class="bg-white p-3 rounded-2xl border border-slate-200/80 text-slate-700 shadow-2xs whitespace-pre-wrap">
+                    <div class="bg-white p-2.5 rounded-2xl border border-slate-200/80 text-slate-700 shadow-2xs whitespace-pre-wrap">
                         ${escapeHtmlEdu(respostaTexto)}
                     </div>
                 `;
             } else {
                 mensagensDiv.innerHTML += `
-                    <div class="bg-amber-50 text-amber-800 p-3 rounded-2xl border border-amber-200 shadow-2xs">
+                    <div class="bg-amber-50 text-amber-800 p-2.5 rounded-2xl border border-amber-200 shadow-2xs">
                         ⚠️ O serviço de IA está temporariamente sobrecarregado (Alta demanda / 503). Por favor, aguarde alguns instantes e tente novamente. (${escapeHtmlEdu(erroUltimo || 'Indisponível')})
                     </div>
                 `;

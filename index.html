@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%230EA5E9'/><path d='M30 35 v30 M70 35 v30 M20 40 v20 M80 40 v20 M30 50 h40' stroke='white' stroke-width='8' stroke-linecap='round'/></svg>">
-    <title>EduFís Pro v8.7 - Plataforma de Gestão Pedagógica</title>
+    <title>EduFís Pro v8.8 - Plataforma de Gestão Pedagógica & IA</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Three.js para Renderização do Personagem 3D -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
         body { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -213,7 +215,7 @@
                     </div>
                     <div>
                         <span class="text-base font-extrabold text-slate-900 leading-none tracking-tight block">EduFís</span>
-                        <span class="text-[10px] uppercase tracking-widest text-theme-main text-sky-600 font-extrabold mt-0.5 block">Pro v8.7</span>
+                        <span class="text-[10px] uppercase tracking-widest text-theme-main text-sky-600 font-extrabold mt-0.5 block">Pro v8.8</span>
                     </div>
                 </div>
             </div>
@@ -237,9 +239,9 @@
                         <button onclick="changeTab('home')" id="btn-tab-home" class="w-full text-left px-3.5 py-3 rounded-2xl text-xs font-bold text-slate-700 hover:bg-sky-50 hover:text-sky-600 flex items-center gap-3 transition-all cursor-pointer group">
                             <span class="text-base group-hover:scale-110 transition-transform">🏠</span> Visão Geral
                         </button>
-                        <!-- NOVA ABA: SALA VIRTUAL -->
-                        <button onclick="changeTab('sala-virtual')" id="btn-tab-sala-virtual" class="w-full text-left px-3.5 py-3 rounded-2xl text-xs font-bold text-sky-700 bg-sky-50 border border-sky-200/60 flex items-center gap-3 transition-all cursor-pointer group shadow-xs">
-                            <span class="text-base group-hover:scale-110 transition-transform">🎓</span> Sala Virtual
+                        <!-- SALA VIRTUAL NO MENU -->
+                        <button onclick="changeTab('sala-virtual')" id="btn-tab-sala-virtual" class="w-full text-left px-3.5 py-3 rounded-2xl text-xs font-bold text-slate-700 hover:bg-sky-50 hover:text-sky-600 flex items-center gap-3 transition-all cursor-pointer group">
+                            <span class="text-base group-hover:scale-110 transition-transform">🎓</span> Sala Virtual (3D)
                         </button>
                         <button onclick="changeTab('turmas')" id="btn-tab-turmas" class="w-full text-left px-3.5 py-3 rounded-2xl text-xs font-bold text-slate-700 hover:bg-sky-50 hover:text-sky-600 flex items-center gap-3 transition-all cursor-pointer group">
                             <span class="text-base group-hover:scale-110 transition-transform">🏫</span> Turmas
@@ -284,7 +286,7 @@
 
                 <div class="pt-4 border-t border-slate-100 px-3 flex items-center justify-between text-[11px] text-slate-400 font-semibold">
                     <span>EduFís Pro SaaS</span>
-                    <span class="bg-sky-50 text-sky-600 font-bold px-2 py-0.5 rounded-md text-[10px]">v8.7</span>
+                    <span class="bg-sky-50 text-sky-600 font-bold px-2 py-0.5 rounded-md text-[10px]">v8.8</span>
                 </div>
             </aside>
 
@@ -303,7 +305,7 @@
                             <p class="text-slate-300 text-xs sm:text-sm font-medium">Tecnologia e organização profissional para transformar as suas aulas de Educação Física.</p>
                         </div>
                         <button onclick="changeTab('sala-virtual')" class="bg-white hover:bg-slate-100 text-slate-900 font-bold px-6 py-3.5 rounded-2xl text-xs shadow-lg transition-all cursor-pointer relative z-10 flex items-center gap-2">
-                            <span>🎓</span> Entrar na Sala Virtual
+                            <span>🎓</span> Entrar na Sala Virtual (3D)
                         </button>
                     </div>
                     
@@ -332,8 +334,8 @@
                                 <span>⚡</span> Atalhos Rápidos
                             </h3>
                             <div class="grid grid-cols-2 gap-3">
-                                <button onclick="changeTab('sala-virtual')" class="p-3.5 bg-sky-50/80 hover:bg-sky-100 text-sky-900 rounded-2xl font-bold text-xs text-left transition-all cursor-pointer flex items-center gap-2.5">
-                                    <span class="text-base">🎓</span> Sala Virtual
+                                <button onclick="toggleChatEdu()" class="p-3.5 bg-sky-50/80 hover:bg-sky-100 text-sky-900 rounded-2xl font-bold text-xs text-left transition-all cursor-pointer flex items-center gap-2.5">
+                                    <span class="text-base">🤖</span> Atlas IA Rápido
                                 </button>
                                 <button onclick="changeTab('turmas'); abrirModalTurma();" class="p-3.5 bg-slate-50 hover:bg-slate-100 text-slate-800 rounded-2xl font-bold text-xs text-left transition-all cursor-pointer flex items-center gap-2.5">
                                     <span class="text-base">🏫</span> + Registar Turma
@@ -370,61 +372,63 @@
                     </div>
                 </div>
 
-                <!-- NOVA ABA: SALA VIRTUAL (COMPLETA E MODERNA COM PERSONAGEM, VOZ E IA REAL) -->
+                <!-- ABA: SALA VIRTUAL COM PERSONAGEM 3D E IA REAL -->
                 <div id="tab-sala-virtual" class="hidden space-y-6">
-                    <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-sky-950 text-white p-6 sm:p-8 rounded-3xl shadow-xl flex flex-col sm:flex-row justify-between items-center gap-6 relative overflow-hidden">
-                        <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-sky-500/10 rounded-full blur-2xl pointer-events-none"></div>
-                        <div class="flex items-center gap-5 relative z-10">
-                            <!-- AVATAR DO PERSONAGEM DO PROFESSOR VIRTUAL -->
-                            <div class="w-24 h-24 bg-sky-600 rounded-3xl p-2.5 shadow-2xl border-2 border-sky-400 flex items-center justify-center relative shrink-0">
-                                <img src="https://chatgpt.com/s/m_6acebd8cdaf08191820d3e5ce8be2600" alt="Professor Virtual" class="w-full h-full object-cover rounded-2xl bg-slate-900" onerror="this.onerror=null; this.src='data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'50\' fill=\'%230EA5E9\'/><path d=\'M30 50 h40 M50 30 v40\' stroke=\'white\' stroke-width=\'8\' stroke-linecap=\'round\'/></svg>';">
-                                <span class="absolute -top-1 -right-1 w-5 h-5 bg-emerald-500 border-2 border-white rounded-full animate-ping"></span>
-                            </div>
-                            <div class="space-y-1.5">
-                                <span class="bg-sky-500/20 text-sky-300 text-[10px] uppercase font-extrabold px-3 py-1 rounded-full border border-sky-400/30">Ambiente de Ensino Inteligente</span>
-                                <h2 class="text-2xl sm:text-3xl font-black tracking-tight">Sala Virtual</h2>
-                                <p class="text-xs text-slate-300 max-w-xl">Especialista em anatomia, biomecânica, fisiologia, desportos, pedagogia e planeamento pedagógico.</p>
-                            </div>
+                    <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-sky-950 text-white p-6 sm:p-8 rounded-3xl shadow-xl flex flex-col lg:flex-row justify-between items-center gap-6">
+                        <div class="space-y-1.5 text-center lg:text-left">
+                            <span class="bg-sky-500/20 text-sky-300 text-[10px] uppercase font-extrabold px-3 py-1 rounded-full border border-sky-400/30">Ambiente 3D Imersivo</span>
+                            <h2 class="text-2xl sm:text-3xl font-black tracking-tight">Sala Virtual com Professor 3D</h2>
+                            <p class="text-xs text-slate-300">Faça perguntas por texto ou voz. O personagem interage com animações e responde com IA real e áudio!</p>
                         </div>
-                        <div class="flex items-center gap-2.5 relative z-10 flex-wrap">
+                        <div class="flex items-center gap-3">
                             <button onclick="pararFalaAudio()" class="bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-400/30 text-xs font-bold px-4 py-2.5 rounded-2xl cursor-pointer transition-colors shadow-xs">⏹️ Parar Voz</button>
                             <button onclick="limparConversaSalaVirtual()" class="bg-white/10 hover:bg-white/20 text-white border border-white/20 text-xs font-bold px-4 py-2.5 rounded-2xl cursor-pointer transition-colors shadow-xs">🗑️ Nova Conversa</button>
                         </div>
                     </div>
 
-                    <!-- CAIXA DE CHAT DA SALA VIRTUAL -->
-                    <div class="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-xs flex flex-col h-[520px]">
+                    <!-- GRELHA: CANVAS 3D DO PERSONAGEM + CHAT INTERATIVO -->
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                         
-                        <!-- SUGESTÕES DE PERGUNTAS RÁPIDAS -->
-                        <div class="pb-3 border-b border-slate-100 flex gap-2 overflow-x-auto text-xs whitespace-nowrap scrollbar-none">
-                            <span class="text-[10px] uppercase font-extrabold text-slate-400 self-center">Sugestões:</span>
-                            <button onclick="usarPromptSalaVirtual('Explique a fisiologia muscular')" class="px-3 py-1.5 bg-slate-50 hover:bg-sky-50 text-slate-700 hover:text-sky-700 border border-slate-200 rounded-xl font-bold cursor-pointer transition-colors shrink-0 shadow-2xs">🧬 Explique a fisiologia muscular</button>
-                            <button onclick="usarPromptSalaVirtual('Como montar um plano de aula?')" class="px-3 py-1.5 bg-slate-50 hover:bg-sky-50 text-slate-700 hover:text-sky-700 border border-slate-200 rounded-xl font-bold cursor-pointer transition-colors shrink-0 shadow-2xs">📋 Como montar um plano de aula?</button>
-                            <button onclick="usarPromptSalaVirtual('Quais são as regras oficiais do futsal?')" class="px-3 py-1.5 bg-slate-50 hover:bg-sky-50 text-slate-700 hover:text-sky-700 border border-slate-200 rounded-xl font-bold cursor-pointer transition-colors shrink-0 shadow-2xs">⚽ Regras do futsal</button>
-                            <button onclick="usarPromptSalaVirtual('Dicas de cinesiologia para saltos verticais')" class="px-3 py-1.5 bg-slate-50 hover:bg-sky-50 text-slate-700 hover:text-sky-700 border border-slate-200 rounded-xl font-bold cursor-pointer transition-colors shrink-0 shadow-2xs">🦴 Cinesiologia e saltos</button>
-                        </div>
+                        <!-- CANVAS DO PERSONAGEM 3D (LADO ESQUERDO) -->
+                        <div class="lg:col-span-5 bg-slate-900 border border-slate-800 rounded-3xl p-4 flex flex-col items-center justify-between shadow-xl relative overflow-hidden min-h-[380px]">
+                            <div class="absolute top-4 left-4 z-10 bg-slate-800/80 backdrop-blur-md px-3 py-1 rounded-xl border border-slate-700 text-[11px] font-bold text-sky-400 flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Professor Virtual 3D
+                            </div>
+                            
+                            <!-- CONTENTOR DO THREE.JS -->
+                            <div id="canvas-container-3d" class="w-full h-[300px] flex items-center justify-center cursor-grab active:cursor-grabbing"></div>
 
-                        <!-- MENSAGENS DA CONVERSA -->
-                        <div id="chat-sala-virtual-messages" class="flex-1 overflow-y-auto space-y-4 pr-2 text-xs py-4">
-                            <div class="bg-sky-50 border border-sky-200/80 p-5 rounded-3xl text-sky-900 space-y-2 shadow-2xs">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded-full bg-sky-600 text-white font-extrabold flex items-center justify-center text-xs shrink-0">PV</div>
-                                    <strong class="text-sky-700 font-extrabold text-sm">Professor Virtual:</strong>
-                                </div>
-                                <p class="text-slate-800 leading-relaxed font-medium pl-11">Olá, professor! Seja bem-vindo à sua Sala Virtual. O que vamos aprender hoje?</p>
+                            <div class="w-full text-center text-[11px] text-slate-400 font-medium">
+                                Rotacione o personagem arrastando com o rato ou toque no ecrã.
                             </div>
                         </div>
 
-                        <!-- BARRA DE ENTRADA E VOZ -->
-                        <div class="pt-4 border-t border-slate-100 flex gap-3 items-center">
-                            <input type="text" id="chat-sala-virtual-input" placeholder="Digite sua dúvida ou clique no microfone para falar..." onkeypress="if(event.key==='Enter') enviarMensagemSalaVirtual()" class="flex-1 bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs">
-                            
-                            <button type="button" id="btn-mic-sala-virtual" onclick="alternarGravacaoSalaVirtual()" title="Falar por voz" class="w-12 h-12 bg-slate-100 hover:bg-sky-100 text-slate-700 hover:text-sky-600 border border-slate-200 rounded-2xl flex items-center justify-center transition-all cursor-pointer shrink-0 shadow-xs text-base">
-                                🎤
-                            </button>
+                        <!-- CHAT COM A IA (LADO DIREITO) -->
+                        <div class="lg:col-span-7 bg-white border border-slate-200/80 rounded-3xl p-6 shadow-xs flex flex-col h-[420px] lg:h-[380px]">
+                            <div class="pb-2 border-b border-slate-100 flex gap-2 overflow-x-auto text-xs whitespace-nowrap scrollbar-none">
+                                <button onclick="usarPromptSalaVirtual('Explique a fisiologia muscular')" class="px-3 py-1.5 bg-slate-50 hover:bg-sky-50 text-slate-700 hover:text-sky-700 border border-slate-200 rounded-xl font-bold cursor-pointer transition-colors shrink-0">🧬 Fisiologia</button>
+                                <button onclick="usarPromptSalaVirtual('Como montar um plano de aula de basquetebol?')" class="px-3 py-1.5 bg-slate-50 hover:bg-sky-50 text-slate-700 hover:text-sky-700 border border-slate-200 rounded-xl font-bold cursor-pointer transition-colors shrink-0">📋 Plano de Aula</button>
+                                <button onclick="usarPromptSalaVirtual('Quais as regras do futsal escolar?')" class="px-3 py-1.5 bg-slate-50 hover:bg-sky-50 text-slate-700 hover:text-sky-700 border border-slate-200 rounded-xl font-bold cursor-pointer transition-colors shrink-0">⚽ Regras Futsal</button>
+                            </div>
 
-                            <button onclick="enviarMensagemSalaVirtual()" class="btn-primary-theme bg-sky-600 hover:bg-sky-700 text-white font-bold px-7 py-3.5 rounded-2xl text-xs shadow-md shadow-sky-600/20 transition-all cursor-pointer">Enviar</button>
+                            <div id="chat-sala-virtual-messages" class="flex-1 overflow-y-auto space-y-3 pr-2 text-xs py-3">
+                                <div class="bg-sky-50 border border-sky-200/80 p-3.5 rounded-2xl text-sky-900 space-y-1">
+                                    <strong class="block text-sky-700 font-extrabold">Professor Virtual:</strong>
+                                    Olá, professor! Seja bem-vindo à sua Sala Virtual. O que vamos aprender hoje?
+                                </div>
+                            </div>
+
+                            <div class="pt-3 border-t border-slate-100 flex gap-2 items-center">
+                                <input type="text" id="chat-sala-virtual-input" placeholder="Converse com o professor 3D..." onkeypress="if(event.key==='Enter') enviarMensagemSalaVirtual()" class="flex-1 bg-slate-50 border border-slate-200 rounded-2xl px-3.5 py-3 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500">
+                                
+                                <button type="button" id="btn-mic-sala-virtual" onclick="alternarGravacaoSalaVirtual()" title="Falar por voz" class="w-11 h-11 bg-slate-100 hover:bg-sky-100 text-slate-700 hover:text-sky-600 border border-slate-200 rounded-2xl flex items-center justify-center transition-all cursor-pointer shrink-0 text-base">
+                                    🎤
+                                </button>
+
+                                <button onclick="enviarMensagemSalaVirtual()" class="btn-primary-theme bg-sky-600 hover:bg-sky-700 text-white font-bold px-5 py-3 rounded-2xl text-xs shadow-md shadow-sky-600/20 transition-all cursor-pointer">Enviar</button>
+                            </div>
                         </div>
+
                     </div>
                 </div>
 
@@ -713,7 +717,7 @@
                             <div class="space-y-2">
                                 <label class="block text-[11px] uppercase font-bold text-slate-500">Cole aqui a sua API Key do Google AI Studio</label>
                                 <input type="password" id="cfg-gemini-key" placeholder="AIzaSy..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs">
-                                <p class="text-[11px] text-slate-400">Esta chave é guardada com total segurança no navegador (localStorage) para permitir que o <strong>Professor Virtual</strong> responda às suas perguntas em tempo real.</p>
+                                <p class="text-[11px] text-slate-400">Esta chave é guardada de forma segura no navegador (localStorage) para permitir que o <strong>Atlas IA</strong> responda às suas dúvidas pedagógicas em tempo real.</p>
                             </div>
                         </div>
 
@@ -793,6 +797,58 @@
         </div>
     </div>
 
+    <!-- RESTAURADO: BOTÃO FLUTUANTE DO ATLAS IA (CANTOS INFERIOR DIREITO) -->
+    <div id="professor-edu-container" class="fixed bottom-6 right-6 z-50 no-print">
+        <button onclick="toggleChatEdu()" class="w-16 h-16 bg-sky-600 hover:bg-sky-700 text-white rounded-full shadow-2xl flex items-center justify-center transition-transform hover:scale-110 cursor-pointer relative group p-2 overflow-hidden border-2 border-white">
+            <svg class="w-full h-full rounded-full bg-slate-900" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="50" fill="#0EA5E9"/>
+                <line x1="50" y1="22" x2="50" y2="30" stroke="#E2E8F0" stroke-width="4" stroke-linecap="round"/>
+                <circle cx="50" cy="18" r="4" fill="#38BDF8"/>
+                <rect x="25" y="30" width="50" height="38" rx="12" fill="#0F172A" stroke="#E2E8F0" stroke-width="3"/>
+                <rect x="31" y="38" width="38" height="18" rx="6" fill="#1E293B"/>
+                <circle cx="41" cy="47" r="4" fill="#38BDF8"/>
+                <circle cx="59" cy="47" r="4" fill="#38BDF8"/>
+                <path d="M43 60 Q 50 64 57 60" stroke="#38BDF8" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                <path d="M30 72 L 70 72 L 65 92 L 35 92 Z" fill="#1E293B"/>
+                <circle cx="50" cy="80" r="3" fill="#F59E0B"/>
+            </svg>
+            <span class="absolute top-0 right-0 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full z-10"></span>
+            <div class="absolute right-20 bg-slate-900 text-white text-xs font-bold px-3.5 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-md pointer-events-none">
+                Atlas IA Rápido 💡
+            </div>
+        </button>
+
+        <div id="chat-edu-box" class="hidden absolute bottom-20 right-0 w-[92vw] sm:w-[420px] bg-white border border-slate-200 rounded-3xl shadow-2xl flex flex-col overflow-hidden transition-all duration-300 max-h-[480px]">
+            <div class="bg-slate-900 text-white p-3.5 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-xl bg-sky-600 flex items-center justify-center border border-sky-400 shrink-0">🤖</div>
+                    <div>
+                        <h4 class="text-xs font-extrabold tracking-wide">Atlas IA Rápido</h4>
+                        <p class="text-[9px] text-sky-400 font-semibold">Assistente Pedagógico de Educação Física</p>
+                    </div>
+                </div>
+                <button onclick="toggleChatEdu()" class="text-slate-400 hover:text-white text-sm font-bold cursor-pointer p-1">✕</button>
+            </div>
+
+            <div id="chat-edu-messages" class="flex-1 p-3.5 overflow-y-auto space-y-3 bg-slate-50 min-h-[220px] max-h-[260px] text-xs">
+                <div class="bg-white p-3 rounded-2xl border border-slate-200/80 text-slate-700 shadow-2xs">
+                    Olá! Clique no microfone 🎤 ou digite para tirar dúvidas rápidas sobre as suas aulas! 🚀
+                </div>
+            </div>
+
+            <div class="px-3 py-2 bg-slate-100 border-t border-slate-200 flex gap-1.5 overflow-x-auto text-[10px] whitespace-nowrap scrollbar-none">
+                <button onclick="usarPromptPronto('Crie um circuito motor de 4 estações.')" class="px-2.5 py-1 bg-white hover:bg-sky-50 text-slate-700 hover:text-sky-700 border border-slate-200 rounded-xl font-bold cursor-pointer shrink-0">🔄 Circuito Motor</button>
+                <button onclick="usarPromptPronto('5 questões de teste sobre Voleibol.')" class="px-2.5 py-1 bg-white hover:bg-sky-50 text-slate-700 hover:text-sky-700 border border-slate-200 rounded-xl font-bold cursor-pointer shrink-0">📝 Prova de Vôlei</button>
+            </div>
+
+            <div class="p-3 bg-white border-t border-slate-200 flex gap-2 items-center">
+                <input type="text" id="chat-edu-input" placeholder="Digite ou fale com o Atlas IA..." onkeypress="if(event.key==='Enter') enviarMensagemEdu()" class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500">
+                <button type="button" id="btn-mic-audio" onclick="alternarGravacaoVoz()" title="Falar por voz" class="w-9 h-9 bg-slate-100 hover:bg-sky-100 text-slate-700 hover:text-sky-600 border border-slate-200 rounded-xl flex items-center justify-center transition-colors cursor-pointer shrink-0 text-base">🎤</button>
+                <button onclick="enviarMensagemEdu()" class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-xl text-xs font-bold transition-colors cursor-pointer shadow-xs">Enviar</button>
+            </div>
+        </div>
+    </div>
+
     <!-- MODAL GENÉRICO -->
     <div id="modal-app" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 z-50 no-print">
         <div class="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 w-full max-w-md space-y-5 shadow-2xl">
@@ -810,33 +866,48 @@
         let editandoIndex = -1;
         let documentoAtualId = null;
 
-        let recognitionSalaVirtual = null;
-        let estaGravandoSalaVirtual = false;
+        let recognition = null;
+        let estaGravando = false;
+
+        let recognitionSala = null;
+        let estaGravandoSala = false;
+
+        let cena3D, camera3D, renderizador3D, boneco3D;
+        let animandoFala3D = false;
 
         function toggleSidebarMobile() {
             document.getElementById('sidebar-menu').classList.toggle('-translate-x-full');
             document.getElementById('sidebar-overlay').classList.toggle('hidden');
         }
 
-        function usarPromptSalaVirtual(textoPrompt) {
-            document.getElementById('chat-sala-virtual-input').value = textoPrompt;
+        function toggleChatEdu() {
+            const box = document.getElementById('chat-edu-box');
+            box.classList.toggle('hidden');
+            if (!box.classList.contains('hidden')) {
+                document.getElementById('chat-edu-input').focus();
+            }
+        }
+
+        function usarPromptPronto(texto) {
+            document.getElementById('chat-edu-input').value = texto;
+            enviarMensagemEdu();
+        }
+
+        function usarPromptSalaVirtual(texto) {
+            document.getElementById('chat-sala-virtual-input').value = texto;
             enviarMensagemSalaVirtual();
         }
 
         function limparConversaSalaVirtual() {
-            const mensagensDiv = document.getElementById('chat-sala-virtual-messages');
-            mensagensDiv.innerHTML = `
-                <div class="bg-sky-50 border border-sky-200/80 p-5 rounded-3xl text-sky-900 space-y-2 shadow-2xs">
-                    <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-full bg-sky-600 text-white font-extrabold flex items-center justify-center text-xs shrink-0">PV</div>
-                        <strong class="text-sky-700 font-extrabold text-sm">Professor Virtual:</strong>
-                    </div>
-                    <p class="text-slate-800 leading-relaxed font-medium pl-11">Conversa limpa com sucesso! O que vamos estudar ou planear agora?</p>
+            document.getElementById('chat-sala-virtual-messages').innerHTML = `
+                <div class="bg-sky-50 border border-sky-200/80 p-3.5 rounded-2xl text-sky-900 space-y-1">
+                    <strong class="block text-sky-700 font-extrabold">Professor Virtual:</strong>
+                    Conversa reiniciada! Como posso te ajudar na Educação Física hoje?
                 </div>
             `;
         }
 
-        // SÍNTESE DE VOZ (TEXT-TO-SPEECH)
+        // TEXT-TO-SPEECH (FALA EM VOZ ALTA)
         function falarTextoPorVoz(texto) {
             if (!('speechSynthesis' in window)) return;
             window.speechSynthesis.cancel();
@@ -844,156 +915,221 @@
             const utterance = new SpeechSynthesisUtterance(textoLimpo);
             utterance.lang = 'pt-PT';
             utterance.rate = 1.0;
-            utterance.pitch = 1.0;
+            
+            animandoFala3D = true;
+            utterance.onend = function() { animandoFala3D = false; };
+            utterance.onerror = function() { animandoFala3D = false; };
+
             window.speechSynthesis.speak(utterance);
         }
 
         function pararFalaAudio() {
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-            }
+            if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+            animandoFala3D = false;
         }
 
-        // RECONHECIMENTO DE VOZ (SPEECH-TO-TEXT)
+        // MICROFONE DO BOTÃO FLUTUANTE
+        function alternarGravacaoVoz() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) { alert("Reconhecimento de voz não suportado neste navegador."); return; }
+            const btn = document.getElementById('btn-mic-audio');
+
+            if (estaGravando) { if (recognition) recognition.stop(); return; }
+
+            recognition = new SpeechRecognition();
+            recognition.lang = 'pt-PT';
+            recognition.onstart = () => { estaGravando = true; btn.classList.add('bg-rose-500', 'text-white', 'animate-pulse'); btn.textContent = '⏹️'; };
+            recognition.onresult = (e) => { document.getElementById('chat-edu-input').value = e.results[0][0].transcript; };
+            recognition.onend = () => { estaGravando = false; btn.classList.remove('bg-rose-500', 'text-white', 'animate-pulse'); btn.textContent = '🎤'; if(document.getElementById('chat-edu-input').value.trim()) enviarMensagemEdu(); };
+            recognition.start();
+        }
+
+        // MICROFONE DA SALA VIRTUAL
         function alternarGravacaoSalaVirtual() {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            if (!SpeechRecognition) {
-                alert("O seu navegador não suporta reconhecimento de voz. Tente usar o Google Chrome.");
-                return;
-            }
-            const btnMic = document.getElementById('btn-mic-sala-virtual');
+            if (!SpeechRecognition) { alert("Reconhecimento de voz não suportado."); return; }
+            const btn = document.getElementById('btn-mic-sala-virtual');
 
-            if (estaGravandoSalaVirtual) {
-                if (recognitionSalaVirtual) recognitionSalaVirtual.stop();
-                return;
-            }
+            if (estaGravandoSala) { if (recognitionSala) recognitionSala.stop(); return; }
 
-            recognitionSalaVirtual = new SpeechRecognition();
-            recognitionSalaVirtual.lang = 'pt-PT';
-            recognitionSalaVirtual.interimResults = false;
-            recognitionSalaVirtual.maxAlternatives = 1;
-
-            recognitionSalaVirtual.onstart = function() {
-                estaGravandoSalaVirtual = true;
-                btnMic.classList.add('bg-rose-500', 'text-white', 'animate-pulse');
-                btnMic.textContent = '⏹️';
-                document.getElementById('chat-sala-virtual-input').placeholder = "A gravar... Fale e clique novamente para terminar.";
-            };
-
-            recognitionSalaVirtual.onresult = function(event) {
-                const speechResult = event.results[0][0].transcript;
-                const input = document.getElementById('chat-sala-virtual-input');
-                input.value = input.value ? input.value + " " + speechResult : speechResult;
-            };
-
-            recognitionSalaVirtual.onerror = function() { pararGravacaoSalaVirtualVisual(); };
-            recognitionSalaVirtual.onend = function() {
-                pararGravacaoSalaVirtualVisual();
-                if(document.getElementById('chat-sala-virtual-input').value.trim()) {
-                    enviarMensagemSalaVirtual();
-                }
-            };
-
-            recognitionSalaVirtual.start();
+            recognitionSala = new SpeechRecognition();
+            recognitionSala.lang = 'pt-PT';
+            recognitionSala.onstart = () => { estaGravandoSala = true; btn.classList.add('bg-rose-500', 'text-white', 'animate-pulse'); btn.textContent = '⏹️'; };
+            recognitionSala.onresult = (e) => { document.getElementById('chat-sala-virtual-input').value = e.results[0][0].transcript; };
+            recognitionSala.onend = () => { estaGravandoSala = false; btn.classList.remove('bg-rose-500', 'text-white', 'animate-pulse'); btn.textContent = '🎤'; if(document.getElementById('chat-sala-virtual-input').value.trim()) enviarMensagemSalaVirtual(); };
+            recognitionSala.start();
         }
 
-        function pararGravacaoSalaVirtualVisual() {
-            estaGravandoSalaVirtual = false;
-            const btnMic = document.getElementById('btn-mic-sala-virtual');
-            btnMic.classList.remove('bg-rose-500', 'text-white', 'animate-pulse');
-            btnMic.textContent = '🎤';
-            document.getElementById('chat-sala-virtual-input').placeholder = "Digite sua dúvida ou clique no microfone para falar...";
-        }
-
-        // COMUNICAÇÃO COM A IA REAL (GOOGLE GEMINI API)
-        async function enviarMensagemSalaVirtual() {
-            const input = document.getElementById('chat-sala-virtual-input');
-            const mensagensDiv = document.getElementById('chat-sala-virtual-messages');
-            const texto = input.value.trim();
-            if (!texto) return;
-
+        // CHAMADA GEMINI API
+        async function chamarGeminiAI(texto) {
             const apiKey = configApp.geminiKey || document.getElementById('cfg-gemini-key')?.value.trim();
-            if (!apiKey) {
-                mensagensDiv.innerHTML += `
-                    <div class="bg-rose-50 text-rose-700 p-4 rounded-3xl border border-rose-200 shadow-2xs">
-                        ⚠️ Chave da API do Gemini não configurada. Vá a <strong>Configurações</strong> no menu lateral, cole a sua chave do Google AI Studio e clique em Guardar.
-                    </div>
-                `;
-                mensagensDiv.scrollTop = mensagensDiv.scrollHeight;
-                return;
-            }
+            if (!apiKey) return "⚠️ Chave API do Gemini não configurada. Vá a Configurações no menu lateral, insira sua chave e guarde.";
 
-            mensagensDiv.innerHTML += `
-                <div class="bg-sky-600 text-white p-4 rounded-3xl ml-12 shadow-2xs space-y-1">
-                    <strong class="block text-sky-200 text-[10px] uppercase font-extrabold mb-0.5">Você:</strong>
-                    🎤 ${escapeHtmlEdu(texto)}
-                </div>
-            `;
-            input.value = '';
-            mensagensDiv.scrollTop = mensagensDiv.scrollHeight;
-
-            const loadingId = 'load_sala_' + Date.now();
-            mensagensDiv.innerHTML += `
-                <div id="${loadingId}" class="bg-white p-4 rounded-3xl border border-slate-200 text-slate-500 shadow-2xs italic flex items-center gap-3">
-                    <div class="w-4 h-4 rounded-full border-2 border-sky-600 border-t-transparent animate-spin"><span></span></div>
-                    Professor Virtual está a preparar a resposta pedagógica... ⏳
-                </div>
-            `;
-            mensagensDiv.scrollTop = mensagensDiv.scrollHeight;
-
-            const resposta = await chamarGeminiReal(texto, apiKey);
-            if(document.getElementById(loadingId)) document.getElementById(loadingId).remove();
-
-            mensagensDiv.innerHTML += `
-                <div class="bg-sky-50 border border-sky-200/80 p-5 rounded-3xl text-sky-900 shadow-2xs space-y-3">
-                    <div class="flex justify-between items-center border-b border-sky-100 pb-2">
-                        <div class="flex items-center gap-2.5">
-                            <div class="w-7 h-7 rounded-full bg-sky-600 text-white font-extrabold flex items-center justify-center text-xs shrink-0">PV</div>
-                            <strong class="text-sky-700 font-extrabold text-sm">Professor Virtual:</strong>
-                        </div>
-                        <button onclick="falarTextoPorVoz(${JSON.stringify(resposta).replace(/"/g, '&quot;')})" class="text-[11px] bg-sky-200 hover:bg-sky-300 text-sky-800 font-bold px-3 py-1.5 rounded-xl cursor-pointer shadow-2xs flex items-center gap-1">🔊 Ouvir Resposta</button>
-                    </div>
-                    <div class="whitespace-pre-wrap text-slate-800 font-medium leading-relaxed">${escapeHtmlEdu(resposta)}</div>
-                </div>
-            `;
-            mensagensDiv.scrollTop = mensagensDiv.scrollHeight;
-
-            // Leitura automática da resposta por voz
-            falarTextoPorVoz(resposta);
-        }
-
-        async function chamarGeminiReal(texto, apiKey) {
             const modelos = ["gemini-3.8-flash", "gemini-3.6-flash", "gemini-2.5-flash"];
-            const systemPrompt = "Você é o Professor Virtual, um docente experiente, paciente, didático e altamente motivador, especializado em Educação Física. Você domina anatomia humana, fisiologia do exercício, biomecânica, cinesiologia, treinamento físico, esportes, jogos, recreação, avaliação física e pedagogia da Educação Física. Explique conceitos com clareza, forneça exemplos práticos, faça perguntas instigantes para verificar a aprendizagem e adapte a profundidade das respostas ao nível do professor utilizador.";
+            const sistema = "Você é o Professor Virtual, um docente especialista em Educação Física escolar, anatomia, fisiologia, desportos, biomecânica e pedagogia da Educação Física. Responda de forma didática, acolhedora e com profundidade técnica.";
 
             for (const modelo of modelos) {
                 try {
                     const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${modelo}:generateContent?key=${apiKey}`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            contents: [
-                                { role: "user", parts: [{ text: systemPrompt }, { text: texto }] }
-                            ]
-                        })
+                        body: JSON.stringify({ contents: [{ role: "user", parts: [{ text: sistema }, { text: texto }] }] })
                     });
-
-                    if (res.status === 401 || res.status === 403) {
-                        return "⚠️ Erro de Autenticação: A chave da API do Gemini é inválida. Verifique nas Configurações.";
-                    }
-                    if (res.status === 429) {
-                        return "⚠️ O serviço de IA atingiu o limite de requisições por minuto. Aguarde instantes e tente novamente.";
-                    }
-
                     const data = await res.json();
                     if (data.candidates?.[0]?.content?.parts?.[0]?.text) {
                         return data.candidates[0].content.parts[0].text;
                     }
-                } catch(err) {
-                    // Tenta o próximo modelo
-                }
+                } catch(e) {}
             }
-            return "⚠️ Erro de conexão com o serviço de IA. Verifique a sua ligação à internet e a chave configurada.";
+            return "⚠️ Erro de conexão com o Google Gemini. Verifique sua chave API e conexão à internet.";
+        }
+
+        async function enviarMensagemEdu() {
+            const input = document.getElementById('chat-edu-input');
+            const mensagens = document.getElementById('chat-edu-messages');
+            const texto = input.value.trim();
+            if(!texto) return;
+
+            mensagens.innerHTML += `<div class="bg-sky-600 text-white p-2.5 rounded-2xl ml-6">🎤 ${escapeHtmlEdu(texto)}</div>`;
+            input.value = '';
+            mensagens.scrollTop = mensagens.scrollHeight;
+
+            const loadId = 'l_' + Date.now();
+            mensagens.innerHTML += `<div id="${loadId}" class="bg-white p-2.5 rounded-2xl border text-slate-400 italic">A pensar... ⏳</div>`;
+            mensagens.scrollTop = mensagens.scrollHeight;
+
+            const resposta = await chamarGeminiAI(texto);
+            document.getElementById(loadId)?.remove();
+
+            mensagens.innerHTML += `<div class="bg-white p-2.5 rounded-2xl border text-slate-700 whitespace-pre-wrap">${escapeHtmlEdu(resposta)}</div>`;
+            mensagens.scrollTop = mensagens.scrollHeight;
+            falarTextoPorVoz(resposta);
+        }
+
+        async function enviarMensagemSalaVirtual() {
+            const input = document.getElementById('chat-sala-virtual-input');
+            const mensagens = document.getElementById('chat-sala-virtual-messages');
+            const texto = input.value.trim();
+            if(!texto) return;
+
+            mensagens.innerHTML += `
+                <div class="bg-sky-600 text-white p-3.5 rounded-2xl ml-8 shadow-2xs">
+                    <strong class="block text-sky-200 text-[10px] uppercase font-extrabold mb-0.5">Você:</strong>
+                    🎤 ${escapeHtmlEdu(texto)}
+                </div>
+            `;
+            input.value = '';
+            mensagens.scrollTop = mensagens.scrollHeight;
+
+            const loadId = 'ls_' + Date.now();
+            mensagens.innerHTML += `<div id="${loadId}" class="bg-white p-3.5 rounded-2xl border text-slate-400 italic">Professor Virtual 3D está a responder... ⏳</div>`;
+            mensagens.scrollTop = mensagens.scrollHeight;
+
+            const resposta = await chamarGeminiAI(texto);
+            document.getElementById(loadId)?.remove();
+
+            mensagens.innerHTML += `
+                <div class="bg-sky-50 border border-sky-200/80 p-3.5 rounded-2xl text-sky-900 shadow-2xs space-y-1">
+                    <div class="flex justify-between items-center">
+                        <strong class="text-sky-700 font-extrabold">Professor Virtual:</strong>
+                        <button onclick="falarTextoPorVoz(${JSON.stringify(resposta).replace(/"/g, '&quot;')})" class="text-[10px] bg-sky-200 hover:bg-sky-300 text-sky-800 font-bold px-2 py-0.5 rounded-xl cursor-pointer">🔊 Ouvir</button>
+                    </div>
+                    <div class="whitespace-pre-wrap text-slate-800 font-medium">${escapeHtmlEdu(resposta)}</div>
+                </div>
+            `;
+            mensagens.scrollTop = mensagens.scrollHeight;
+            falarTextoPorVoz(resposta);
+        }
+
+        // RENDERIZAÇÃO DO PERSONAGEM 3D COM THREE.JS
+        function inicializarCena3D() {
+            const container = document.getElementById('canvas-container-3d');
+            if (!container || container.children.length > 0) return;
+
+            cena3D = new THREE.Scene();
+            camera3D = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+            camera3D.position.set(0, 1.3, 3.8);
+
+            renderizador3D = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderizador3D.setSize(container.clientWidth, container.clientHeight);
+            renderizador3D.setPixelRatio(window.devicePixelRatio);
+            container.appendChild(renderizador3D.domElement);
+
+            // Luzes
+            const luzAmb = new THREE.AmbientLight(0xffffff, 1.2);
+            cena3D.add(luzAmb);
+            const luzDir = new THREE.DirectionalLight(0x38bdf8, 1.5);
+            luzDir.position.set(2, 4, 2);
+            cena3D.add(luzDir);
+
+            // Grupo do Boneco 3D Estilizado (Professor de Educação Física)
+            boneco3D = new THREE.Group();
+
+            // Cabeça
+            const matPele = new THREE.MeshStandardMaterial({ color: 0xf5d0b1, roughness: 0.5 });
+            const cabeca = new THREE.Mesh(new THREE.SphereGeometry(0.35, 32, 32), matPele);
+            cabeca.position.y = 1.2;
+            boneco3D.add(cabeca);
+
+            // Cabelo / Boné desportivo
+            const matBone = new THREE.MeshStandardMaterial({ color: 0x0284c7 });
+            const bone = new THREE.Mesh(new THREE.SphereGeometry(0.36, 16, 16, 0, Math.PI * 2, 0, Math.PI * 0.5), matBone);
+            bone.position.set(0, 1.3, 0);
+            boneco3D.add(bone);
+
+            // Corpo (Roupa Esportiva / Casaco)
+            const matRoupa = new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.4 });
+            const corpo = new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.35, 0.9, 16), matRoupa);
+            corpo.position.y = 0.5;
+            boneco3D.add(corpo);
+
+            // Braços
+            const bracoEsq = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.09, 0.7, 16), matRoupa);
+            bracoEsq.position.set(-0.45, 0.6, 0);
+            bracoEsq.rotation.z = 0.2;
+            boneco3D.add(bracoEsq);
+
+            const bracoDir = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.09, 0.7, 16), matRoupa);
+            bracoDir.position.set(0.45, 0.6, 0);
+            bracoDir.rotation.z = -0.2;
+            boneco3D.add(bracoDir);
+
+            cena3D.add(boneco3D);
+
+            // Rotação por arraste do rato
+            let isDragging = false;
+            let prevMouseX = 0;
+            container.addEventListener('mousedown', (e) => { isDragging = true; prevMouseX = e.clientX; });
+            window.addEventListener('mouseup', () => { isDragging = false; });
+            window.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                const delta = e.clientX - prevMouseX;
+                boneco3D.rotation.y += delta * 0.01;
+                prevMouseX = e.clientX;
+            });
+
+            // Loop de Animação 3D
+            let clock = new THREE.Clock();
+            function animar3D() {
+                requestAnimationFrame(animar3D);
+                const t = clock.getElapsedTime();
+
+                // Movimento natural de respiração / idle
+                boneco3D.position.y = Math.sin(t * 2) * 0.03;
+                cabeca.rotation.y = Math.sin(t * 1.5) * 0.1;
+
+                // Se estiver a falar por voz, anima os braços e cabeça de forma expressiva
+                if (animandoFala3D) {
+                    bracoEsq.rotation.x = Math.sin(t * 12) * 0.3;
+                    bracoDir.rotation.x = Math.cos(t * 12) * 0.3;
+                } else {
+                    bracoEsq.rotation.x = 0;
+                    bracoDir.rotation.x = 0;
+                }
+
+                renderizador3D.render(cena3D, camera3D);
+            }
+            animar3D();
         }
 
         function escapeHtmlEdu(text) {
@@ -1007,7 +1143,7 @@
             const filtrados = bancoJogos.filter(j => j.titulo.toLowerCase().includes(busca) || j.categoria.toLowerCase().includes(busca) || j.objetivo.toLowerCase().includes(busca));
 
             container.innerHTML = filtrados.map((j, idx) => `
-                <div class="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-xs flex flex-col justify-between space-y-4 hover:shadow-md transition-shadow">
+                <div class="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-xs flex flex-col justify-between space-y-4">
                     <div class="space-y-2">
                         <div class="flex justify-between items-center"><h3 class="font-extrabold text-sm text-slate-900">${j.titulo}</h3><span class="px-3 py-1 rounded-full text-[10px] font-extrabold bg-sky-50 text-sky-700">${j.categoria}</span></div>
                         <p class="text-xs text-slate-600"><strong>🎯 Objetivo:</strong> ${j.objetivo}</p>
@@ -1015,8 +1151,8 @@
                         <p class="text-xs text-sky-700 font-medium"><strong>📋 Regras:</strong> ${j.regras}</p>
                     </div>
                     <div class="flex justify-end gap-3 pt-3 border-t border-slate-100">
-                        <button onclick="editarJogo(${idx})" class="text-xs text-sky-600 font-bold hover:underline cursor-pointer">Editar</button>
-                        <button onclick="removerJogo(${idx})" class="text-xs text-rose-600 font-bold hover:underline cursor-pointer">Excluir</button>
+                        <button onclick="editarJogo(${idx})" class="text-xs text-sky-600 font-bold cursor-pointer hover:underline">Editar</button>
+                        <button onclick="removerJogo(${idx})" class="text-xs text-rose-600 font-bold cursor-pointer hover:underline">Excluir</button>
                     </div>
                 </div>
             `).join('');
@@ -1035,7 +1171,7 @@
             });
 
             container.innerHTML = filtrados.map(a => `
-                <div class="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-xs space-y-2 hover:shadow-md transition-shadow">
+                <div class="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-xs space-y-2">
                     <div class="flex justify-between items-center"><h3 class="font-extrabold text-sm text-slate-900">${a.nome}</h3><span class="px-3 py-1 rounded-full text-[10px] font-extrabold bg-slate-100 text-slate-700">${a.tipo} • ${a.regiao}</span></div>
                     <p class="text-xs text-slate-600"><strong>Ação:</strong> ${a.acao}</p>
                     <p class="text-xs text-sky-700 font-medium"><strong>Aplicações:</strong> ${a.exercicios}</p>
@@ -1115,6 +1251,7 @@
             if(tabId === 'editor-word') renderizarListaDocsWord();
             if(tabId === 'gestao') carregarPlanoGestaoNaTela();
             if(tabId === 'sala-virtual') {
+                setTimeout(inicializarCena3D, 100);
                 document.getElementById('chat-sala-virtual-input').focus();
             }
         }
@@ -1158,13 +1295,12 @@
 
             if(configApp.nomeProf) document.getElementById('header-user-nome').textContent = `👤 ${configApp.nomeProf}`;
             salvarDadosLocais();
-            alert('✅ Todas as configurações e a chave da IA foram salvas com sucesso!');
+            alert('✅ Configurações e chave da IA guardadas com sucesso!');
         }
 
         function resetarTodosDadosSistema() {
-            if(confirm("⚠️ Tem certeza que deseja apagar TODOS os dados (turmas, alunos, notas, planos e jogos) armazenados localmente?")) {
+            if(confirm("⚠️ Tem certeza que deseja apagar TODOS os dados e reiniciar a aplicação?")) {
                 localStorage.clear();
-                alert("🔄 Todos os dados foram redefinidos.");
                 location.reload();
             }
         }
@@ -1192,9 +1328,9 @@
             const t = idx >= 0 ? turmas[idx] : { nome: '', ano: '', turno: '' };
             document.getElementById('modal-titulo').textContent = idx >= 0 ? 'Editar Turma' : 'Registar Nova Turma';
             document.getElementById('modal-corpo').innerHTML = `
-                <div><label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Nome da Turma</label><input type="text" id="m-t-nome" value="${t.nome}" placeholder="Ex: 8º Ano A" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs"></div>
-                <div><label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Ano / Série</label><input type="text" id="m-t-ano" value="${t.ano}" placeholder="Ex: 8º Ano" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs"></div>
-                <div><label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Turno</label><input type="text" id="m-t-turno" value="${t.turno}" placeholder="Ex: Manhã" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs"></div>
+                <div><label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Nome da Turma</label><input type="text" id="m-t-nome" value="${t.nome}" placeholder="Ex: 8º Ano A" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs"></div>
+                <div><label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Ano / Série</label><input type="text" id="m-t-ano" value="${t.ano}" placeholder="Ex: 8º Ano" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs"></div>
+                <div><label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Turno</label><input type="text" id="m-t-turno" value="${t.turno}" placeholder="Ex: Manhã" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs"></div>
             `;
             document.getElementById('modal-app').classList.remove('hidden');
         }
@@ -1208,8 +1344,8 @@
             let turmasOpts = turmas.length ? turmas.map(t => `<option value="${t.nome}" ${t.nome === a.turma ? 'selected' : ''}>${t.nome}</option>`).join('') : '<option value="Geral">Sem turmas disponíveis</option>';
             document.getElementById('modal-titulo').textContent = idx >= 0 ? 'Editar Aluno' : 'Matricular Aluno';
             document.getElementById('modal-corpo').innerHTML = `
-                <div><label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Nome do Aluno</label><input type="text" id="m-a-nome" value="${a.nome}" placeholder="Ex: João Silva" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs"></div>
-                <div><label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Turma</label><select id="m-a-turma" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs">${turmasOpts}</select></div>
+                <div><label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Nome do Aluno</label><input type="text" id="m-a-nome" value="${a.nome}" placeholder="Ex: João Silva" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs"></div>
+                <div><label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Turma</label><select id="m-a-turma" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs">${turmasOpts}</select></div>
             `;
             document.getElementById('modal-app').classList.remove('hidden');
         }
@@ -1222,11 +1358,11 @@
             const j = idx >= 0 ? bancoJogos[idx] : { titulo: '', categoria: '', objetivo: '', materiais: '', regras: '' };
             document.getElementById('modal-titulo').textContent = idx >= 0 ? 'Editar Ideia de Jogo' : 'Adicionar Nova Ideia de Jogo';
             document.getElementById('modal-corpo').innerHTML = `
-                <div><label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Título</label><input type="text" id="m-j-titulo" value="${j.titulo}" placeholder="Nome do Jogo" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs"></div>
-                <div><label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Categoria</label><input type="text" id="m-j-cat" value="${j.categoria}" placeholder="Ex: Esportes, Lúdico" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs"></div>
-                <div><label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Objetivo</label><input type="text" id="m-j-obj" value="${j.objetivo}" placeholder="Objetivo pedagógico" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs"></div>
-                <div><label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Materiais</label><input type="text" id="m-j-mat" value="${j.materiais}" placeholder="Ex: Cones, bolas" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs"></div>
-                <div><label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Regras</label><textarea id="m-j-reg" placeholder="Explicação das regras..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs h-20 focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs">${j.regras}</textarea></div>
+                <div><label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Título</label><input type="text" id="m-j-titulo" value="${j.titulo}" placeholder="Nome do Jogo" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs"></div>
+                <div><label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Categoria</label><input type="text" id="m-j-cat" value="${j.categoria}" placeholder="Ex: Esportes, Lúdico" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs"></div>
+                <div><label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Objetivo</label><input type="text" id="m-j-obj" value="${j.objetivo}" placeholder="Objetivo pedagógico" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs"></div>
+                <div><label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Materiais</label><input type="text" id="m-j-mat" value="${j.materiais}" placeholder="Ex: Cones, bolas" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs"></div>
+                <div><label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Regras</label><textarea id="m-j-reg" placeholder="Explicação das regras..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs h-20">${j.regras}</textarea></div>
             `;
             document.getElementById('modal-app').classList.remove('hidden');
         }
@@ -1319,11 +1455,11 @@
                 listaDiv.innerHTML = `<p class="text-xs text-slate-400">Nenhum aluno matriculado nesta turma.</p>`;
             } else {
                 listaDiv.innerHTML = alunosTurma.map((aluno, i) => `
-                    <div class="flex justify-between items-center p-3.5 bg-slate-50 rounded-2xl border border-slate-100 shadow-2xs">
+                    <div class="flex justify-between items-center p-3.5 bg-slate-50 rounded-2xl border border-slate-100">
                         <span class="text-xs font-bold text-slate-800">${i+1}. ${aluno.nome}</span>
                         <div class="flex gap-2">
-                            <label class="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl cursor-pointer flex items-center gap-1 shadow-2xs"><input type="radio" name="presenca_${i}" checked class="accent-emerald-600"> Presente</label>
-                            <label class="text-[11px] font-bold text-rose-700 bg-rose-50 px-3 py-1.5 rounded-xl cursor-pointer flex items-center gap-1 shadow-2xs"><input type="radio" name="presenca_${i}" class="accent-rose-600"> Ausente</label>
+                            <label class="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl cursor-pointer flex items-center gap-1"><input type="radio" name="presenca_${i}" checked class="accent-emerald-600"> Presente</label>
+                            <label class="text-[11px] font-bold text-rose-700 bg-rose-50 px-3 py-1.5 rounded-xl cursor-pointer flex items-center gap-1"><input type="radio" name="presenca_${i}" class="accent-rose-600"> Ausente</label>
                         </div>
                     </div>
                 `).join('');
@@ -1492,7 +1628,7 @@
         }
 
         function descarregarBackupJSON() {
-            const dadosCompletos = { versao: "8.7", turmas, alunos, bancoJogos, documentosWord, documentosPDF, planoGestao: planoGestaoDados, agendaHoje: agendaHojeDados, configApp };
+            const dadosCompletos = { versao: "8.8", turmas, alunos, bancoJogos, documentosWord, documentosPDF, planoGestao: planoGestaoDados, agendaHoje: agendaHojeDados, configApp };
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dadosCompletos, null, 2));
             const dl = document.createElement('a');
             dl.setAttribute("href", dataStr);
@@ -1521,7 +1657,7 @@
                     carregarTudoNaTela();
                     alert("✅ Backup restaurado com sucesso!");
                 } catch (err) {
-                    alert("❌ Erro ao ler ficheiro .json de backup.");
+                    alert("❌ Erro ao ler ficheiro de backup.");
                 }
             };
             reader.readAsText(file);

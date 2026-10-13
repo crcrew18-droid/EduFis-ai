@@ -111,7 +111,7 @@
             { codigo: "EF67EF01", tema: "Esportes", desc: "Experimentar e fruir diferentes esportes de marca, precisão, invasão e técnico-combinatórios." },
             { codigo: "EF67EF03", tema: "Esportes", desc: "Praticar um ou mais esportes de marca, precisão, invasão e técnico-combinatórios oferecidos na escola." },
             { codigo: "EF89EF07", tema: "Esportes", desc: "Formular e propor estratégias para a resolução de desafios em jogos desportivos." },
-            { codigo: "EF67EF07", tema: "Ginástica", desc: "Propor e produzir alternativas para a prática da ginástica de conscientização corporal." },
+            { codigo: "EF67EF07", tema: "Ginástica", desc: "Propor e produzir alternatives para a prática da ginástica de conscientização corporal." },
             { codigo: "EF89EF09", tema: "Ginástica", desc: "Construir apresentações de ginástica geral, integrando diferentes elementos gimnásticos." },
             { codigo: "EF35EF01", tema: "Brincadeiras e Jogos", desc: "Experimentar e fruir brincadeiras e jogos populares do Brasil e do mundo." },
             { codigo: "EF35EF05", tema: "Lutas", desc: "Experimentar e fruir lutas presentes no contexto comunitário e regional." }
@@ -561,9 +561,14 @@
                     <div class="flex justify-between items-center flex-wrap gap-3">
                         <div>
                             <h2 class="text-2xl font-black text-slate-900 tracking-tight">Gestor de Documentos 📄</h2>
-                            <p class="text-slate-500 text-xs sm:text-sm">Guarde referências a PDFs, relatórios e testes externos.</p>
+                            <p class="text-slate-500 text-xs sm:text-sm">Anexe e organize seus arquivos PDF, relatórios e testes da escola.</p>
                         </div>
-                        <button onclick="abrirModalUploadPDF()" class="btn-primary-theme bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-md shadow-sky-600/20 transition-all cursor-pointer">+ Adicionar PDF / Documento</button>
+                        <div>
+                            <input type="file" id="input-upload-pdf-file" accept="application/pdf" class="hidden" onchange="processarUploadPDF(event)">
+                            <button onclick="document.getElementById('input-upload-pdf-file').click()" class="btn-primary-theme bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-md shadow-sky-600/20 transition-all cursor-pointer flex items-center gap-2">
+                                <span>📤</span> Enviar Ficheiro PDF
+                            </button>
+                        </div>
                     </div>
                     <div id="lista-provas-cards" class="grid grid-cols-1 sm:grid-cols-2 gap-5"></div>
                 </div>
@@ -734,35 +739,29 @@
         </div>
     </div>
 
-    <!-- MASCOTE FLUTUANTE & CHAT DO ATLAS IA (DESIGN HUMANO DE PROFESSOR / TREINADOR) -->
+    <!-- MASCOTE FLUTUANTE & CHAT DO ATLAS IA (ROBOZINHO MODERNO) -->
     <div id="professor-edu-container" class="fixed bottom-6 right-6 z-50 no-print">
-        <button onclick="toggleChatEdu()" class="w-16 h-16 bg-sky-600 hover:bg-sky-700 text-white rounded-full shadow-2xl flex items-center justify-center transition-transform hover:scale-110 cursor-pointer relative group p-0.5 overflow-hidden border-2 border-white">
-            <!-- AVATAR HUMANO: PROFESSOR / TREINADOR DE EDUCAÇÃO FÍSICA -->
+        <button onclick="toggleChatEdu()" class="w-16 h-16 bg-sky-600 hover:bg-sky-700 text-white rounded-full shadow-2xl flex items-center justify-center transition-transform hover:scale-110 cursor-pointer relative group p-1.5 overflow-hidden border-2 border-white">
+            <!-- AVATAR ROBOZINHO ASSISTENTE -->
             <svg class="w-full h-full rounded-full bg-slate-900" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <!-- Fundo de campo / pista azul -->
                 <circle cx="50" cy="50" r="50" fill="#0EA5E9"/>
-                <!-- Camisa polo esportiva azul escura -->
-                <path d="M20 92 C 20 68, 80 68, 80 92 Z" fill="#0F172A"/>
-                <!-- Detalhe da gola da camisa -->
-                <path d="M36 68 L 50 82 L 64 68 Z" fill="#1E293B"/>
-                <!-- Apito prateado pendurado no pescoço -->
-                <path d="M46 62 C 46 72, 54 72, 54 62 Z" stroke="#E2E8F0" stroke-width="2" fill="none"/>
-                <rect x="46" y="72" width="8" height="10" rx="2" fill="#94A3B8"/>
-                <circle cx="50" cy="78" r="1.5" fill="#0F172A"/>
-                <!-- Rosto humano / Tom de pele natural -->
-                <ellipse cx="50" cy="45" rx="20" ry="22" fill="#FED7AA"/>
-                <!-- Cabelo castanho curto e alinhado -->
-                <path d="M30 40 C 28 26, 38 20, 50 20 C 62 20, 72 26, 70 40 C 65 28, 35 28, 30 40 Z" fill="#331800"/>
-                <!-- Olhos humanos expressivos -->
-                <ellipse cx="42" cy="43" rx="2.5" ry="3" fill="#0F172A"/>
-                <ellipse cx="58" cy="43" rx="2.5" ry="3" fill="#0F172A"/>
-                <circle cx="43" cy="42" r="1" fill="white"/>
-                <circle cx="59" cy="42" r="1" fill="white"/>
-                <!-- Sobrancelhas amigáveis -->
-                <path d="M37 38 Q 42 35 46 38" stroke="#331800" stroke-width="2" stroke-linecap="round"/>
-                <path d="M54 38 Q 58 35 63 38" stroke="#331800" stroke-width="2" stroke-linecap="round"/>
-                <!-- Sorriso simpático -->
-                <path d="M40 52 Q 50 60 60 52" stroke="#0F172A" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                <!-- Antena -->
+                <line x1="50" y1="22" x2="50" y2="30" stroke="#E2E8F0" stroke-width="4" stroke-linecap="round"/>
+                <circle cx="50" cy="18" r="4" fill="#38BDF8"/>
+                <!-- Cabeça do Robô -->
+                <rect x="25" y="30" width="50" height="38" rx="12" fill="#0F172A" stroke="#E2E8F0" stroke-width="3"/>
+                <!-- Visor digital -->
+                <rect x="31" y="38" width="38" height="18" rx="6" fill="#1E293B"/>
+                <!-- Olhos acesos -->
+                <circle cx="41" cy="47" r="4" fill="#38BDF8"/>
+                <circle cx="59" cy="47" r="4" fill="#38BDF8"/>
+                <circle cx="42" cy="46" r="1.5" fill="white"/>
+                <circle cx="60" cy="46" r="1.5" fill="white"/>
+                <!-- Sorriso LED -->
+                <path d="M43 60 Q 50 64 57 60" stroke="#38BDF8" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                <!-- Corpo / Apito -->
+                <path d="M30 72 L 70 72 L 65 92 L 35 92 Z" fill="#1E293B"/>
+                <circle cx="50" cy="80" r="3" fill="#F59E0B"/>
             </svg>
             <span class="absolute top-0 right-0 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full z-10"></span>
             <div class="absolute right-20 bg-slate-900 text-white text-[11px] font-bold px-3 py-1.5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-md pointer-events-none">
@@ -776,12 +775,13 @@
                     <div class="w-10 h-10 rounded-xl bg-sky-600 overflow-hidden flex items-center justify-center border border-sky-400 shrink-0">
                         <svg class="w-full h-full bg-slate-900" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="50" cy="50" r="50" fill="#0EA5E9"/>
-                            <path d="M20 92 C 20 68, 80 68, 80 92 Z" fill="#0F172A"/>
-                            <ellipse cx="50" cy="45" rx="20" ry="22" fill="#FED7AA"/>
-                            <path d="M30 40 C 28 26, 38 20, 50 20 C 62 20, 72 26, 70 40 C 65 28, 35 28, 30 40 Z" fill="#331800"/>
-                            <circle cx="42" cy="43" r="2.5" fill="#0F172A"/>
-                            <circle cx="58" cy="43" r="2.5" fill="#0F172A"/>
-                            <path d="M40 52 Q 50 60 60 52" stroke="#0F172A" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                            <line x1="50" y1="22" x2="50" y2="30" stroke="#E2E8F0" stroke-width="4" stroke-linecap="round"/>
+                            <circle cx="50" cy="18" r="4" fill="#38BDF8"/>
+                            <rect x="25" y="30" width="50" height="38" rx="12" fill="#0F172A" stroke="#E2E8F0" stroke-width="3"/>
+                            <rect x="31" y="38" width="38" height="18" rx="6" fill="#1E293B"/>
+                            <circle cx="41" cy="47" r="4" fill="#38BDF8"/>
+                            <circle cx="59" cy="47" r="4" fill="#38BDF8"/>
+                            <path d="M43 60 Q 50 64 57 60" stroke="#38BDF8" stroke-width="2.5" stroke-linecap="round" fill="none"/>
                         </svg>
                     </div>
                     <div>
@@ -1424,22 +1424,60 @@
             }
         }
 
-        function abrirModalUploadPDF() {
-            const nome = prompt("Nome do documento PDF / Prova:");
-            if(!nome) return;
-            documentosPDF.push({ id: Date.now(), nome });
-            salvarDadosLocais();
-            atualizarEstatisticas();
-            renderizarListaPDFs();
+        function processarUploadPDF(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            if (file.type !== "application/pdf") {
+                alert("Por favor, selecione um ficheiro em formato PDF.");
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const dataUrl = evt.target.result;
+                const tamanhoKb = (file.size / 1024).toFixed(1);
+                
+                documentosPDF.push({ 
+                    id: Date.now(), 
+                    nome: file.name,
+                    tamanho: `${tamanhoKb} KB`,
+                    data: dataUrl,
+                    dataCriacao: new Date().toLocaleDateString('pt-PT')
+                });
+
+                salvarDadosLocais();
+                atualizarEstatisticas();
+                renderizarListaPDFs();
+                alert(`✅ O PDF "${file.name}" foi enviado e salvo com sucesso!`);
+            };
+            reader.readAsDataURL(file);
+            e.target.value = '';
+        }
+
+        function visualizarPDF(id) {
+            const pdf = documentosPDF.find(p => p.id === id);
+            if (pdf && pdf.data) {
+                const win = window.open();
+                win.document.write(`<iframe src="${pdf.data}" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>`);
+            } else {
+                alert("Não foi possível visualizar este PDF.");
+            }
         }
 
         function renderizarListaPDFs() {
             const container = document.getElementById('lista-provas-cards');
             if(!container) return;
-            container.innerHTML = documentosPDF.length === 0 ? `<p class="text-xs text-slate-400">Nenhum documento PDF registado.</p>` : documentosPDF.map((p, idx) => `
-                <div class="bg-white border border-slate-200/80 p-4 rounded-2xl flex justify-between items-center shadow-xs">
-                    <span class="text-xs font-bold text-slate-800">📄 ${p.nome}</span>
-                    <button onclick="documentosPDF.splice(${idx},1);salvarDadosLocais();renderizarListaPDFs();atualizarEstatisticas();" class="text-xs text-rose-600 font-bold cursor-pointer">Excluir</button>
+            container.innerHTML = documentosPDF.length === 0 ? `<p class="text-xs text-slate-400 col-span-2">Nenhum documento PDF registado. Clique no botão "+ Enviar Ficheiro PDF" acima.</p>` : documentosPDF.map((p, idx) => `
+                <div class="bg-white border border-slate-200/80 p-5 rounded-3xl flex justify-between items-center shadow-xs hover:shadow-md transition-shadow">
+                    <div class="space-y-1 max-w-[70%]">
+                        <span class="text-xs font-extrabold text-slate-800 block truncate">📄 ${p.nome}</span>
+                        <span class="text-[10px] text-slate-400 font-semibold block">${p.tamanho || 'Tamanho desconhecido'} ${p.dataCriacao ? '• ' + p.dataCriacao : ''}</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        ${p.data ? `<button onclick="visualizarPDF(${p.id})" class="text-xs text-sky-600 font-extrabold hover:underline cursor-pointer">Abrir</button>` : ''}
+                        <button onclick="documentosPDF.splice(${idx},1);salvarDadosLocais();renderizarListaPDFs();atualizarEstatisticas();" class="text-xs text-rose-600 font-bold cursor-pointer hover:underline">Excluir</button>
+                    </div>
                 </div>
             `).join('');
         }

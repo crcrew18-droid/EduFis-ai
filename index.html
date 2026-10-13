@@ -103,7 +103,7 @@
             { id: "m9", nome: "Tríceps Braquial", tipo: "Músculo", regiao: "Superiores", acao: "Extensão do cotovelo.", exercicios: "Flexão no solo, Passe de peito no basquete, Cortada no Vôlei." },
             { id: "m10", nome: "Reto Abdominal e Oblíquos", tipo: "Músculo", regiao: "Tronco", acao: "Flexão e rotação do tronco, estabilização do Core.", exercicios: "Prancha abdominal, Rotações com bola medicinal." },
             { id: "o1", nome: "Fêmur", tipo: "Osso", regiao: "Esqueleto", acao: "Maior osso do corpo humano; suporta o peso corporal e articula no quadril e joelho.", exercicios: "Suporte de carga, Corridas, Saltos." },
-            { id: "o2", nome: "Tíbia e Fíbula", tipo: "Osso", regiao: "Esqueleto", acao: "Ossos da perna; sustentação e fixação muscular para tornozelo/joelho.", exercicios: "Impacto controlled, Treino de agilidade e mudança de direção." },
+            { id: "o2", nome: "Tíbia e Fíbula", tipo: "Osso", regiao: "Esqueleto", acao: "Ossos da perna; sustentação e fixação muscular para tornozelo/joelho.", exercicios: "Impacto controlado, Treino de agilidade e mudança de direção." },
             { id: "o3", nome: "Escápula e Clavícula", tipo: "Osso", regiao: "Esqueleto", acao: "Cinto escapular; dão mobilidade e amplitude de movimento aos ombros.", exercicios: "Movimentos de arremesso, natação e ginástica artística." }
         ];
 
@@ -111,7 +111,7 @@
             { codigo: "EF67EF01", tema: "Esportes", desc: "Experimentar e fruir diferentes esportes de marca, precisão, invasão e técnico-combinatórios." },
             { codigo: "EF67EF03", tema: "Esportes", desc: "Praticar um ou mais esportes de marca, precisão, invasão e técnico-combinatórios oferecidos na escola." },
             { codigo: "EF89EF07", tema: "Esportes", desc: "Formular e propor estratégias para a resolução de desafios em jogos desportivos." },
-            { codigo: "EF67EF07", tema: "Ginástica", desc: "Propor e produzir alternativas para a prática da ginástica de conscientização corporal." },
+            { codigo: "EF67EF07", tema: "Ginástica", desc: "Propor e produzir alternatives para a prática da ginástica de conscientização corporal." },
             { codigo: "EF89EF09", tema: "Ginástica", desc: "Construir apresentações de ginástica geral, integrando diferentes elementos gimnásticos." },
             { codigo: "EF35EF01", tema: "Brincadeiras e Jogos", desc: "Experimentar e fruir brincadeiras e jogos populares do Brasil e do mundo." },
             { codigo: "EF35EF05", tema: "Lutas", desc: "Experimentar e fruir lutas presentes no contexto comunitário e regional." }
@@ -742,17 +742,24 @@
     <!-- MASCOTE FLUTUANTE & CHAT DO ATLAS IA (ROBOZINHO MODERNO) -->
     <div id="professor-edu-container" class="fixed bottom-6 right-6 z-50 no-print">
         <button onclick="toggleChatEdu()" class="w-16 h-16 bg-sky-600 hover:bg-sky-700 text-white rounded-full shadow-2xl flex items-center justify-center transition-transform hover:scale-110 cursor-pointer relative group p-1.5 overflow-hidden border-2 border-white">
+            <!-- AVATAR ROBOZINHO ASSISTENTE -->
             <svg class="w-full h-full rounded-full bg-slate-900" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="50" cy="50" r="50" fill="#0EA5E9"/>
+                <!-- Antena -->
                 <line x1="50" y1="22" x2="50" y2="30" stroke="#E2E8F0" stroke-width="4" stroke-linecap="round"/>
                 <circle cx="50" cy="18" r="4" fill="#38BDF8"/>
+                <!-- Cabeça do Robô -->
                 <rect x="25" y="30" width="50" height="38" rx="12" fill="#0F172A" stroke="#E2E8F0" stroke-width="3"/>
+                <!-- Visor digital -->
                 <rect x="31" y="38" width="38" height="18" rx="6" fill="#1E293B"/>
+                <!-- Olhos acesos -->
                 <circle cx="41" cy="47" r="4" fill="#38BDF8"/>
                 <circle cx="59" cy="47" r="4" fill="#38BDF8"/>
                 <circle cx="42" cy="46" r="1.5" fill="white"/>
                 <circle cx="60" cy="46" r="1.5" fill="white"/>
+                <!-- Sorriso LED -->
                 <path d="M43 60 Q 50 64 57 60" stroke="#38BDF8" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                <!-- Corpo / Apito -->
                 <path d="M30 72 L 70 72 L 65 92 L 35 92 Z" fill="#1E293B"/>
                 <circle cx="50" cy="80" r="3" fill="#F59E0B"/>
             </svg>
@@ -762,7 +769,7 @@
             </div>
         </button>
 
-        <div id="chat-edu-box" class="hidden absolute bottom-20 right-0 w-80 sm:w-96 bg-white border border-slate-200 rounded-3xl shadow-2xl flex flex-col overflow-hidden transition-all duration-300 max-h-[520px]">
+        <div id="chat-edu-box" class="hidden absolute bottom-20 right-0 w-80 sm:w-96 bg-white border border-slate-200 rounded-3xl shadow-2xl flex flex-col overflow-hidden transition-all duration-300 max-h-[500px]">
             <div class="bg-slate-900 text-white p-4 flex items-center justify-between">
                 <div class="flex items-center gap-2.5">
                     <div class="w-10 h-10 rounded-xl bg-sky-600 overflow-hidden flex items-center justify-center border border-sky-400 shrink-0">
@@ -785,10 +792,758 @@
                 <button onclick="toggleChatEdu()" class="text-slate-400 hover:text-white text-sm font-bold cursor-pointer p-1">✕</button>
             </div>
 
-            <div id="chat-edu-messages" class="flex-1 p-4 overflow-y-auto space-y-3 bg-slate-50 min-h-[240px] max-h-[300px] text-xs">
+            <div id="chat-edu-messages" class="flex-1 p-4 overflow-y-auto space-y-3 bg-slate-50 min-h-[280px] max-h-[340px] text-xs">
                 <div class="bg-white p-3 rounded-2xl border border-slate-200/80 text-slate-700 shadow-2xs">
-                    Olá! Sou o <strong>Atlas IA</strong>. Escolha um comando rápido abaixo ou digite sua dúvida pedagógica! 🚀
+                    Olá! Sou o <strong>Atlas IA</strong>. Como posso ajudar nas suas aulas, planos de ensino, circuitos ou conteúdos de anatomia hoje? 🚀
                 </div>
             </div>
 
-            <!-- NOVO: ATALHOS DE PROMPTS PRONTOS EM 1 CLIQUE -->
+            <div class="p-3 bg-white border-t border-slate-200 flex gap-2">
+                <input type="text" id="chat-edu-input" placeholder="Digite sua dúvida pedagógica..." onkeypress="if(event.key==='Enter') enviarMensagemEdu()" class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500">
+                <button onclick="enviarMensagemEdu()" class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer shadow-xs">Enviar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL GENÉRICO -->
+    <div id="modal-app" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 z-50 no-print">
+        <div class="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 w-full max-w-md space-y-5 shadow-2xl">
+            <h3 id="modal-titulo" class="font-extrabold text-base text-slate-950">Registar</h3>
+            <div id="modal-corpo" class="space-y-4"></div>
+            <div class="flex justify-end gap-2.5 pt-2">
+                <button type="button" onclick="fecharModal()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2.5 rounded-2xl text-xs font-bold transition-colors">Cancelar</button>
+                <button type="button" onclick="executarSalvarModal()" class="btn-primary-theme bg-sky-600 text-white font-bold px-5 py-2.5 rounded-2xl text-xs cursor-pointer shadow-md shadow-sky-600/20 transition-all">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let modalTipo = '';
+        let editandoIndex = -1;
+        let documentoAtualId = null;
+
+        function toggleSidebarMobile() {
+            document.getElementById('sidebar-menu').classList.toggle('-translate-x-full');
+            document.getElementById('sidebar-overlay').classList.toggle('hidden');
+        }
+
+        function toggleChatEdu() {
+            const box = document.getElementById('chat-edu-box');
+            box.classList.toggle('hidden');
+            if (!box.classList.contains('hidden')) {
+                document.getElementById('chat-edu-input').focus();
+            }
+        }
+
+        async function enviarMensagemEdu() {
+            const input = document.getElementById('chat-edu-input');
+            const mensagensDiv = document.getElementById('chat-edu-messages');
+            const texto = input.value.trim();
+            if (!texto) return;
+
+            const inputKey = document.getElementById('cfg-gemini-key') ? document.getElementById('cfg-gemini-key').value.trim() : '';
+            const apiKey = configApp.geminiKey || inputKey;
+
+            if (!apiKey) {
+                mensagensDiv.innerHTML += `
+                    <div class="bg-rose-50 text-rose-700 p-3 rounded-2xl border border-rose-200 shadow-2xs">
+                        ⚠️ Chave da API do Gemini não configurada. Vá a <strong>Configurações</strong> no menu lateral, cole a sua chave da API e clique no botão <strong>Guardar Todas as Configurações</strong>.
+                    </div>
+                `;
+                mensagensDiv.scrollTop = mensagensDiv.scrollHeight;
+                return;
+            }
+
+            mensagensDiv.innerHTML += `
+                <div class="bg-sky-600 text-white p-3 rounded-2xl ml-8 shadow-2xs">
+                    ${escapeHtmlEdu(texto)}
+                </div>
+            `;
+            input.value = '';
+            mensagensDiv.scrollTop = mensagensDiv.scrollHeight;
+
+            const loadingId = 'loading_' + Date.now();
+            mensagensDiv.innerHTML += `
+                <div id="${loadingId}" class="bg-white p-3 rounded-2xl border border-slate-200 text-slate-500 shadow-2xs italic">
+                    Atlas IA está a elaborar a resposta... ⏳
+                </div>
+            `;
+            mensagensDiv.scrollTop = mensagensDiv.scrollHeight;
+
+            const modelosParaTestar = ["gemini-3.8-flash", "gemini-3.6-flash", "gemini-2.5-flash"];
+            let sucesso = false;
+            let respostaTexto = null;
+            let erroUltimo = null;
+
+            for (const modelo of modelosParaTestar) {
+                let tentativas = 0;
+                const maxTentativas = 3;
+
+                while (tentativas <= maxTentativas) {
+                    try {
+                        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${modelo}:generateContent?key=${apiKey}`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                contents: [
+                                    {
+                                        role: "user",
+                                        parts: [
+                                            { text: "Você é o Atlas IA, um assistente de inteligência artificial especializado em Educação Física escolar, BNCC, anatomia, fisiologia do exercício, criação de planos de aula, circuitos motores e adaptações inclusivas. Responda de forma prática, profissional e objetiva aos professores." },
+                                            { text: texto }
+                                        ]
+                                    }
+                                ]
+                            })
+                        });
+
+                        if (res.status === 401 || res.status === 403) {
+                            if(document.getElementById(loadingId)) document.getElementById(loadingId).remove();
+                            mensagensDiv.innerHTML += `
+                                <div class="bg-rose-50 text-rose-700 p-3 rounded-2xl border border-rose-200 shadow-2xs">
+                                    Erro de Autenticação (${res.status}): A chave da API é inválida ou não tem permissão. Verifique nas Configurações.
+                                </div>
+                            `;
+                            mensagensDiv.scrollTop = mensagensDiv.scrollHeight;
+                            return;
+                        }
+
+                        if (res.status === 404) {
+                            break;
+                        }
+
+                        const data = await res.json();
+
+                        if (data.error) {
+                            const errCode = data.error.code;
+                            if ((errCode === 503 || errCode === 429) && tentativas < maxTentativas) {
+                                tentativas++;
+                                const esperaMs = Math.pow(2, tentativas) * 1000 + Math.random() * 1000;
+                                await new Promise(resolve => setTimeout(resolve, esperaMs));
+                                continue;
+                            }
+                            erroUltimo = `Erro (${errCode}): ${data.error.message}`;
+                            break;
+                        }
+
+                        respostaTexto = data.candidates?.[0]?.content?.parts?.[0]?.text;
+                        if (respostaTexto) {
+                            sucesso = true;
+                            break;
+                        }
+                    } catch (netErr) {
+                        erroUltimo = "Erro de conexão de rede com o Google Gemini.";
+                    }
+                    break;
+                }
+                if (sucesso) break;
+            }
+
+            if(document.getElementById(loadingId)) document.getElementById(loadingId).remove();
+
+            if (sucesso && respostaTexto) {
+                mensagensDiv.innerHTML += `
+                    <div class="bg-white p-3 rounded-2xl border border-slate-200/80 text-slate-700 shadow-2xs whitespace-pre-wrap">
+                        ${escapeHtmlEdu(respostaTexto)}
+                    </div>
+                `;
+            } else {
+                mensagensDiv.innerHTML += `
+                    <div class="bg-amber-50 text-amber-800 p-3 rounded-2xl border border-amber-200 shadow-2xs">
+                        ⚠️ O serviço de IA está temporariamente sobrecarregado (Alta demanda / 503). Por favor, aguarde alguns instantes e tente novamente. (${escapeHtmlEdu(erroUltimo || 'Indisponível')})
+                    </div>
+                `;
+            }
+            mensagensDiv.scrollTop = mensagensDiv.scrollHeight;
+        }
+
+        function escapeHtmlEdu(text) {
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        function renderizarBancoJogos() {
+            const container = document.getElementById('grid-jogos');
+            if (!container) return;
+            const busca = document.getElementById('search-jogos').value.toLowerCase().trim();
+            const filtrados = bancoJogos.filter(j => j.titulo.toLowerCase().includes(busca) || j.categoria.toLowerCase().includes(busca) || j.objetivo.toLowerCase().includes(busca));
+
+            container.innerHTML = filtrados.map((j, idx) => `
+                <div class="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-xs flex flex-col justify-between space-y-4 hover:shadow-md transition-shadow">
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center"><h3 class="font-extrabold text-sm text-slate-900">${j.titulo}</h3><span class="px-3 py-1 rounded-full text-[10px] font-extrabold bg-sky-50 text-sky-700">${j.categoria}</span></div>
+                        <p class="text-xs text-slate-600"><strong>🎯 Objetivo:</strong> ${j.objetivo}</p>
+                        <p class="text-xs text-slate-600"><strong>🎒 Materiais:</strong> ${j.materiais}</p>
+                        <p class="text-xs text-sky-700 font-medium"><strong>📋 Regras:</strong> ${j.regras}</p>
+                    </div>
+                    <div class="flex justify-end gap-3 pt-3 border-t border-slate-100">
+                        <button onclick="editarJogo(${idx})" class="text-xs text-sky-600 font-bold hover:underline cursor-pointer">Editar</button>
+                        <button onclick="removerJogo(${idx})" class="text-xs text-rose-600 font-bold hover:underline cursor-pointer">Excluir</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderizarAtlasAnatomia() {
+            const container = document.getElementById('grid-anatomia');
+            if (!container) return;
+            const busca = document.getElementById('search-anatomia').value.toLowerCase().trim();
+            const regiao = document.getElementById('filter-regiao-anatomia').value;
+            
+            const filtrados = baseAnatomia.filter(a => {
+                const matchBusca = a.nome.toLowerCase().includes(busca) || a.acao.toLowerCase().includes(busca) || a.exercicios.toLowerCase().includes(busca);
+                const matchRegiao = (regiao === 'Todas' || a.regiao === regiao);
+                return matchBusca && matchRegiao;
+            });
+
+            container.innerHTML = filtrados.map(a => `
+                <div class="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-xs space-y-2 hover:shadow-md transition-shadow">
+                    <div class="flex justify-between items-center"><h3 class="font-extrabold text-sm text-slate-900">${a.nome}</h3><span class="px-3 py-1 rounded-full text-[10px] font-extrabold bg-slate-100 text-slate-700">${a.tipo} • ${a.regiao}</span></div>
+                    <p class="text-xs text-slate-600"><strong>Ação:</strong> ${a.acao}</p>
+                    <p class="text-xs text-sky-700 font-medium"><strong>Aplicações:</strong> ${a.exercicios}</p>
+                </div>
+            `).join('');
+        }
+
+        function alternarTelaAuth(modo) {
+            if (modo === 'registrar') {
+                document.getElementById('form-login').classList.add('hidden');
+                document.getElementById('form-registrar').classList.remove('hidden');
+            } else {
+                document.getElementById('form-registrar').classList.add('hidden');
+                document.getElementById('form-login').classList.remove('hidden');
+            }
+        }
+
+        function handleRegistrar(e) {
+            e.preventDefault();
+            const nome = document.getElementById('reg-nome').value.trim();
+            const email = document.getElementById('reg-email').value.trim().toLowerCase();
+            const senha = document.getElementById('reg-senha').value;
+            usuarios.push({ nome, email, senha });
+            usuarioLogado = { nome, email };
+            configApp.nomeProf = nome;
+            salvarDadosLocais();
+            switchView('dashboard');
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value.trim().toLowerCase();
+            const senha = document.getElementById('login-senha').value;
+            const user = usuarios.find(u => u.email === email && u.senha === senha) || { nome: 'Professor(a)', email };
+            usuarioLogado = { nome: user.nome, email: user.email };
+            if(!configApp.nomeProf) configApp.nomeProf = user.nome;
+            salvarDadosLocais();
+            switchView('dashboard');
+        }
+
+        function logout() {
+            usuarioLogado = null;
+            salvarDadosLocais();
+            switchView('login');
+        }
+
+        function switchView(view) {
+            document.getElementById('view-login').classList.add('hidden');
+            document.getElementById('view-dashboard').classList.add('hidden');
+            if (view === 'login') document.getElementById('view-login').classList.remove('hidden');
+            if (view === 'dashboard') {
+                document.getElementById('view-dashboard').classList.remove('hidden');
+                carregarTudoNaTela();
+                if(configApp.temaCor) aplicarTemaCor(configApp.temaCor);
+            }
+        }
+
+        function changeTab(tabId) {
+            ['home', 'jogos', 'anatomia', 'turmas', 'alunos', 'chamada', 'editor-word', 'gestao', 'documentos', 'backup', 'config'].forEach(t => {
+                const el = document.getElementById(`tab-${t}`);
+                if(el) el.classList.add('hidden');
+                const btn = document.getElementById(`btn-tab-${t}`);
+                if(btn) {
+                    btn.classList.remove('bg-sky-50', 'text-sky-600', 'font-extrabold');
+                }
+            });
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`btn-tab-${tabId}`);
+            if(activeBtn) {
+                activeBtn.classList.add('bg-sky-50', 'text-sky-600', 'font-extrabold');
+            }
+            if(tabId === 'jogos') renderizarBancoJogos();
+            if(tabId === 'anatomia') renderizarAtlasAnatomia();
+            if(tabId === 'config') carregarConfigNaTela();
+            if(tabId === 'editor-word') renderizarListaDocsWord();
+            if(tabId === 'gestao') carregarPlanoGestaoNaTela();
+        }
+
+        function carregarTudoNaTela() {
+            if(usuarioLogado) document.getElementById('header-user-nome').textContent = `👤 ${configApp.nomeProf || usuarioLogado.nome}`;
+            document.getElementById('agenda-data-hoje').textContent = new Date().toLocaleDateString('pt-PT');
+            atualizarSelectsTurmas();
+            atualizarTabelaTurmas();
+            atualizarTabelaAlunos();
+            atualizarEstatisticas();
+            renderizarBancoJogos();
+            renderizarAtlasAnatomia();
+            renderizarListaDocsWord();
+            renderizarBNCCChecks();
+            changeTab('home');
+        }
+
+        function carregarConfigNaTela() {
+            if(document.getElementById('cfg-nome-prof')) document.getElementById('cfg-nome-prof').value = configApp.nomeProf || '';
+            if(document.getElementById('cfg-cargo-prof')) document.getElementById('cfg-cargo-prof').value = configApp.cargoProf || '';
+            if(document.getElementById('cfg-nome-escola')) document.getElementById('cfg-nome-escola').value = configApp.nomeEscola || '';
+            if(document.getElementById('cfg-municipio')) document.getElementById('cfg-municipio').value = configApp.municipioEscola || '';
+            if(document.getElementById('cfg-ano-letivo')) document.getElementById('cfg-ano-letivo').value = configApp.anoLetivo || '';
+            if(document.getElementById('cfg-gemini-key')) document.getElementById('cfg-gemini-key').value = configApp.geminiKey || '';
+            if(document.getElementById('cfg-duracao-aula')) document.getElementById('cfg-duracao-aula').value = configApp.duracaoAula || '50';
+            if(document.getElementById('cfg-periodo-padrao')) document.getElementById('cfg-periodo-padrao').value = configApp.periodoPadrao || '1º Bimestre';
+            if(document.getElementById('cfg-segmento')) document.getElementById('cfg-segmento').value = configApp.segmentoPadrao || 'Ensino Fundamental II';
+        }
+
+        function salvarConfigPerfil() {
+            configApp.nomeProf = document.getElementById('cfg-nome-prof').value.trim();
+            configApp.cargoProf = document.getElementById('cfg-cargo-prof').value.trim();
+            configApp.nomeEscola = document.getElementById('cfg-nome-escola').value.trim();
+            configApp.municipioEscola = document.getElementById('cfg-municipio').value.trim();
+            configApp.anoLetivo = document.getElementById('cfg-ano-letivo').value.trim();
+            configApp.geminiKey = document.getElementById('cfg-gemini-key').value.trim();
+            configApp.duracaoAula = document.getElementById('cfg-duracao-aula').value;
+            configApp.periodoPadrao = document.getElementById('cfg-periodo-padrao').value;
+            configApp.segmentoPadrao = document.getElementById('cfg-segmento').value;
+
+            if(configApp.nomeProf) document.getElementById('header-user-nome').textContent = `👤 ${configApp.nomeProf}`;
+            salvarDadosLocais();
+            alert('✅ Todas as configurações e a chave da IA foram salvas com sucesso!');
+        }
+
+        function resetarTodosDadosSistema() {
+            if(confirm("⚠️ Tem certeza que deseja apagar TODOS os dados (turmas, alunos, notas, planos e jogos) armazenados localmente? Esta ação não pode ser desfeita.")) {
+                localStorage.clear();
+                alert("🔄 Todos os dados foram redefinidos.");
+                location.reload();
+            }
+        }
+
+        function atualizarSelectsTurmas() {
+            const selectAgenda = document.getElementById('agenda-select-turma');
+            const selectChamada = document.getElementById('select-turma-chamada');
+            
+            const opcoes = turmas.length ? turmas.map(t => `<option value="${t.nome}">${t.nome}</option>`).join('') : '<option value="">Sem turmas registadas</option>';
+            
+            if(selectAgenda) {
+                selectAgenda.innerHTML = `<option value="">Selecione a turma...</option>` + opcoes;
+                if(agendaHojeDados.turma) selectAgenda.value = agendaHojeDados.turma;
+            }
+            if(selectChamada) {
+                selectChamada.innerHTML = `<option value="">Escolha uma turma...</option>` + opcoes;
+            }
+            
+            if(document.getElementById('agenda-input-conteudo') && agendaHojeDados.conteudo) {
+                document.getElementById('agenda-input-conteudo').value = agendaHojeDados.conteudo;
+            }
+        }
+
+        function salvarAgendaHoje() {
+            agendaHojeDados.turma = document.getElementById('agenda-select-turma').value;
+            agendaHojeDados.conteudo = document.getElementById('agenda-input-conteudo').value.trim();
+            salvarDadosLocais();
+        }
+
+        function abrirModalTurma(idx = -1) {
+            modalTipo = 'turma';
+            editandoIndex = idx;
+            const t = idx >= 0 ? turmas[idx] : { nome: '', ano: '', turno: '' };
+            document.getElementById('modal-titulo').textContent = idx >= 0 ? 'Editar Turma' : 'Registar Nova Turma';
+            document.getElementById('modal-corpo').innerHTML = `
+                <div><label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Nome da Turma</label><input type="text" id="m-t-nome" value="${t.nome}" placeholder="Ex: 8º Ano A" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs"></div>
+                <div><label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Ano / Série</label><input type="text" id="m-t-ano" value="${t.ano}" placeholder="Ex: 8º Ano" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs"></div>
+                <div><label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Turno</label><input type="text" id="m-t-turno" value="${t.turno}" placeholder="Ex: Manhã" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs"></div>
+            `;
+            document.getElementById('modal-app').classList.remove('hidden');
+        }
+
+        function editarTurma(idx) { abrirModalTurma(idx); }
+
+        function abrirModalAluno(idx = -1) {
+            modalTipo = 'aluno';
+            editandoIndex = idx;
+            const a = idx >= 0 ? alunos[idx] : { nome: '', turma: '' };
+            let turmasOpts = turmas.length ? turmas.map(t => `<option value="${t.nome}" ${t.nome === a.turma ? 'selected' : ''}>${t.nome}</option>`).join('') : '<option value="Geral">Sem turmas disponíveis</option>';
+            document.getElementById('modal-titulo').textContent = idx >= 0 ? 'Editar Aluno' : 'Matricular Aluno';
+            document.getElementById('modal-corpo').innerHTML = `
+                <div><label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Nome do Aluno</label><input type="text" id="m-a-nome" value="${a.nome}" placeholder="Ex: João Silva" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs"></div>
+                <div><label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Turma</label><select id="m-a-turma" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs">${turmasOpts}</select></div>
+            `;
+            document.getElementById('modal-app').classList.remove('hidden');
+        }
+
+        function editarAluno(idx) { abrirModalAluno(idx); }
+
+        function abrirModalJogo(idx = -1) {
+            modalTipo = 'jogo';
+            editandoIndex = idx;
+            const j = idx >= 0 ? bancoJogos[idx] : { titulo: '', categoria: '', objetivo: '', materiais: '', regras: '' };
+            document.getElementById('modal-titulo').textContent = idx >= 0 ? 'Editar Ideia de Jogo' : 'Adicionar Nova Ideia de Jogo';
+            document.getElementById('modal-corpo').innerHTML = `
+                <div><label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Título</label><input type="text" id="m-j-titulo" value="${j.titulo}" placeholder="Nome do Jogo" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs"></div>
+                <div><label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Categoria</label><input type="text" id="m-j-cat" value="${j.categoria}" placeholder="Ex: Esportes, Lúdico" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs"></div>
+                <div><label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Objetivo</label><input type="text" id="m-j-obj" value="${j.objetivo}" placeholder="Objetivo pedagógico" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs"></div>
+                <div><label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Materiais</label><input type="text" id="m-j-mat" value="${j.materiais}" placeholder="Ex: Cones, bolas" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs"></div>
+                <div><label class="block text-[11px] uppercase font-bold text-slate-500 mb-1">Regras</label><textarea id="m-j-reg" placeholder="Explicação das regras..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs h-20 focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs">${j.regras}</textarea></div>
+            `;
+            document.getElementById('modal-app').classList.remove('hidden');
+        }
+
+        function editarJogo(idx) { abrirModalJogo(idx); }
+
+        function fecharModal() { document.getElementById('modal-app').classList.add('hidden'); }
+
+        function executarSalvarModal() {
+            if(modalTipo === 'turma') {
+                const nome = document.getElementById('m-t-nome').value.trim();
+                const ano = document.getElementById('m-t-ano').value.trim();
+                const turno = document.getElementById('m-t-turno').value.trim();
+                if(!nome) return;
+                if(editandoIndex >= 0) {
+                    turmas[editandoIndex] = { nome, ano: ano || 'N/A', turno: turno || 'N/A' };
+                } else {
+                    turmas.push({ nome, ano: ano || 'N/A', turno: turno || 'N/A' });
+                }
+                atualizarTabelaTurmas();
+                atualizarSelectsTurmas();
+            } else if(modalTipo === 'aluno') {
+                const nome = document.getElementById('m-a-nome').value.trim();
+                const turma = document.getElementById('m-a-turma').value;
+                if(!nome) return;
+                if(editandoIndex >= 0) {
+                    alunos[editandoIndex] = { nome, turma };
+                } else {
+                    alunos.push({ nome, turma });
+                }
+                atualizarTabelaAlunos();
+            } else if(modalTipo === 'jogo') {
+                const titulo = document.getElementById('m-j-titulo').value.trim();
+                const categoria = document.getElementById('m-j-cat').value.trim();
+                const objetivo = document.getElementById('m-j-obj').value.trim();
+                const materiais = document.getElementById('m-j-mat').value.trim();
+                const regras = document.getElementById('m-j-reg').value.trim();
+                if(!titulo) return;
+                if(editandoIndex >= 0) {
+                    bancoJogos[editandoIndex] = { id: bancoJogos[editandoIndex].id, titulo, categoria: categoria || 'Geral', objetivo, materiais, regras };
+                } else {
+                    bancoJogos.push({ id: Date.now(), titulo, categoria: categoria || 'Geral', objetivo, materiais, regras });
+                }
+                renderizarBancoJogos();
+            }
+            salvarDadosLocais();
+            atualizarEstatisticas();
+            fecharModal();
+        }
+
+        function removerJogo(idx) {
+            bancoJogos.splice(idx, 1);
+            salvarDadosLocais();
+            renderizarBancoJogos();
+        }
+
+        function atualizarTabelaTurmas() {
+            const tbody = document.getElementById('tabela-turmas');
+            if(!tbody) return;
+            tbody.innerHTML = turmas.length === 0 ? `<tr><td colspan="5" class="p-8 text-center text-slate-400">Nenhuma turma registada.</td></tr>` : turmas.map((t, idx) => {
+                const qtdAlunos = alunos.filter(a => a.turma === t.nome).length;
+                return `
+                    <tr class="hover:bg-slate-50/80 transition-colors">
+                        <td class="p-4 font-bold text-slate-900">${t.nome}</td>
+                        <td class="p-4 text-slate-600">${t.ano}</td>
+                        <td class="p-4 text-slate-600">${t.turno}</td>
+                        <td class="p-4 text-slate-600">${qtdAlunos} alunos</td>
+                        <td class="p-4 text-right space-x-3">
+                            <button onclick="editarTurma(${idx})" class="text-sky-600 font-bold cursor-pointer hover:underline">Editar</button>
+                            <button onclick="turmas.splice(${idx},1);salvarDadosLocais();atualizarTabelaTurmas();atualizarSelectsTurmas();" class="text-rose-600 font-bold cursor-pointer hover:underline">Excluir</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function atualizarTabelaAlunos() {
+            const tbody = document.getElementById('tabela-alunos');
+            if(!tbody) return;
+            tbody.innerHTML = alunos.length === 0 ? `<tr><td colspan="3" class="p-8 text-center text-slate-400">Nenhum aluno registado.</td></tr>` : alunos.map((a, idx) => `
+                <tr class="hover:bg-slate-50/80 transition-colors">
+                    <td class="p-4 font-bold text-slate-900">${a.nome}</td>
+                    <td class="p-4 text-slate-600">${a.turma}</td>
+                    <td class="p-4 text-right space-x-3">
+                        <button onclick="editarAluno(${idx})" class="text-sky-600 font-bold cursor-pointer hover:underline">Editar</button>
+                        <button onclick="alunos.splice(${idx},1);salvarDadosLocais();atualizarTabelaAlunos()" class="text-rose-600 font-bold cursor-pointer hover:underline">Excluir</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function carregarChamadaTurma() {
+            const turmaSelecionada = document.getElementById('select-turma-chamada').value;
+            const container = document.getElementById('container-lista-chamada');
+            const listaDiv = document.getElementById('lista-alunos-chamada');
+            if(!turmaSelecionada) { container.classList.add('hidden'); return; }
+            
+            const alunosTurma = alunos.filter(a => a.turma === turmaSelecionada);
+            if(alunosTurma.length === 0) {
+                listaDiv.innerHTML = `<p class="text-xs text-slate-400">Nenhum aluno matriculado nesta turma.</p>`;
+            } else {
+                listaDiv.innerHTML = alunosTurma.map((aluno, i) => `
+                    <div class="flex justify-between items-center p-3.5 bg-slate-50 rounded-2xl border border-slate-100 shadow-2xs">
+                        <span class="text-xs font-bold text-slate-800">${i+1}. ${aluno.nome}</span>
+                        <div class="flex gap-2">
+                            <label class="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl cursor-pointer flex items-center gap-1 shadow-2xs"><input type="radio" name="presenca_${i}" checked class="accent-emerald-600"> Presente</label>
+                            <label class="text-[11px] font-bold text-rose-700 bg-rose-50 px-3 py-1.5 rounded-xl cursor-pointer flex items-center gap-1 shadow-2xs"><input type="radio" name="presenca_${i}" class="accent-rose-600"> Ausente</label>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            container.classList.remove('hidden');
+        }
+
+        function formatarEditorWord(cmd) {
+            document.execCommand(cmd, false, null);
+        }
+
+        function inserirQuestaoQuizWord() {
+            const area = document.getElementById('editor-word-area');
+            area.innerHTML += `<br><div style="border: 1px solid #cbd5e1; padding: 12px; border-radius: 12px; margin: 10px 0; background: #f8fafc;"><strong>Questão:</strong> [Digite a pergunta aqui]<br>a) [Opção A]<br>b) [Opção B]<br>c) [Opção C]<br>d) [Opção D]</div><br>`;
+        }
+
+        function novoDocumentoWord() {
+            documentoAtualId = null;
+            document.getElementById('doc-word-titulo').value = '';
+            document.getElementById('editor-word-area').innerHTML = 'Comece a escrever a sua atividade pedagógica aqui...';
+        }
+
+        function salvarDocumentoWord() {
+            const titulo = document.getElementById('doc-word-titulo').value.trim() || 'Atividade Sem Título';
+            const conteudo = document.getElementById('editor-word-area').innerHTML;
+            
+            if (documentoAtualId) {
+                const doc = documentosWord.find(d => d.id === documentoAtualId);
+                if(doc) { doc.titulo = titulo; doc.conteudo = conteudo; }
+            } else {
+                const novoDoc = { id: Date.now(), titulo, conteudo };
+                documentosWord.push(novoDoc);
+                documentoAtualId = novoDoc.id;
+            }
+            salvarDadosLocais();
+            atualizarEstatisticas();
+            renderizarListaDocsWord();
+            alert('✅ Atividade guardada com sucesso!');
+        }
+
+        function renderizarListaDocsWord() {
+            const container = document.getElementById('lista-docs-word');
+            if(!container) return;
+            container.innerHTML = documentosWord.length === 0 ? `<p class="text-xs text-slate-400">Nenhuma atividade salva.</p>` : documentosWord.map(d => `
+                <div onclick="carregarDocumentoWord(${d.id})" class="p-3 bg-slate-50 hover:bg-sky-50/50 rounded-2xl border border-slate-200/80 cursor-pointer flex justify-between items-center transition-colors">
+                    <span class="text-xs font-bold text-slate-800 truncate">${d.titulo}</span>
+                    <button onclick="event.stopPropagation(); excluirDocumentoWord(${d.id})" class="text-xs text-rose-600 font-bold hover:underline">Excluir</button>
+                </div>
+            `).join('');
+        }
+
+        function carregarDocumentoWord(id) {
+            const doc = documentosWord.find(d => d.id === id);
+            if(doc) {
+                documentoAtualId = doc.id;
+                document.getElementById('doc-word-titulo').value = doc.titulo;
+                document.getElementById('editor-word-area').innerHTML = doc.conteudo;
+            }
+        }
+
+        function excluirDocumentoWord(id) {
+            documentosWord = documentosWord.filter(d => d.id !== id);
+            if(documentoAtualId === id) novoDocumentoWord();
+            salvarDadosLocais();
+            atualizarEstatisticas();
+            renderizarListaDocsWord();
+        }
+
+        function renderizarBNCCChecks() {
+            const container = document.getElementById('bncc-container-checks');
+            if(!container) return;
+            container.innerHTML = baseBNCC.map(b => `
+                <label class="flex items-start gap-3 p-3.5 bg-slate-50 border border-slate-200/80 rounded-2xl cursor-pointer hover:bg-sky-50/50 transition-colors bncc-item-wrapper shadow-2xs" id="label-bncc-${b.codigo}">
+                    <input type="checkbox" value="${b.codigo}" class="mt-0.5 bncc-check accent-sky-600" onchange="atualizarClasseCheckBNCC(this)">
+                    <div>
+                        <strong class="text-xs text-sky-700">${b.codigo} (${b.tema})</strong>
+                        <p class="text-xs text-slate-600 font-medium">${b.desc}</p>
+                    </div>
+                </label>
+            `).join('');
+            carregarPlanoGestaoNaTela();
+        }
+
+        function atualizarClasseCheckBNCC(checkbox) {
+            const wrapper = checkbox.closest('.bncc-item-wrapper');
+            if (checkbox.checked) {
+                wrapper.classList.add('checked-item');
+            } else {
+                wrapper.classList.remove('checked-item');
+            }
+        }
+
+        function salvarPlanoGestao() {
+            planoGestaoDados.escola = document.getElementById('plano-escola').value;
+            planoGestaoDados.professor = document.getElementById('plano-professor').value;
+            planoGestaoDados.periodo = document.getElementById('plano-periodo').value;
+            planoGestaoDados.unidade = document.getElementById('plano-unidade').value;
+            planoGestaoDados.conteudo = document.getElementById('plano-conteudo').value;
+            planoGestaoDados.objetivos = document.getElementById('plano-objetivos').value;
+            
+            const selecionados = [];
+            document.querySelectorAll('.bncc-check:checked').forEach(chk => selecionados.push(chk.value));
+            planoGestaoDados.bnccSelecionados = selecionados;
+
+            salvarDadosLocais();
+            alert('✅ Plano pedagógico guardado com sucesso!');
+        }
+
+        function carregarPlanoGestaoNaTela() {
+            if(document.getElementById('plano-escola')) document.getElementById('plano-escola').value = planoGestaoDados.escola || configApp.nomeEscola || '';
+            if(document.getElementById('plano-professor')) document.getElementById('plano-professor').value = planoGestaoDados.professor || configApp.nomeProf || '';
+            if(document.getElementById('plano-periodo')) document.getElementById('plano-periodo').value = planoGestaoDados.periodo || configApp.periodoPadrao || '';
+            if(document.getElementById('plano-unidade')) document.getElementById('plano-unidade').value = planoGestaoDados.unidade || '';
+            if(document.getElementById('plano-conteudo')) document.getElementById('plano-conteudo').value = planoGestaoDados.conteudo || '';
+            if(document.getElementById('plano-objetivos')) document.getElementById('plano-objetivos').value = planoGestaoDados.objetivos || '';
+
+            if(planoGestaoDados.bnccSelecionados) {
+                document.querySelectorAll('.bncc-check').forEach(chk => {
+                    if(planoGestaoDados.bnccSelecionados.includes(chk.value)) {
+                        chk.checked = true;
+                        atualizarClasseCheckBNCC(chk);
+                    }
+                });
+            }
+        }
+
+        function processarUploadPDF(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            if (file.type !== "application/pdf") {
+                alert("Por favor, selecione um ficheiro em formato PDF.");
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const dataUrl = evt.target.result;
+                const tamanhoKb = (file.size / 1024).toFixed(1);
+                
+                documentosPDF.push({ 
+                    id: Date.now(), 
+                    nome: file.name,
+                    tamanho: `${tamanhoKb} KB`,
+                    data: dataUrl,
+                    dataCriacao: new Date().toLocaleDateString('pt-PT')
+                });
+
+                salvarDadosLocais();
+                atualizarEstatisticas();
+                renderizarListaPDFs();
+                alert(`✅ O PDF "${file.name}" foi enviado e salvo com sucesso!`);
+            };
+            reader.readAsDataURL(file);
+            e.target.value = '';
+        }
+
+        function visualizarPDF(id) {
+            const pdf = documentosPDF.find(p => p.id === id);
+            if (pdf && pdf.data) {
+                const win = window.open();
+                win.document.write(`<iframe src="${pdf.data}" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>`);
+            } else {
+                alert("Não foi possível visualizar este PDF.");
+            }
+        }
+
+        function renderizarListaPDFs() {
+            const container = document.getElementById('lista-provas-cards');
+            if(!container) return;
+            container.innerHTML = documentosPDF.length === 0 ? `<p class="text-xs text-slate-400 col-span-2">Nenhum documento PDF registado. Clique no botão "+ Enviar Ficheiro PDF" acima.</p>` : documentosPDF.map((p, idx) => `
+                <div class="bg-white border border-slate-200/80 p-5 rounded-3xl flex justify-between items-center shadow-xs hover:shadow-md transition-shadow">
+                    <div class="space-y-1 max-w-[70%]">
+                        <span class="text-xs font-extrabold text-slate-800 block truncate">📄 ${p.nome}</span>
+                        <span class="text-[10px] text-slate-400 font-semibold block">${p.tamanho || 'Tamanho desconhecido'} ${p.dataCriacao ? '• ' + p.dataCriacao : ''}</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        ${p.data ? `<button onclick="visualizarPDF(${p.id})" class="text-xs text-sky-600 font-extrabold hover:underline cursor-pointer">Abrir</button>` : ''}
+                        <button onclick="documentosPDF.splice(${idx},1);salvarDadosLocais();renderizarListaPDFs();atualizarEstatisticas();" class="text-xs text-rose-600 font-bold cursor-pointer hover:underline">Excluir</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function atualizarEstatisticas() {
+            if(document.getElementById('stat-turmas')) document.getElementById('stat-turmas').textContent = turmas.length;
+            if(document.getElementById('stat-alunos')) document.getElementById('stat-alunos').textContent = alunos.length;
+            if(document.getElementById('stat-documentos')) document.getElementById('stat-documentos').textContent = documentosWord.length;
+            if(document.getElementById('stat-pdfs')) document.getElementById('stat-pdfs').textContent = documentosPDF.length;
+            renderizarListaPDFs();
+        }
+
+        function descarregarBackupJSON() {
+            const dadosCompletos = {
+                versao: "8.6",
+                turmas: turmas,
+                alunos: alunos,
+                bancoJogos: bancoJogos,
+                documentosWord: documentosWord,
+                documentosPDF: documentosPDF,
+                planoGestao: planoGestaoDados,
+                agendaHoje: agendaHojeDados,
+                configApp: configApp
+            };
+
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dadosCompletos, null, 2));
+            const dl = document.createElement('a');
+            dl.setAttribute("href", dataStr);
+            dl.setAttribute("download", `EduFis_Backup.json`);
+            document.body.appendChild(dl);
+            dl.click();
+            dl.remove();
+        }
+
+        function restaurarBackupJSON(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    const dados = JSON.parse(evt.target.result);
+                    if (dados.turmas) turmas = dados.turmas;
+                    if (dados.alunos) alunos = dados.alunos;
+                    if (dados.bancoJogos) bancoJogos = dados.bancoJogos;
+                    if (dados.documentosWord) documentosWord = dados.documentosWord;
+                    if (dados.documentosPDF) documentosPDF = dados.documentosPDF;
+                    if (dados.planoGestao) planoGestaoDados = dados.planoGestao;
+                    if (dados.agendaHoje) agendaHojeDados = dados.agendaHoje;
+                    if (dados.configApp) configApp = dados.configApp;
+
+                    salvarDadosLocais();
+                    carregarTudoNaTela();
+                    alert("✅ Backup restaurado com sucesso! Seus dados foram carregados.");
+                } catch (err) {
+                    alert("❌ Ocorreu um erro ao carregar o ficheiro de backup. Certifique-se de usar um ficheiro .json válido.");
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        if (usuarioLogado) {
+            switchView('dashboard');
+        } else {
+            switchView('login');
+        }
+    </script>
+</body>
+</html>

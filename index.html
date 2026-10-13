@@ -258,6 +258,9 @@
                     
                     <div class="space-y-1.5 pt-2 border-t border-slate-100">
                         <div class="text-[10px] uppercase font-extrabold text-slate-400 px-3 tracking-wider mb-2">Pedagógico</div>
+                        <button onclick="changeTab('ia-professor')" id="btn-tab-ia-professor" class="w-full text-left px-3.5 py-3 rounded-2xl text-xs font-bold text-sky-700 bg-sky-50 border border-sky-200/60 flex items-center gap-3 transition-all cursor-pointer group shadow-xs">
+                            <span class="text-base group-hover:scale-110 transition-transform">🤖</span> Sala do Professor IA (Voz)
+                        </button>
                         <button onclick="changeTab('jogos')" id="btn-tab-jogos" class="w-full text-left px-3.5 py-3 rounded-2xl text-xs font-bold text-slate-700 hover:bg-sky-50 hover:text-sky-600 flex items-center gap-3 transition-all cursor-pointer group">
                             <span class="text-base group-hover:scale-110 transition-transform">🎮</span> Banco de Jogos & Ideias
                         </button>
@@ -306,8 +309,8 @@
                             <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Bem-vindo ao EduFís Pro 🏋️</h2>
                             <p class="text-slate-300 text-xs sm:text-sm font-medium">Tecnologia e organização profissional para transformar as suas aulas de Educação Física.</p>
                         </div>
-                        <button onclick="changeTab('jogos')" class="bg-white hover:bg-slate-100 text-slate-900 font-bold px-6 py-3.5 rounded-2xl text-xs shadow-lg transition-all cursor-pointer relative z-10 flex items-center gap-2">
-                            <span>🎮</span> Explorar Banco de Jogos
+                        <button onclick="changeTab('ia-professor')" class="bg-white hover:bg-slate-100 text-slate-900 font-bold px-6 py-3.5 rounded-2xl text-xs shadow-lg transition-all cursor-pointer relative z-10 flex items-center gap-2">
+                            <span>🤖</span> Falar com o Professor IA por Voz
                         </button>
                     </div>
                     
@@ -336,8 +339,8 @@
                                 <span>⚡</span> Atalhos Rápidos
                             </h3>
                             <div class="grid grid-cols-2 gap-3">
-                                <button onclick="changeTab('jogos')" class="p-3.5 bg-sky-50/80 hover:bg-sky-100 text-sky-900 rounded-2xl font-bold text-xs text-left transition-all cursor-pointer flex items-center gap-2.5">
-                                    <span class="text-base">🎮</span> Banco de Jogos
+                                <button onclick="changeTab('ia-professor')" class="p-3.5 bg-sky-50 hover:bg-sky-100 text-sky-900 rounded-2xl font-bold text-xs text-left transition-all cursor-pointer flex items-center gap-2.5">
+                                    <span class="text-base">🤖</span> Professor IA (Voz)
                                 </button>
                                 <button onclick="changeTab('turmas'); abrirModalTurma();" class="p-3.5 bg-slate-50 hover:bg-slate-100 text-slate-800 rounded-2xl font-bold text-xs text-left transition-all cursor-pointer flex items-center gap-2.5">
                                     <span class="text-base">🏫</span> + Registar Turma
@@ -370,6 +373,61 @@
                                     <input type="text" id="agenda-input-conteudo" onchange="salvarAgendaHoje()" placeholder="Ex: Fundamentos do Futsal / Teste Físico" class="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs">
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NOVA ABA: SALA DO PROFESSOR IA (FALA E VOZ EM ECRÃ INTEIRO) -->
+                <div id="tab-ia-professor" class="hidden space-y-6">
+                    <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-sky-950 text-white p-6 sm:p-8 rounded-3xl shadow-xl flex flex-col sm:flex-row justify-between items-center gap-6">
+                        <div class="flex items-center gap-5">
+                            <!-- AVATAR DO PROFESSOR VIRTUAL -->
+                            <div class="w-20 h-20 bg-sky-600 rounded-3xl p-3 shadow-xl border-2 border-sky-400 flex items-center justify-center relative shrink-0">
+                                <svg class="w-full h-full bg-slate-900 rounded-2xl p-1.5" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="50" cy="50" r="50" fill="#0EA5E9"/>
+                                    <line x1="50" y1="22" x2="50" y2="30" stroke="#E2E8F0" stroke-width="4" stroke-linecap="round"/>
+                                    <circle cx="50" cy="18" r="4" fill="#38BDF8"/>
+                                    <rect x="25" y="30" width="50" height="38" rx="12" fill="#0F172A" stroke="#E2E8F0" stroke-width="3"/>
+                                    <rect x="31" y="38" width="38" height="18" rx="6" fill="#1E293B"/>
+                                    <circle cx="41" cy="47" r="4" fill="#38BDF8"/>
+                                    <circle cx="59" cy="47" r="4" fill="#38BDF8"/>
+                                    <circle cx="42" cy="46" r="1.5" fill="white"/>
+                                    <circle cx="60" cy="46" r="1.5" fill="white"/>
+                                    <path d="M43 60 Q 50 64 57 60" stroke="#38BDF8" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                                    <path d="M30 72 L 70 72 L 65 92 L 35 92 Z" fill="#1E293B"/>
+                                    <circle cx="50" cy="80" r="3" fill="#F59E0B"/>
+                                </svg>
+                                <span id="avatar-status-dot" class="absolute -top-1 -right-1 w-5 h-5 bg-emerald-500 border-2 border-white rounded-full animate-ping"></span>
+                            </div>
+                            <div class="space-y-1">
+                                <span class="bg-sky-500/20 text-sky-300 text-[10px] uppercase font-extrabold px-3 py-1 rounded-full border border-sky-400/30">Assistente Pedagógico Interativo</span>
+                                <h2 class="text-2xl font-black tracking-tight">Professor Atlas IA</h2>
+                                <p class="text-xs text-slate-300">Converse por voz ou texto. Ele ouve o que diz e responde em voz alta para si!</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="pararFalaAudio()" class="bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-400/30 text-xs font-bold px-4 py-2.5 rounded-2xl cursor-pointer transition-colors">⏹️ Parar Voz</button>
+                        </div>
+                    </div>
+
+                    <!-- CAIXA DE CHAT PRINCIPAL DA SALA DO PROFESSOR IA -->
+                    <div class="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-xs flex flex-col h-[450px]">
+                        <div id="chat-tab-messages" class="flex-1 overflow-y-auto space-y-4 pr-2 text-xs">
+                            <div class="bg-sky-50 border border-sky-200/80 p-4 rounded-3xl text-sky-900 space-y-1 shadow-2xs">
+                                <strong class="block text-sky-700 font-extrabold">Professor Atlas IA:</strong>
+                                Olá Professor! Estou pronto na minha sala virtual. Pode clicar no botão de microfone abaixo para falar sua dúvida ou pedido de aula. Eu responderei com a minha voz! 🎙️
+                            </div>
+                        </div>
+
+                        <!-- BARRA DE ENTRADA DE DADOS E VOZ -->
+                        <div class="pt-4 border-t border-slate-100 flex gap-3 items-center">
+                            <input type="text" id="chat-tab-input" placeholder="Escreva aqui ou clique no microfone para falar com o professor..." onkeypress="if(event.key==='Enter') enviarMensagemTabIA()" class="flex-1 bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-xs">
+                            
+                            <button type="button" id="btn-mic-tab" onclick="alternarGravacaoTabIA()" title="Falar por voz" class="w-11 h-11 bg-slate-100 hover:bg-sky-100 text-slate-700 hover:text-sky-600 border border-slate-200 rounded-2xl flex items-center justify-center transition-all cursor-pointer shrink-0 shadow-xs text-base">
+                                🎤
+                            </button>
+
+                            <button onclick="enviarMensagemTabIA()" class="btn-primary-theme bg-sky-600 hover:bg-sky-700 text-white font-bold px-6 py-3 rounded-2xl text-xs shadow-md shadow-sky-600/20 transition-all cursor-pointer">Enviar</button>
                         </div>
                     </div>
                 </div>
@@ -739,87 +797,6 @@
         </div>
     </div>
 
-    <!-- MASCOTE FLUTUANTE & CHAT DO ATLAS IA COM GRAVAÇÃO MANUAL -->
-    <div id="professor-edu-container" class="fixed bottom-6 right-6 z-50 no-print">
-        <button onclick="toggleChatEdu()" class="w-16 h-16 bg-sky-600 hover:bg-sky-700 text-white rounded-full shadow-2xl flex items-center justify-center transition-transform hover:scale-110 cursor-pointer relative group p-2 overflow-hidden border-2 border-white">
-            <svg class="w-full h-full rounded-full bg-slate-900" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="50" cy="50" r="50" fill="#0EA5E9"/>
-                <line x1="50" y1="22" x2="50" y2="30" stroke="#E2E8F0" stroke-width="4" stroke-linecap="round"/>
-                <circle cx="50" cy="18" r="4" fill="#38BDF8"/>
-                <rect x="25" y="30" width="50" height="38" rx="12" fill="#0F172A" stroke="#E2E8F0" stroke-width="3"/>
-                <rect x="31" y="38" width="38" height="18" rx="6" fill="#1E293B"/>
-                <circle cx="41" cy="47" r="4" fill="#38BDF8"/>
-                <circle cx="59" cy="47" r="4" fill="#38BDF8"/>
-                <circle cx="42" cy="46" r="1.5" fill="white"/>
-                <circle cx="60" cy="46" r="1.5" fill="white"/>
-                <path d="M43 60 Q 50 64 57 60" stroke="#38BDF8" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-                <path d="M30 72 L 70 72 L 65 92 L 35 92 Z" fill="#1E293B"/>
-                <circle cx="50" cy="80" r="3" fill="#F59E0B"/>
-            </svg>
-            <span class="absolute top-0 right-0 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full z-10"></span>
-            <div class="absolute right-20 bg-slate-900 text-white text-xs font-bold px-3.5 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-md pointer-events-none">
-                Falar com Atlas IA 💡
-            </div>
-        </button>
-
-        <!-- CAIXA DE CHAT HORIZONTAL -->
-        <div id="chat-edu-box" class="hidden absolute bottom-20 right-0 w-[92vw] sm:w-[540px] bg-white border border-slate-200 rounded-3xl shadow-2xl flex flex-col overflow-hidden transition-all duration-300 max-h-[480px]">
-            <div class="bg-slate-900 text-white p-3 flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 rounded-xl bg-sky-600 overflow-hidden flex items-center justify-center border border-sky-400 shrink-0">
-                        <svg class="w-full h-full bg-slate-900" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="50" cy="50" r="50" fill="#0EA5E9"/>
-                            <line x1="50" y1="22" x2="50" y2="30" stroke="#E2E8F0" stroke-width="4" stroke-linecap="round"/>
-                            <circle cx="50" cy="18" r="4" fill="#38BDF8"/>
-                            <rect x="25" y="30" width="50" height="38" rx="12" fill="#0F172A" stroke="#E2E8F0" stroke-width="3"/>
-                            <rect x="31" y="38" width="38" height="18" rx="6" fill="#1E293B"/>
-                            <circle cx="41" cy="47" r="4" fill="#38BDF8"/>
-                            <circle cx="59" cy="47" r="4" fill="#38BDF8"/>
-                            <path d="M43 60 Q 50 64 57 60" stroke="#38BDF8" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <h4 class="text-xs font-extrabold tracking-wide">Atlas IA</h4>
-                        <p class="text-[9px] text-sky-400 font-semibold">Assistente inteligente de Educação Física</p>
-                    </div>
-                </div>
-                <button onclick="toggleChatEdu()" class="text-slate-400 hover:text-white text-sm font-bold cursor-pointer p-1">✕</button>
-            </div>
-
-            <!-- ÁREA DE MENSAGENS -->
-            <div id="chat-edu-messages" class="flex-1 p-3 overflow-y-auto space-y-2.5 bg-slate-50 min-h-[220px] max-h-[280px] text-xs">
-                <div class="bg-white p-2.5 rounded-2xl border border-slate-200/80 text-slate-700 shadow-2xs">
-                    Olá! Sou o <strong>Atlas IA</strong>. Clique no microfone 🎤 para gravar a sua voz e clique novamente quando terminar de falar! 🚀
-                </div>
-            </div>
-
-            <!-- ATALHOS DE PROMPTS PRONTOS EM 1 CLIQUE -->
-            <div class="px-2.5 py-1.5 bg-slate-100 border-t border-slate-200 flex gap-1.5 overflow-x-auto text-[10px] whitespace-nowrap scrollbar-none">
-                <button onclick="usarPromptPronto('Crie um circuito motor completo de 4 estações utilizando materiais simples.')" class="px-2 py-1 bg-white hover:bg-sky-50 text-slate-700 hover:text-sky-700 border border-slate-200 rounded-xl font-bold cursor-pointer transition-colors shrink-0">
-                    🔄 Circuito Motor
-                </button>
-                <button onclick="usarPromptPronto('Crie 5 questões objetivas com gabarito sobre os fundamentos básicos do Voleibol.')" class="px-2 py-1 bg-white hover:bg-sky-50 text-slate-700 hover:text-sky-700 border border-slate-200 rounded-xl font-bold cursor-pointer transition-colors shrink-0">
-                    📝 Prova de Vôlei
-                </button>
-                <button onclick="usarPromptPronto('Como posso adaptar uma aula de futsal para incluir um aluno com mobilidade reduzida?')" class="px-2 py-1 bg-white hover:bg-sky-50 text-slate-700 hover:text-sky-700 border border-slate-200 rounded-xl font-bold cursor-pointer transition-colors shrink-0">
-                    ♿ Inclusão Prática
-                </button>
-                <button onclick="usarPromptPronto('Monte um plano de aula de 50 minutos sobre Danças Urbanas alinhado à BNCC.')" class="px-2 py-1 bg-white hover:bg-sky-50 text-slate-700 hover:text-sky-700 border border-slate-200 rounded-xl font-bold cursor-pointer transition-colors shrink-0">
-                    💃 Plano Danças
-                </button>
-            </div>
-
-            <div class="p-2.5 bg-white border-t border-slate-200 flex gap-2 items-center">
-                <input type="text" id="chat-edu-input" placeholder="Digite ou clique no microfone para falar..." onkeypress="if(event.key==='Enter') enviarMensagemEdu()" class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500">
-                <!-- BOTÃO DE MICROFONE MANUAL (LIGA/DESLIGA) -->
-                <button type="button" id="btn-mic-audio" onclick="alternarGravacaoVoz()" title="Gravar voz" class="w-9 h-9 bg-slate-100 hover:bg-sky-100 text-slate-700 hover:text-sky-600 border border-slate-200 rounded-xl flex items-center justify-center transition-colors cursor-pointer shrink-0 shadow-2xs">
-                    🎤
-                </button>
-                <button onclick="enviarMensagemEdu()" class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer shadow-xs">Enviar</button>
-            </div>
-        </div>
-    </div>
-
     <!-- MODAL GENÉRICO -->
     <div id="modal-app" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 z-50 no-print">
         <div class="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 w-full max-w-md space-y-5 shadow-2xl">
@@ -836,89 +813,94 @@
         let modalTipo = '';
         let editandoIndex = -1;
         let documentoAtualId = null;
-        let recognition = null;
-        let estaGravando = false;
+        let recognitionTab = null;
+        let estaGravandoTab = false;
 
         function toggleSidebarMobile() {
             document.getElementById('sidebar-menu').classList.toggle('-translate-x-full');
             document.getElementById('sidebar-overlay').classList.toggle('hidden');
         }
 
-        function toggleChatEdu() {
-            const box = document.getElementById('chat-edu-box');
-            box.classList.toggle('hidden');
-            if (!box.classList.contains('hidden')) {
-                document.getElementById('chat-edu-input').focus();
+        // SISTEMA DE SÍNTESE DE VOZ (TEXT-TO-SPEECH) - O PROFESSOR FALA COM O UTILIZADOR
+        function falarTextoPorVoz(texto) {
+            if (!('speechSynthesis' in window)) return;
+            window.speechSynthesis.cancel(); // Para qualquer fala anterior
+            
+            // Limpa formatações HTML básicas para a voz soar natural
+            const textoLimpo = texto.replace(/<[^>]*>?/gm, '').replace(/[*#_]/g, '');
+            const utterance = new SpeechSynthesisUtterance(textoLimpo);
+            utterance.lang = 'pt-PT'; // Português
+            utterance.rate = 1.0; // Velocidade normal
+            utterance.pitch = 1.0;
+            
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function pararFalaAudio() {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
             }
         }
 
-        function usarPromptPronto(textoPrompt) {
-            document.getElementById('chat-edu-input').value = textoPrompt;
-            enviarMensagemEdu();
-        }
-
-        // CONTROLO MANUAL DE GRAVAÇÃO DE VOZ (CLIQUE PARA GRAVAR, CLIQUE PARA PARAR)
-        function alternarGravacaoVoz() {
+        // CONTROLO DE VOZ NA ABA DO PROFESSOR IA
+        function alternarGravacaoTabIA() {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             if (!SpeechRecognition) {
                 alert("O seu navegador não suporta reconhecimento de voz. Tente usar o Google Chrome.");
                 return;
             }
 
-            const btnMic = document.getElementById('btn-mic-audio');
+            const btnMic = document.getElementById('btn-mic-tab');
 
-            if (estaGravando) {
-                if (recognition) {
-                    recognition.stop();
-                }
+            if (estaGravandoTab) {
+                if (recognitionTab) recognitionTab.stop();
                 return;
             }
 
-            recognition = new SpeechRecognition();
-            recognition.lang = 'pt-PT';
-            recognition.interimResults = false;
-            recognition.maxAlternatives = 1;
+            recognitionTab = new SpeechRecognition();
+            recognitionTab.lang = 'pt-PT';
+            recognitionTab.interimResults = false;
+            recognitionTab.maxAlternatives = 1;
 
-            recognition.onstart = function() {
-                estaGravando = true;
+            recognitionTab.onstart = function() {
+                estaGravandoTab = true;
                 btnMic.classList.add('bg-rose-500', 'text-white', 'animate-pulse');
                 btnMic.textContent = '⏹️';
-                document.getElementById('chat-edu-input').placeholder = "A gravar... Fale agora e clique novamente para terminar.";
+                document.getElementById('chat-tab-input').placeholder = "A gravar... Fale o que deseja e clique novamente para enviar.";
             };
 
-            recognition.onresult = function(event) {
+            recognitionTab.onresult = function(event) {
                 const speechResult = event.results[0][0].transcript;
-                const input = document.getElementById('chat-edu-input');
+                const input = document.getElementById('chat-tab-input');
                 input.value = input.value ? input.value + " " + speechResult : speechResult;
             };
 
-            recognition.onerror = function(event) {
-                pararGravacaoVisual();
+            recognitionTab.onerror = function() {
+                pararGravacaoTabVisual();
             };
 
-            recognition.onend = function() {
-                pararGravacaoVisual();
-                // Se já houver texto transcrito, envia automaticamente após fechar o microfone
-                const textoFinal = document.getElementById('chat-edu-input').value.trim();
+            recognitionTab.onend = function() {
+                pararGravacaoTabVisual();
+                const textoFinal = document.getElementById('chat-tab-input').value.trim();
                 if(textoFinal) {
-                    enviarMensagemEdu();
+                    enviarMensagemTabIA();
                 }
             };
 
-            recognition.start();
+            recognitionTab.start();
         }
 
-        function pararGravacaoVisual() {
-            estaGravando = false;
-            const btnMic = document.getElementById('btn-mic-audio');
+        function pararGravacaoTabVisual() {
+            estaGravandoTab = false;
+            const btnMic = document.getElementById('btn-mic-tab');
             btnMic.classList.remove('bg-rose-500', 'text-white', 'animate-pulse');
             btnMic.textContent = '🎤';
-            document.getElementById('chat-edu-input').placeholder = "Digite ou clique no microfone para falar...";
+            document.getElementById('chat-tab-input').placeholder = "Escreva aqui ou clique no microfone para falar com o professor...";
         }
 
-        async function enviarMensagemEdu() {
-            const input = document.getElementById('chat-edu-input');
-            const mensagensDiv = document.getElementById('chat-edu-messages');
+        async function enviarMensagemTabIA() {
+            const input = document.getElementById('chat-tab-input');
+            const mensagensDiv = document.getElementById('chat-tab-messages');
             const texto = input.value.trim();
             if (!texto) return;
 
@@ -927,8 +909,8 @@
 
             if (!apiKey) {
                 mensagensDiv.innerHTML += `
-                    <div class="bg-rose-50 text-rose-700 p-2.5 rounded-2xl border border-rose-200 shadow-2xs">
-                        ⚠️ Chave da API do Gemini não configurada. Vá a <strong>Configurações</strong> no menu lateral, cole a sua chave da API e clique no botão <strong>Guardar Todas as Configurações</strong>.
+                    <div class="bg-rose-50 text-rose-700 p-4 rounded-3xl border border-rose-200 shadow-2xs">
+                        ⚠️ Chave da API do Gemini não configurada. Vá a <strong>Configurações</strong> no menu lateral, cole a sua chave e clique em Guardar.
                     </div>
                 `;
                 mensagensDiv.scrollTop = mensagensDiv.scrollHeight;
@@ -936,17 +918,18 @@
             }
 
             mensagensDiv.innerHTML += `
-                <div class="bg-sky-600 text-white p-2.5 rounded-2xl ml-8 shadow-2xs">
+                <div class="bg-sky-600 text-white p-4 rounded-3xl ml-12 shadow-2xs">
+                    <strong class="block text-sky-200 text-[10px] uppercase font-extrabold mb-0.5">Você:</strong>
                     🎤 ${escapeHtmlEdu(texto)}
                 </div>
             `;
             input.value = '';
             mensagensDiv.scrollTop = mensagensDiv.scrollHeight;
 
-            const loadingId = 'loading_' + Date.now();
+            const loadingId = 'loading_tab_' + Date.now();
             mensagensDiv.innerHTML += `
-                <div id="${loadingId}" class="bg-white p-2.5 rounded-2xl border border-slate-200 text-slate-500 shadow-2xs italic">
-                    Atlas IA está a elaborar a resposta... ⏳
+                <div id="${loadingId}" class="bg-white p-4 rounded-3xl border border-slate-200 text-slate-500 shadow-2xs italic">
+                    Professor Atlas IA está a pensar na resposta... ⏳
                 </div>
             `;
             mensagensDiv.scrollTop = mensagensDiv.scrollHeight;
@@ -970,7 +953,7 @@
                                     {
                                         role: "user",
                                         parts: [
-                                            { text: "Você é o Atlas IA, um assistente de inteligência artificial especializado em Educação Física escolar, BNCC, anatomia, fisiologia do exercício, criação de planos de aula, circuitos motores e adaptações inclusivas. Responda de forma prática, profissional e objetiva aos professores." },
+                                            { text: "Você é o Professor Atlas IA, um docente experiente e carismático de Educação Física. Responda diretamente ao professor utilizador com clareza, tom acolhedor e profissional, pronto a ser lido em voz alta." },
                                             { text: texto }
                                         ]
                                     }
@@ -981,20 +964,17 @@
                         if (res.status === 401 || res.status === 403) {
                             if(document.getElementById(loadingId)) document.getElementById(loadingId).remove();
                             mensagensDiv.innerHTML += `
-                                <div class="bg-rose-50 text-rose-700 p-2.5 rounded-2xl border border-rose-200 shadow-2xs">
-                                    Erro de Autenticação (${res.status}): A chave da API é inválida ou não tem permissão. Verifique nas Configurações.
+                                <div class="bg-rose-50 text-rose-700 p-4 rounded-3xl border border-rose-200 shadow-2xs">
+                                    Erro de Autenticação (${res.status}): A chave da API é inválida. Verifique nas Configurações.
                                 </div>
                             `;
                             mensagensDiv.scrollTop = mensagensDiv.scrollHeight;
                             return;
                         }
 
-                        if (res.status === 404) {
-                            break;
-                        }
+                        if (res.status === 404) break;
 
                         const data = await res.json();
-
                         if (data.error) {
                             const errCode = data.error.code;
                             if ((errCode === 503 || errCode === 429) && tentativas < maxTentativas) {
@@ -1024,14 +1004,20 @@
 
             if (sucesso && respostaTexto) {
                 mensagensDiv.innerHTML += `
-                    <div class="bg-white p-2.5 rounded-2xl border border-slate-200/80 text-slate-700 shadow-2xs whitespace-pre-wrap">
-                        ${escapeHtmlEdu(respostaTexto)}
+                    <div class="bg-sky-50 border border-sky-200/80 p-4 rounded-3xl text-sky-900 shadow-2xs space-y-1">
+                        <div class="flex justify-between items-center">
+                            <strong class="text-sky-700 font-extrabold">Professor Atlas IA:</strong>
+                            <button onclick="falarTextoPorVoz(${JSON.stringify(respostaTexto).replace(/"/g, '&quot;')})" class="text-[10px] bg-sky-200 hover:bg-sky-300 text-sky-800 font-bold px-2.5 py-1 rounded-xl cursor-pointer">🔊 Ouvir Voz</button>
+                        </div>
+                        <div class="whitespace-pre-wrap">${escapeHtmlEdu(respostaTexto)}</div>
                     </div>
                 `;
+                // Fala automaticamente a resposta do Professor Virtual
+                falarTextoPorVoz(respostaTexto);
             } else {
                 mensagensDiv.innerHTML += `
-                    <div class="bg-amber-50 text-amber-800 p-2.5 rounded-2xl border border-amber-200 shadow-2xs">
-                        ⚠️ O serviço de IA está temporariamente sobrecarregado (Alta demanda / 503). Por favor, aguarde alguns instantes e tente novamente. (${escapeHtmlEdu(erroUltimo || 'Indisponível')})
+                    <div class="bg-amber-50 text-amber-800 p-4 rounded-3xl border border-amber-200 shadow-2xs">
+                        ⚠️ O serviço de IA está temporariamente sobrecarregado (503). Tente novamente em instantes. (${escapeHtmlEdu(erroUltimo || 'Indisponível')})
                     </div>
                 `;
             }
@@ -1136,24 +1122,29 @@
         }
 
         function changeTab(tabId) {
-            ['home', 'jogos', 'anatomia', 'turmas', 'alunos', 'chamada', 'editor-word', 'gestao', 'documentos', 'backup', 'config'].forEach(t => {
+            ['home', 'ia-professor', 'jogos', 'anatomia', 'turmas', 'alunos', 'chamada', 'editor-word', 'gestao', 'documentos', 'backup', 'config'].forEach(t => {
                 const el = document.getElementById(`tab-${t}`);
                 if(el) el.classList.add('hidden');
                 const btn = document.getElementById(`btn-tab-${t}`);
                 if(btn) {
-                    btn.classList.remove('bg-sky-50', 'text-sky-600', 'font-extrabold');
+                    btn.classList.remove('bg-sky-50', 'text-sky-700', 'border-sky-200/60', 'font-extrabold');
+                    btn.classList.add('text-slate-700', 'hover:bg-sky-50', 'hover:text-sky-600');
                 }
             });
             document.getElementById(`tab-${tabId}`).classList.remove('hidden');
             const activeBtn = document.getElementById(`btn-tab-${tabId}`);
             if(activeBtn) {
-                activeBtn.classList.add('bg-sky-50', 'text-sky-600', 'font-extrabold');
+                activeBtn.classList.remove('text-slate-700', 'hover:bg-sky-50', 'hover:text-sky-600');
+                activeBtn.classList.add('bg-sky-50', 'text-sky-700', 'border-sky-200/60', 'font-extrabold');
             }
             if(tabId === 'jogos') renderizarBancoJogos();
             if(tabId === 'anatomia') renderizarAtlasAnatomia();
             if(tabId === 'config') carregarConfigNaTela();
             if(tabId === 'editor-word') renderizarListaDocsWord();
             if(tabId === 'gestao') carregarPlanoGestaoNaTela();
+            if(tabId === 'ia-professor') {
+                document.getElementById('chat-tab-input').focus();
+            }
         }
 
         function carregarTudoNaTela() {

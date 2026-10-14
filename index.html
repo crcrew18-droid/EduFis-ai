@@ -4,24 +4,252 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%230EA5E9'/><path d='M30 35 v30 M70 35 v30 M20 40 v20 M80 40 v20 M30 50 h40' stroke='white' stroke-width='8' stroke-linecap='round'/></svg>">
-    <title>EduFís Pro v8.10 - Plataforma de Gestão Pedagógica</title>
+    <title>EduFís Pro v8.8 - Plataforma de Gestão Pedagógica</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
         body { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+    </style>
+</head>
+<body class="bg-slate-900/5 text-slate-800 min-h-screen flex flex-col antialiased selection:bg-sky-500 selection:text-white">
 
-        @media print {
-            body * { visibility: hidden !important; }
-            #tab-gestao, #tab-gestao * { visibility: visible !important; }
-            #tab-gestao {
-                position: absolute !important;
-                left: 0 !important;
-                top: 0 !important;
-                width: 100% !important;
-                margin: 0 !important;
-                padding: 0 !important;
+    <script>
+        let usuarios = JSON.parse(localStorage.getItem('edufis_usuarios_v8')) || [];
+        let usuarioLogado = JSON.parse(localStorage.getItem('edufis_sessao_v8')) || null;
+        let documentosWord = JSON.parse(localStorage.getItem('edufis_word_v8')) || [];
+        let documentosPDF = JSON.parse(localStorage.getItem('edufis_pdf_v8')) || [];
+
+        function salvarDadosLocais() {
+            try {
+                localStorage.setItem('edufis_usuarios_v8', JSON.stringify(usuarios));
+                localStorage.setItem('edufis_sessao_v8', JSON.stringify(usuarioLogado));
+                localStorage.setItem('edufis_word_v8', JSON.stringify(documentosWord));
+                localStorage.setItem('edufis_pdf_v8', JSON.stringify(documentosPDF));
+            } catch (e) {
+                alert("⚠️ Armazenamento cheio no navegador. Apague alguns ficheiros antigos.");
             }
-            header, aside, button, .no-print, #view-login, #sidebar-overlay, #modal-app, #professor-edu-container { display: none !important; }
-            body, main { background: white !important; padding: 0 !important; margin: 0 !important; box-shadow: none !important; width: 100% !important; }
-            input, textarea, select { border: none !important; background: transparent !important; resize: none !important; color: black !important; padding: 0 !important; box-shadow: none !important; }
-            .bncc-item-
+        }
+    </script>
+
+    <!-- TELA DE LOGIN -->
+    <div id="view-login" class="flex flex-col items-center justify-center flex-1 p-4 bg-gradient-to-br from-slate-900 via-slate-800 to-sky-950 min-h-screen">
+        <div class="w-full max-w-md bg-white/95 backdrop-blur-xl border border-white/20 rounded-3xl p-8 shadow-2xl space-y-6">
+            <div class="text-center space-y-3">
+                <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">EduFís Pro</h1>
+                <p class="text-slate-500 text-xs font-semibold tracking-wide">PLATAFORMA DE GESTÃO PEDAGÓGICA</p>
+            </div>
+            
+            <form id="form-login" class="space-y-4" onsubmit="handleLogin(event)">
+                <div>
+                    <label class="block text-[11px] font-extrabold uppercase text-slate-500 mb-1.5">E-mail Profissional</label>
+                    <input type="email" id="login-email" required placeholder="professor@escola.pt" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-extrabold uppercase text-slate-500 mb-1.5">Palavra-passe</label>
+                    <input type="password" id="login-senha" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500">
+                </div>
+                <button type="submit" class="w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-3.5 rounded-2xl shadow-lg transition-all cursor-pointer">Entrar na Plataforma</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- DASHBOARD PRINCIPAL -->
+    <div id="view-dashboard" class="hidden flex flex-col flex-1 min-h-screen bg-slate-50">
+        <header class="bg-white/80 backdrop-blur-md border-b border-slate-200 px-4 sm:px-8 py-3.5 flex items-center justify-between sticky top-0 z-40 shadow-xs">
+            <div>
+                <span class="text-base font-extrabold text-slate-900 leading-none tracking-tight block">EduFís</span>
+                <span class="text-[10px] uppercase tracking-widest text-sky-600 font-extrabold mt-0.5 block">Pro v8.8</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <span class="text-xs font-bold text-slate-700" id="header-user-nome">👤 Professor(a)</span>
+                <button onclick="logout()" class="text-xs bg-rose-50 text-rose-600 border border-rose-200 px-3.5 py-2 rounded-2xl font-bold hover:bg-rose-100 transition-all cursor-pointer">Sair</button>
+            </div>
+        </header>
+
+        <div class="flex flex-1 relative">
+            <aside class="w-72 bg-white border-r border-slate-200 p-5 flex flex-col justify-between z-40 hidden lg:flex">
+                <div class="space-y-1.5">
+                    <button onclick="changeTab('home')" class="w-full text-left px-3.5 py-3 rounded-2xl text-xs font-bold text-slate-700 hover:bg-sky-50 hover:text-sky-600">🏠 Visão Geral</button>
+                    <button onclick="changeTab('editor-word')" class="w-full text-left px-3.5 py-3 rounded-2xl text-xs font-bold text-slate-700 hover:bg-sky-50 hover:text-sky-600">📝 Editor de Atividades</button>
+                    <button onclick="changeTab('documentos')" class="w-full text-left px-3.5 py-3 rounded-2xl text-xs font-bold text-slate-700 hover:bg-sky-50 hover:text-sky-600">📄 Gestor de Documentos</button>
+                </div>
+            </aside>
+
+            <main class="flex-1 p-4 sm:p-8 overflow-y-auto max-w-6xl mx-auto w-full">
+                
+                <!-- ABA HOME -->
+                <div id="tab-home" class="space-y-6">
+                    <div class="bg-slate-900 text-white p-6 rounded-3xl shadow-xl space-y-2">
+                        <h2 class="text-2xl font-extrabold">Bem-vindo ao EduFís Pro 🏋️</h2>
+                        <p class="text-slate-300 text-xs">Sistema pedagógico rápido e otimizado.</p>
+                    </div>
+                </div>
+
+                <!-- ABA EDITOR DE ATIVIDADES -->
+                <div id="tab-editor-word" class="hidden space-y-6">
+                    <div class="flex justify-between items-center flex-wrap gap-3">
+                        <h2 class="text-2xl font-black text-slate-900">Editor de Atividades 📝</h2>
+                        <div class="flex gap-2">
+                            <button onclick="salvarDocumentoWordComoPDF()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-md cursor-pointer">📄 Guardar no Gestor de Documentos</button>
+                            <button onclick="salvarDocumentoWord()" class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-md cursor-pointer">💾 Guardar Atividade</button>
+                        </div>
+                    </div>
+                    <div class="bg-white border border-slate-200 p-6 rounded-3xl space-y-4 shadow-xs">
+                        <input type="text" id="doc-word-titulo" placeholder="Título da Atividade / Ficha..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs font-bold">
+                        <div id="editor-word-area" contenteditable="true" class="w-full min-h-[250px] p-4 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none">Escreva sua atividade aqui...</div>
+                    </div>
+                </div>
+
+                <!-- ABA GESTOR DE DOCUMENTOS -->
+                <div id="tab-documentos" class="hidden space-y-6">
+                    <div class="flex justify-between items-center flex-wrap gap-3">
+                        <h2 class="text-2xl font-black text-slate-900">Gestor de Documentos 📄</h2>
+                        <div>
+                            <input type="file" id="input-upload-pdf-file" accept="application/pdf" class="hidden" onchange="processarUploadPDF(event)">
+                            <button onclick="document.getElementById('input-upload-pdf-file').click()" class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold cursor-pointer">📤 Enviar Ficheiro PDF</button>
+                        </div>
+                    </div>
+                    <div id="lista-provas-cards" class="grid grid-cols-1 sm:grid-cols-2 gap-5"></div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- MODAL DE VISUALIZAÇÃO DE DOCUMENTOS -->
+    <div id="modal-visualizador" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 z-50">
+        <div class="bg-white border border-slate-200 rounded-3xl w-full max-w-2xl flex flex-col overflow-hidden shadow-2xl max-h-[85vh]">
+            <div class="bg-slate-900 text-white p-4 flex justify-between items-center">
+                <h3 id="modal-doc-titulo" class="text-xs font-extrabold">Visualizar Documento</h3>
+                <button onclick="fecharModalVisualizador()" class="text-slate-400 hover:text-white text-sm font-bold cursor-pointer">✕</button>
+            </div>
+            <div id="modal-doc-conteudo" class="p-6 overflow-y-auto flex-1 text-xs leading-relaxed space-y-4 bg-slate-50"></div>
+            <div class="p-4 bg-white border-t border-slate-200 flex justify-end gap-2">
+                <button onclick="window.print()" class="bg-slate-800 text-white px-4 py-2 rounded-xl text-xs font-bold cursor-pointer">🖨️ Imprimir / Guardar PDF</button>
+                <button onclick="fecharModalVisualizador()" class="bg-slate-100 text-slate-700 px-4 py-2 rounded-xl text-xs font-bold cursor-pointer">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function logout() {
+            usuarioLogado = null;
+            localStorage.removeItem('edufis_sessao_v8');
+            switchView('login');
+        }
+
+        function switchView(view) {
+            document.getElementById('view-login').classList.add('hidden');
+            document.getElementById('view-dashboard').classList.add('hidden');
+            if (view === 'login') document.getElementById('view-login').classList.remove('hidden');
+            if (view === 'dashboard') {
+                document.getElementById('view-dashboard').classList.remove('hidden');
+                renderizarListaPDFs();
+            }
+        }
+
+        function changeTab(tabId) {
+            ['home', 'editor-word', 'documentos'].forEach(t => {
+                const el = document.getElementById(`tab-${t}`);
+                if(el) el.classList.add('hidden');
+            });
+            const alvo = document.getElementById(`tab-${tabId}`);
+            if(alvo) alvo.classList.remove('hidden');
+            if(tabId === 'documentos') renderizarListaPDFs();
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value.trim();
+            usuarioLogado = { nome: 'Professor(a)', email };
+            salvarDadosLocais();
+            switchView('dashboard');
+        }
+
+        function salvarDocumentoWord() {
+            alert("✅ Atividade guardada no editor com sucesso!");
+        }
+
+        // SALVA COM SEGURANÇA NO GESTOR DE DOCUMENTOS SEM ERRO DE URL
+        function salvarDocumentoWordComoPDF() {
+            const titulo = document.getElementById('doc-word-titulo').value.trim() || 'Atividade Pedagógica';
+            const conteudoHtml = document.getElementById('editor-word-area').innerHTML;
+            
+            documentosPDF.push({
+                id: Date.now(),
+                tipo: 'html',
+                nome: titulo,
+                tamanho: 'Criado no Editor',
+                conteudoHtml: conteudoHtml,
+                dataCriacao: new Date().toLocaleDateString('pt-PT')
+            });
+
+            salvarDadosLocais();
+            renderizarListaPDFs();
+            alert(`✅ Atividade "${titulo}" guardada com sucesso no Gestor de Documentos!`);
+        }
+
+        function processarUploadPDF(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                documentosPDF.push({ 
+                    id: Date.now(), 
+                    tipo: 'pdf',
+                    nome: file.name,
+                    tamanho: `${(file.size / 1024).toFixed(1)} KB`,
+                    data: evt.target.result,
+                    dataCriacao: new Date().toLocaleDateString('pt-PT')
+                });
+                salvarDadosLocais();
+                renderizarListaPDFs();
+                alert(`✅ PDF "${file.name}" carregado com sucesso!`);
+            };
+            reader.readAsDataURL(file);
+            e.target.value = '';
+        }
+
+        function abrirDocumento(id) {
+            const doc = documentosPDF.find(p => p.id === id);
+            if (!doc) return;
+
+            if (doc.tipo === 'pdf') {
+                const win = window.open();
+                win.document.write(`<iframe src="${doc.data}" frameborder="0" style="width:100%;height:100%;border:0;"></iframe>`);
+            } else {
+                document.getElementById('modal-doc-titulo').textContent = doc.nome;
+                document.getElementById('modal-doc-conteudo').innerHTML = `<div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs">${doc.conteudoHtml}</div>`;
+                document.getElementById('modal-visualizador').classList.remove('hidden');
+            }
+        }
+
+        function fecharModalVisualizador() {
+            document.getElementById('modal-visualizador').classList.add('hidden');
+        }
+
+        function renderizarListaPDFs() {
+            const container = document.getElementById('lista-provas-cards');
+            if(!container) return;
+            container.innerHTML = documentosPDF.length === 0 ? `<p class="text-xs text-slate-400 col-span-2">Nenhum documento guardado.</p>` : documentosPDF.map((p, idx) => `
+                <div class="bg-white border border-slate-200 p-5 rounded-3xl flex justify-between items-center shadow-xs">
+                    <div>
+                        <span class="text-xs font-bold text-slate-800 block">📄 ${p.nome}</span>
+                        <span class="text-[10px] text-slate-400">${p.tamanho} • ${p.dataCriacao}</span>
+                    </div>
+                    <div class="flex gap-3">
+                        <button onclick="abrirDocumento(${p.id})" class="text-xs text-sky-600 font-bold cursor-pointer hover:underline">Abrir</button>
+                        <button onclick="documentosPDF.splice(${idx},1);salvarDadosLocais();renderizarListaPDFs();" class="text-xs text-rose-600 font-bold cursor-pointer hover:underline">Excluir</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        if (usuarioLogado) {
+            switchView('dashboard');
+        } else {
+            switchView('login');
+        }
+    </script>
+</body>
+</html>

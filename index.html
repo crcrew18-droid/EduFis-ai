@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%230EA5E9'/><path d='M30 35 v30 M70 35 v30 M20 40 v20 M80 40 v20 M30 50 h40' stroke='white' stroke-width='8' stroke-linecap='round'/></svg>">
-    <title>EduFís Pro v8.7 - Plataforma de Gestão Pedagógica</title>
+    <title>EduFís - Plataforma de Gestão Pedagógica</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
@@ -21,7 +21,7 @@
                 margin: 0 !important;
                 padding: 0 !important;
             }
-            header, aside, button, .no-print, #view-login, #sidebar-overlay, #modal-app, #professor-edu-container { display: none !important; }
+            header, aside, button, .no-print, #sidebar-overlay, #modal-app, #professor-edu-container { display: none !important; }
             body, main { background: white !important; padding: 0 !important; margin: 0 !important; box-shadow: none !important; width: 100% !important; }
             input, textarea, select { border: none !important; background: transparent !important; resize: none !important; color: black !important; padding: 0 !important; box-shadow: none !important; }
             .bncc-item-wrapper:not(.checked-item) { display: none !important; }
@@ -33,26 +33,23 @@
 <body class="bg-slate-900/5 text-slate-800 min-h-screen flex flex-col antialiased selection:bg-sky-500 selection:text-white">
 
     <script>
-        let usuarios = JSON.parse(localStorage.getItem('edufis_usuarios_v8')) || [];
-        let usuarioLogado = JSON.parse(localStorage.getItem('edufis_sessao_v8')) || null;
-
-        let turmas = JSON.parse(localStorage.getItem('edufis_turmas_v8')) || [];
-        let alunos = JSON.parse(localStorage.getItem('edufis_alunos_v8')) || [];
-        let documentosWord = JSON.parse(localStorage.getItem('edufis_word_v8')) || [];
-        let documentosPDF = JSON.parse(localStorage.getItem('edufis_pdf_v8')) || [];
-        let planoGestaoDados = JSON.parse(localStorage.getItem('edufis_plano_v8')) || {};
-        let agendaHojeDados = JSON.parse(localStorage.getItem('edufis_agenda_v8')) || { turma: '', conteudo: '' };
+        let turmas = JSON.parse(localStorage.getItem('edufis_turmas_v10')) || [];
+        let alunos = JSON.parse(localStorage.getItem('edufis_alunos_v10')) || [];
+        let documentosWord = JSON.parse(localStorage.getItem('edufis_word_v10')) || [];
+        let documentosPDF = JSON.parse(localStorage.getItem('edufis_pdf_v10')) || [];
+        let planoGestaoDados = JSON.parse(localStorage.getItem('edufis_plano_v10')) || {};
+        let agendaHojeDados = JSON.parse(localStorage.getItem('edufis_agenda_v10')) || { turma: '', conteudo: '' };
         
-        let bancoJogos = JSON.parse(localStorage.getItem('edufis_jogos_v8')) || [
+        let bancoJogos = JSON.parse(localStorage.getItem('edufis_jogos_v10')) || [
             { id: 1, titulo: "Queimada Cooperativa", categoria: "Jogos Tradicionais", objetivo: "Estimular a agilidade, mira e cooperação em equipa.", materiais: "1 Bola de borracha, cones para delimitar o campo.", regras: "Quem for queimado vai para a 'cadeia' adversária, mas pode voltar se apanhar uma bola no ar ou se um colega acertar um alvo específico." },
             { id: 2, titulo: "Circuito Funcional de Habilidades", categoria: "Aptidão Física", objetivo: "Desenvolver força, velocidade, equilíbrio e coordenação motora.", materiais: "Cones, cordas, arcos e colchonetes.", regras: "Os alunos dividem-se em grupos e revezam-se nas estações a cada 45 segundos, focando na execução correta dos movimentos." },
             { id: 3, titulo: "Bandeirinha (Rouba Bandeira Adaptado)", categoria: "Esportes Coletivos", objetivo: "Trabalhar estratégia, tomada de decisão rápida e velocidade de reação.", materiais: "2 coletes ou bandeiras, cones.", regras: "Duas equipas tentam roubar a bandeira no campo adversário sem serem apanhados (tocados) no campo inimigo." },
             { id: 4, titulo: "Estafeta das Cores e Formas", categoria: "Coordenação", objetivo: "Trabalhar locomoção, agilidade e raciocínio rápido sob esforço físico.", materiais: "Bolas coloridas, baldes, cartões de tarefas.", regras: "Cada elemento do grupo deve correr até ao centro, recolher um objeto com a cor solicitada e regressar para passar a vez." }
         ];
 
-        let configApp = JSON.parse(localStorage.getItem('edufis_config_v8')) || {
+        let configApp = JSON.parse(localStorage.getItem('edufis_config_v10')) || {
             temaCor: 'sky',
-            nomeProf: '',
+            nomeProf: 'Professor(a)',
             cargoProf: 'Professor(a) de Educação Física',
             nomeEscola: '',
             municipioEscola: '',
@@ -91,72 +88,23 @@
 
         function salvarDadosLocais() {
             try {
-                localStorage.setItem('edufis_usuarios_v8', JSON.stringify(usuarios));
-                localStorage.setItem('edufis_sessao_v8', JSON.stringify(usuarioLogado));
-                localStorage.setItem('edufis_turmas_v8', JSON.stringify(turmas));
-                localStorage.setItem('edufis_alunos_v8', JSON.stringify(alunos));
-                localStorage.setItem('edufis_word_v8', JSON.stringify(documentosWord));
-                localStorage.setItem('edufis_pdf_v8', JSON.stringify(documentosPDF));
-                localStorage.setItem('edufis_plano_v8', JSON.stringify(planoGestaoDados));
-                localStorage.setItem('edufis_agenda_v8', JSON.stringify(agendaHojeDados));
-                localStorage.setItem('edufis_jogos_v8', JSON.stringify(bancoJogos));
-                localStorage.setItem('edufis_config_v8', JSON.stringify(configApp));
+                localStorage.setItem('edufis_turmas_v10', JSON.stringify(turmas));
+                localStorage.setItem('edufis_alunos_v10', JSON.stringify(alunos));
+                localStorage.setItem('edufis_word_v10', JSON.stringify(documentosWord));
+                localStorage.setItem('edufis_pdf_v10', JSON.stringify(documentosPDF));
+                localStorage.setItem('edufis_plano_v10', JSON.stringify(planoGestaoDados));
+                localStorage.setItem('edufis_agenda_v10', JSON.stringify(agendaHojeDados));
+                localStorage.setItem('edufis_jogos_v10', JSON.stringify(bancoJogos));
+                localStorage.setItem('edufis_config_v10', JSON.stringify(configApp));
             } catch (e) {
-                alert("⚠️ O armazenamento local (LocalStorage) está cheio! Tente apagar alguns ficheiros grandes.");
+                alert("⚠️ O armazenamento local (LocalStorage) está cheio!");
             }
         }
     </script>
 
-    <!-- TELA DE LOGIN & REGISTRO -->
-    <div id="view-login" class="flex flex-col items-center justify-center flex-1 p-4 bg-gradient-to-br from-slate-900 via-slate-800 to-sky-950 no-print min-h-screen">
-        <div class="w-full max-w-md bg-white/95 backdrop-blur-xl border border-white/20 rounded-3xl p-8 shadow-2xl space-y-6">
-            <div class="text-center space-y-3">
-                <div class="w-16 h-16 brand-icon-bg bg-sky-600 rounded-2xl flex items-center justify-center mx-auto shadow-lg shadow-sky-500/30 p-3.5">
-                    <svg class="w-full h-full text-white" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round"><path d="M30 35 v30 M70 35 v30 M20 40 v20 M80 40 v20 M30 50 h40"/></svg>
-                </div>
-                <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight" id="auth-box-titulo">EduFís Pro</h1>
-                <p class="text-slate-500 text-xs font-semibold tracking-wide" id="auth-box-sub">PLATAFORMA DE GESTÃO PEDAGÓGICA</p>
-            </div>
-            
-            <form id="form-login" class="space-y-4" onsubmit="handleLogin(event)">
-                <div>
-                    <label class="block text-[11px] font-extrabold uppercase text-slate-500 mb-1.5 tracking-wider">E-mail Profissional</label>
-                    <input type="email" id="login-email" required placeholder="professor@escola.pt" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:bg-white transition-all shadow-xs">
-                </div>
-                <div>
-                    <label class="block text-[11px] font-extrabold uppercase text-slate-500 mb-1.5 tracking-wider">Palavra-passe</label>
-                    <input type="password" id="login-senha" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:bg-white transition-all shadow-xs">
-                </div>
-                <button type="submit" class="w-full btn-primary-theme bg-sky-600 hover:bg-sky-700 text-white font-bold py-3.5 rounded-2xl shadow-lg shadow-sky-600/20 transition-all cursor-pointer">Entrar na Plataforma</button>
-                <div class="text-center pt-2">
-                    <button type="button" onclick="alternarTelaAuth('registrar')" class="text-xs text-slate-500 hover:text-sky-600 font-bold transition-colors cursor-pointer">Ainda não tem conta? Criar conta</button>
-                </div>
-            </form>
-
-            <form id="form-registrar" class="hidden space-y-4" onsubmit="handleRegistrar(event)">
-                <div>
-                    <label class="block text-[11px] font-extrabold uppercase text-slate-500 mb-1.5 tracking-wider">Nome Completo</label>
-                    <input type="text" id="reg-nome" required placeholder="Ex: Prof. Carlos Silva" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:bg-white transition-all shadow-xs">
-                </div>
-                <div>
-                    <label class="block text-[11px] font-extrabold uppercase text-slate-500 mb-1.5 tracking-wider">E-mail Profissional</label>
-                    <input type="email" id="reg-email" required placeholder="professor@escola.pt" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:bg-white transition-all shadow-xs">
-                </div>
-                <div>
-                    <label class="block text-[11px] font-extrabold uppercase text-slate-500 mb-1.5 tracking-wider">Palavra-passe</label>
-                    <input type="password" id="reg-senha" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:bg-white transition-all shadow-xs">
-                </div>
-                <button type="submit" class="w-full btn-primary-theme bg-sky-600 hover:bg-sky-700 text-white font-bold py-3.5 rounded-2xl shadow-lg shadow-sky-600/20 transition-all cursor-pointer">Registar Conta</button>
-                <div class="text-center pt-2">
-                    <button type="button" onclick="alternarTelaAuth('login')" class="text-xs text-slate-500 hover:text-sky-600 font-bold transition-colors cursor-pointer">Já tem conta? Ir para Login</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- DASHBOARD PRINCIPAL -->
-    <div id="view-dashboard" class="hidden flex flex-col flex-1 min-h-screen bg-slate-50">
-        <header class="bg-white/80 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-8 py-3.5 flex items-center justify-between sticky top-0 z-40 shadow-xs no-print">
+    <!-- DASHBOARD PRINCIPAL (ABRE DIRETAMENTE) -->
+    <div id="view-dashboard" class="flex flex-col flex-1 min-h-screen bg-slate-50">
+        <header class="bg-white/85 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-8 py-3.5 flex items-center justify-between sticky top-0 z-40 shadow-xs no-print">
             <div class="flex items-center gap-3">
                 <button onclick="toggleSidebarMobile()" class="lg:hidden text-slate-700 p-2 rounded-xl bg-slate-100 hover:bg-slate-200 transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"><path d=""/></svg>
@@ -167,7 +115,7 @@
                     </div>
                     <div>
                         <span class="text-base font-extrabold text-slate-900 leading-none tracking-tight block">EduFís</span>
-                        <span class="text-[10px] uppercase tracking-widest text-theme-main text-sky-600 font-extrabold mt-0.5 block">Pro v8.7</span>
+                        <span class="text-[10px] uppercase tracking-widest text-sky-600 font-extrabold mt-0.5 block">Gestão Pedagógica</span>
                     </div>
                 </div>
             </div>
@@ -176,7 +124,6 @@
                     <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
                     <span class="text-xs font-bold text-slate-700" id="header-user-nome">👤 Professor(a)</span>
                 </div>
-                <button onclick="logout()" class="text-xs bg-rose-50 text-rose-600 border border-rose-200/60 px-3.5 py-2 rounded-2xl font-bold hover:bg-rose-100 transition-all cursor-pointer shadow-xs">Sair</button>
             </div>
         </header>
 
@@ -241,7 +188,7 @@
                             <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-3 py-1 rounded-full text-[11px] font-semibold text-sky-300">
                                 <span class="w-2 h-2 rounded-full bg-sky-400 animate-ping"></span> Plataforma Ativa
                             </div>
-                            <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Bem-vindo ao EduFís Pro 🏋️</h2>
+                            <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Bem-vindo ao EduFís 🏋️</h2>
                             <p class="text-slate-300 text-xs sm:text-sm font-medium">Gestão pedagógica avançada para Professores de Educação Física.</p>
                         </div>
                         <button onclick="changeTab('jogos')" class="bg-white hover:bg-slate-100 text-slate-900 font-bold px-6 py-3.5 rounded-2xl text-xs shadow-lg transition-all cursor-pointer relative z-10 flex items-center gap-2">
@@ -251,19 +198,19 @@
 
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
                         <div class="bg-white border border-slate-200/80 p-5 rounded-3xl shadow-xs hover:shadow-md transition-shadow">
-                            <div class="text-3xl font-black text-theme-main text-sky-600" id="stat-turmas">0</div>
+                            <div class="text-3xl font-black text-sky-600" id="stat-turmas">0</div>
                             <div class="text-[11px] font-bold text-slate-400 mt-1 uppercase tracking-wider">Turmas</div>
                         </div>
                         <div class="bg-white border border-slate-200/80 p-5 rounded-3xl shadow-xs hover:shadow-md transition-shadow">
-                            <div class="text-3xl font-black text-theme-main text-sky-600" id="stat-alunos">0</div>
+                            <div class="text-3xl font-black text-sky-600" id="stat-alunos">0</div>
                             <div class="text-[11px] font-bold text-slate-400 mt-1 uppercase tracking-wider">Alunos</div>
                         </div>
                         <div class="bg-white border border-slate-200/80 p-5 rounded-3xl shadow-xs hover:shadow-md transition-shadow">
-                            <div class="text-3xl font-black text-theme-main text-sky-600" id="stat-documentos">0</div>
+                            <div class="text-3xl font-black text-sky-600" id="stat-documentos">0</div>
                             <div class="text-[11px] font-bold text-slate-400 mt-1 uppercase tracking-wider">Atividades Salvas</div>
                         </div>
                         <div class="bg-white border border-slate-200/80 p-5 rounded-3xl shadow-xs hover:shadow-md transition-shadow">
-                            <div class="text-3xl font-black text-theme-main text-sky-600" id="stat-pdfs">0</div>
+                            <div class="text-3xl font-black text-sky-600" id="stat-pdfs">0</div>
                             <div class="text-[11px] font-bold text-slate-400 mt-1 uppercase tracking-wider">Ficheiros PDF</div>
                         </div>
                     </div>
@@ -315,7 +262,7 @@
                             <h2 class="text-2xl font-black text-slate-900 tracking-tight">Banco de Jogos & Dinâmicas 🎯</h2>
                             <p class="text-slate-500 text-xs sm:text-sm">Repositório completo com regras, objetivos e materiais.</p>
                         </div>
-                        <button onclick="abrirModalJogo()" class="btn-primary-theme bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-md shadow-sky-600/20 transition-all cursor-pointer">+ Adicionar Nova Ideia</button>
+                        <button onclick="abrirModalJogo()" class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-md shadow-sky-600/20 transition-all cursor-pointer">+ Adicionar Nova Ideia</button>
                     </div>
                     <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
                         <div>
@@ -362,7 +309,7 @@
                             <h2 class="text-2xl font-black text-slate-900 tracking-tight">Gestão de Turmas 🏫</h2>
                             <p class="text-slate-500 text-xs sm:text-sm">Organize as suas turmas e horários letivos.</p>
                         </div>
-                        <button onclick="abrirModalTurma()" class="btn-primary-theme bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-md shadow-sky-600/20 transition-all cursor-pointer">+ Registar Turma</button>
+                        <button onclick="abrirModalTurma()" class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-md shadow-sky-600/20 transition-all cursor-pointer">+ Registar Turma</button>
                     </div>
                     <div class="bg-white border border-slate-200/80 rounded-3xl overflow-x-auto shadow-xs">
                         <table class="w-full text-left text-xs min-w-[500px]">
@@ -389,7 +336,7 @@
                             <h2 class="text-2xl font-black text-slate-900 tracking-tight">Gestão de Alunos 👥</h2>
                             <p class="text-slate-500 text-xs sm:text-sm">Matrículas e listagem geral de estudantes.</p>
                         </div>
-                        <button onclick="abrirModalAluno()" class="btn-primary-theme bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-md shadow-sky-600/20 transition-all cursor-pointer">+ Matricular Aluno</button>
+                        <button onclick="abrirModalAluno()" class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-md shadow-sky-600/20 transition-all cursor-pointer">+ Matricular Aluno</button>
                     </div>
                     <div class="bg-white border border-slate-200/80 rounded-3xl overflow-x-auto shadow-xs">
                         <table class="w-full text-left text-xs min-w-[500px]">
@@ -437,7 +384,7 @@
                             <button onclick="novoDocumentoWord()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2.5 rounded-2xl text-xs font-bold cursor-pointer transition-colors">Novo</button>
                             <button onclick="imprimirEditorWord()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-md shadow-indigo-600/20 cursor-pointer transition-all flex items-center gap-1.5">🖨️ Imprimir Ficha</button>
                             <button onclick="salvarDocumentoWordComoPDF()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-md shadow-emerald-600/20 cursor-pointer transition-all flex items-center gap-1.5">📄 Salvar no Gestor</button>
-                            <button onclick="salvarDocumentoWord()" class="btn-primary-theme bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-md shadow-sky-600/20 cursor-pointer transition-all">💾 Guardar Texto</button>
+                            <button onclick="salvarDocumentoWord()" class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-md shadow-sky-600/20 cursor-pointer transition-all">💾 Guardar Texto</button>
                         </div>
                     </div>
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -468,7 +415,7 @@
                         </div>
                         <div class="flex gap-2">
                             <button onclick="window.print()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2.5 rounded-2xl text-xs font-bold cursor-pointer transition-colors shadow-xs">🖨️ Imprimir Plano</button>
-                            <button onclick="salvarPlanoGestao()" class="btn-primary-theme bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-md shadow-sky-600/20 cursor-pointer transition-all">💾 Guardar Plano</button>
+                            <button onclick="salvarPlanoGestao()" class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-md shadow-sky-600/20 cursor-pointer transition-all">💾 Guardar Plano</button>
                         </div>
                     </div>
                     <div class="bg-white border border-slate-200/80 p-6 sm:p-8 rounded-3xl space-y-6 shadow-xs">
@@ -515,7 +462,7 @@
                             <p class="text-slate-500 text-xs sm:text-sm">Guarde ficheiros e atividades geradas de forma segura.</p>
                         </div>
                         <input type="file" id="input-upload-pdf-file" accept="application/pdf" class="hidden" onchange="processarUploadPDF(event)">
-                        <button onclick="document.getElementById('input-upload-pdf-file').click()" class="btn-primary-theme bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-md shadow-sky-600/20 transition-all cursor-pointer flex items-center gap-2">
+                        <button onclick="document.getElementById('input-upload-pdf-file').click()" class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-md shadow-sky-600/20 transition-all cursor-pointer flex items-center gap-2">
                             📤 Enviar Ficheiro PDF
                         </button>
                     </div>
@@ -532,7 +479,7 @@
                         <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
                             <h3 class="font-extrabold text-xs uppercase text-slate-500 tracking-wider">Descarregar Cópia de Segurança</h3>
                             <p class="text-xs text-slate-500">Guarde um ficheiro com todas as turmas, alunos, notas, fichas e configurações no seu dispositivo.</p>
-                            <button onclick="descarregarBackupJSON()" class="btn-primary-theme w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-3.5 px-6 rounded-2xl text-xs shadow-md shadow-sky-600/20 cursor-pointer transition-all">Descarregar Backup (.json)</button>
+                            <button onclick="descarregarBackupJSON()" class="w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-3.5 px-6 rounded-2xl text-xs shadow-md shadow-sky-600/20 cursor-pointer transition-all">Descarregar Backup (.json)</button>
                         </div>
                         <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
                             <h3 class="font-extrabold text-xs uppercase text-slate-500 tracking-wider">Restaurar Dados</h3>
@@ -656,7 +603,7 @@
                     </div>
 
                     <div class="max-w-5xl flex justify-end gap-3 pt-2">
-                        <button onclick="salvarConfigPerfil()" class="btn-primary-theme bg-sky-600 hover:bg-sky-700 text-white font-extrabold px-8 py-3.5 rounded-2xl text-xs shadow-lg shadow-sky-600/20 transition-all cursor-pointer">Guardar Todas as Configurações</button>
+                        <button onclick="salvarConfigPerfil()" class="bg-sky-600 hover:bg-sky-700 text-white font-extrabold px-8 py-3.5 rounded-2xl text-xs shadow-lg shadow-sky-600/20 transition-all cursor-pointer">Guardar Todas as Configurações</button>
                     </div>
 
                     <div class="max-w-5xl bg-rose-50 border border-rose-200/80 p-6 rounded-3xl space-y-3 mt-8 shadow-xs">
@@ -730,7 +677,7 @@
             <div id="modal-corpo" class="space-y-4"></div>
             <div class="flex justify-end gap-2.5 pt-2">
                 <button type="button" onclick="fecharModal()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2.5 rounded-2xl text-xs font-bold transition-colors">Cancelar</button>
-                <button type="button" onclick="executarSalvarModal()" class="btn-primary-theme bg-sky-600 text-white font-bold px-5 py-2.5 rounded-2xl text-xs cursor-pointer shadow-md shadow-sky-600/20 transition-all">Salvar Registos</button>
+                <button type="button" onclick="executarSalvarModal()" class="bg-sky-600 text-white font-bold px-5 py-2.5 rounded-2xl text-xs cursor-pointer shadow-md shadow-sky-600/20 transition-all">Salvar Registos</button>
             </div>
         </div>
     </div>
@@ -761,7 +708,7 @@
 
         function alternarGravacaoVoz() {
             if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-                alert("O seu navegador não suporta reconhecimento de voz. Tente usar o Google Chrome.");
+                alert("O seu navegador não suporta reconhecimento de voz.");
                 return;
             }
             const btnMic = document.getElementById('btn-mic-audio');
@@ -789,14 +736,8 @@
                 pararGravacaoVisual();
             };
 
-            recognition.onerror = function() {
-                pararGravacaoVisual();
-            };
-
-            recognition.onend = function() {
-                pararGravacaoVisual();
-            };
-
+            recognition.onerror = function() { pararGravacaoVisual(); };
+            recognition.onend = function() { pararGravacaoVisual(); };
             recognition.start();
         }
 
@@ -824,7 +765,7 @@
             const apiKey = configApp.geminiKey || document.getElementById('cfg-gemini-key')?.value.trim();
             if(!apiKey) {
                 document.getElementById(loadingId).remove();
-                container.innerHTML += `<div class="bg-rose-50 text-rose-700 p-2.5 rounded-2xl border border-rose-200 shadow-2xs">⚠️ Chave da API do Gemini não configurada. Vá a <strong>Configurações</strong> no menu lateral, cole a sua chave da API e clique em <strong>Guardar Todas as Configurações</strong>.</div>`;
+                container.innerHTML += `<div class="bg-rose-50 text-rose-700 p-2.5 rounded-2xl border border-rose-200 shadow-2xs">⚠️ Chave da API do Gemini não configurada. Vá a <strong>Configurações</strong> no menu lateral e cole a sua chave.</div>`;
                 return;
             }
 
@@ -844,7 +785,7 @@
                                 contents: [{
                                     role: "user",
                                     parts: [{
-                                        text: `Você é o Atlas IA, um assistente pedagógico especializado em Educação Física escolar, BNCC, anatomia, fisiologia do exercício, criação de planos de aula e circuitos motores. Responda de forma prática e objetiva aos professores. Pergunta: ${texto}`
+                                        text: `Você é o Atlas IA, um assistente pedagógico especializado em Educação Física escolar, BNCC, anatomia, fisiologia do exercício e criação de planos de aula. Pergunta: ${texto}`
                                     }]
                                 }]
                             })
@@ -852,12 +793,11 @@
 
                         if (res.status === 401 || res.status === 403) {
                             document.getElementById(loadingId)?.remove();
-                            container.innerHTML += `<div class="bg-rose-50 text-rose-700 p-2.5 rounded-2xl border border-rose-200 shadow-2xs">❌ Erro de Autenticação (${res.status}): A chave da API é inválida ou não tem permissão. Verifique nas Configurações.</div>`;
+                            container.innerHTML += `<div class="bg-rose-50 text-rose-700 p-2.5 rounded-2xl border border-rose-200 shadow-2xs">❌ Erro de Autenticação: A chave da API é inválida.</div>`;
                             return;
                         }
 
                         if (res.status === 404) { break; }
-
                         if (res.status === 503 || res.status === 429) {
                             tentativas++;
                             await new Promise(r => setTimeout(r, 1000 * tentativas));
@@ -871,10 +811,7 @@
 
                         const data = await res.json();
                         respostaTexto = data.candidates?.[0]?.content?.parts?.[0]?.text;
-                        if(respostaTexto) {
-                            sucesso = true;
-                            break;
-                        }
+                        if(respostaTexto) { sucesso = true; break; }
                     } catch(err) {
                         erroUltimo = err.message;
                         tentativas++;
@@ -887,7 +824,7 @@
             if(sucesso && respostaTexto) {
                 container.innerHTML += `<div class="bg-white p-2.5 rounded-2xl border border-slate-200/80 text-slate-700 shadow-2xs whitespace-pre-wrap">${escapeHtmlEdu(respostaTexto)}</div>`;
             } else {
-                container.innerHTML += `<div class="bg-amber-50 text-amber-800 p-2.5 rounded-2xl border border-amber-200 shadow-2xs">⚠️ O serviço de IA está temporariamente sobrecarregado. Tente novamente em instantes. (${escapeHtmlEdu(erroUltimo || 'Indisponível')})</div>`;
+                container.innerHTML += `<div class="bg-amber-50 text-amber-800 p-2.5 rounded-2xl border border-amber-200 shadow-2xs">⚠️ O serviço de IA está temporariamente sobrecarregado. (${escapeHtmlEdu(erroUltimo || 'Indisponível')})</div>`;
             }
             container.scrollTop = container.scrollHeight;
         }
@@ -939,79 +876,6 @@
             `).join('');
         }
 
-        function alternarTelaAuth(tela) {
-            if (tela === 'registrar') {
-                document.getElementById('form-login').classList.add('hidden');
-                document.getElementById('form-registrar').classList.remove('hidden');
-                document.getElementById('auth-box-titulo').innerText = "Criar Nova Conta";
-                document.getElementById('auth-box-sub').innerText = "REGISTO DE PROFESSOR";
-            } else {
-                document.getElementById('form-registrar').classList.add('hidden');
-                document.getElementById('form-login').classList.remove('hidden');
-                document.getElementById('auth-box-titulo').innerText = "EduFís Pro";
-                document.getElementById('auth-box-sub').innerText = "PLATAFORMA DE GESTÃO PEDAGÓGICA";
-            }
-        }
-
-        function handleRegistrar(e) {
-            e.preventDefault();
-            const nome = document.getElementById('reg-nome').value.trim();
-            const email = document.getElementById('reg-email').value.trim();
-            const senha = document.getElementById('reg-senha').value.trim();
-
-            let usuarios = JSON.parse(localStorage.getItem('edufis_usuarios_v8')) || [];
-            if (usuarios.some(u => u.email === email)) {
-                alert("⚠️ Este e-mail já se encontra registado!");
-                return;
-            }
-
-            usuarios.push({ nome, email, senha });
-            usuarioLogado = { nome, email };
-            salvarDadosLocais();
-            alert("✅ Conta criada com sucesso!");
-            switchView('dashboard');
-        }
-
-        function handleLogin(e) {
-            e.preventDefault();
-            const email = document.getElementById('login-email').value.trim();
-            const senha = document.getElementById('login-senha').value.trim();
-
-            let usuarios = JSON.parse(localStorage.getItem('edufis_usuarios_v8')) || [];
-
-            if (usuarios.length > 0) {
-                const userEncontrado = usuarios.find(u => u.email === email && u.senha === senha);
-                if (userEncontrado) {
-                    usuarioLogado = { nome: userEncontrado.nome, email: userEncontrado.email };
-                    salvarDadosLocais();
-                    switchView('dashboard');
-                } else {
-                    alert("❌ E-mail ou palavra-passe incorretos!");
-                }
-            } else {
-                usuarioLogado = { nome: 'Professor(a)', email };
-                usuarios.push({ nome: 'Professor(a)', email, senha });
-                salvarDadosLocais();
-                switchView('dashboard');
-            }
-        }
-
-        function logout() {
-            usuarioLogado = null;
-            localStorage.removeItem('edufis_sessao_v8');
-            switchView('login');
-        }
-
-        function switchView(view) {
-            document.getElementById('view-login').classList.add('hidden');
-            document.getElementById('view-dashboard').classList.add('hidden');
-            if (view === 'login') document.getElementById('view-login').classList.remove('hidden');
-            if (view === 'dashboard') {
-                document.getElementById('view-dashboard').classList.remove('hidden');
-                carregarTudoNaTela();
-            }
-        }
-
         function changeTab(tabId) {
             ['home', 'jogos', 'anatomia', 'turmas', 'alunos', 'chamada', 'editor-word', 'gestao', 'documentos', 'backup', 'config'].forEach(t => {
                 const el = document.getElementById(`tab-${t}`);
@@ -1041,9 +905,7 @@
         }
 
         function carregarTudoNaTela() {
-            if(usuarioLogado) {
-                document.getElementById('header-user-nome').innerText = `👤 ${configApp.nomeProf || usuarioLogado.nome}`;
-            }
+            document.getElementById('header-user-nome').innerText = `👤 ${configApp.nomeProf || 'Professor(a)'}`;
             document.getElementById('agenda-data-hoje').innerText = new Date().toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'short' });
             atualizarSelectsTurmas();
             atualizarEstatisticas();
@@ -1064,7 +926,7 @@
         }
 
         function salvarConfigPerfil() {
-            configApp.nomeProf = document.getElementById('cfg-nome-prof').value.trim();
+            configApp.nomeProf = document.getElementById('cfg-nome-prof').value.trim() || 'Professor(a)';
             configApp.cargoProf = document.getElementById('cfg-cargo-prof').value.trim();
             configApp.nomeEscola = document.getElementById('cfg-nome-escola').value.trim();
             configApp.municipioEscola = document.getElementById('cfg-municipio').value.trim();
@@ -1075,21 +937,18 @@
             configApp.segmentoPadrao = document.getElementById('cfg-segmento').value;
 
             salvarDadosLocais();
-            if(usuarioLogado && configApp.nomeProf) {
-                usuarioLogado.nome = configApp.nomeProf;
-                document.getElementById('header-user-nome').innerText = `👤 ${configApp.nomeProf}`;
-            }
-            alert("✅ Todas as configurações e a chave da IA foram salvas com sucesso!");
+            document.getElementById('header-user-nome').innerText = `👤 ${configApp.nomeProf}`;
+            alert("✅ Configurações guardadas com sucesso!");
         }
 
         function aplicarTemaCor(cor) {
             configApp.temaCor = cor;
             salvarDadosLocais();
-            alert(`✅ Tema "${cor}" aplicado com sucesso!`);
+            alert(`✅ Tema aplicado com sucesso!`);
         }
 
         function resetarTodosDadosSistema() {
-            if(confirm("⚠️ Tem certeza que deseja apagar TODOS os dados (turmas, alunos, notas, planos e jogos) armazenados localmente? Esta ação não pode ser desfeita.")) {
+            if(confirm("⚠️ Tem certeza que deseja apagar TODOS os dados e redefinir o sistema?")) {
                 localStorage.clear();
                 location.reload();
             }
@@ -1098,12 +957,10 @@
         function atualizarSelectsTurmas() {
             const selAgenda = document.getElementById('agenda-select-turma');
             const selChamada = document.getElementById('select-turma-chamada');
-            
             const opts = turmas.length === 0 ? `<option value="">Sem turmas registadas</option>` : `<option value="">Selecione a turma...</option>` + turmas.map(t => `<option value="${t.nome}">${t.nome} (${t.ano})</option>`).join('');
             
             if(selAgenda) selAgenda.innerHTML = opts;
-            if(selChamada) selChamada.innerHTML = turmas.length === 0 ? `<option value="">Sem turmas registadas</option>` : `<option value="">Escolha uma turma...</option>` + turmas.map(t => `<option value="${t.nome}">${t.nome}</option>`).join('');
-
+            if(selChamada) selChamada.innerHTML = opts;
             if(selAgenda) selAgenda.value = agendaHojeDados.turma || '';
             if(document.getElementById('agenda-input-conteudo')) document.getElementById('agenda-input-conteudo').value = agendaHojeDados.conteudo || '';
         }
@@ -1203,11 +1060,8 @@
                 const ano = document.getElementById('m-t-ano').value.trim() || 'N/A';
                 const turno = document.getElementById('m-t-turno').value.trim() || 'N/A';
                 if(!nome) { alert("Insira o nome da turma."); return; }
-                if(modalIdEditando !== null) {
-                    turmas[modalIdEditando] = { nome, ano, turno };
-                } else {
-                    turmas.push({ nome, ano, turno });
-                }
+                if(modalIdEditando !== null) { turmas[modalIdEditando] = { nome, ano, turno }; }
+                else { turmas.push({ nome, ano, turno }); }
                 salvarDadosLocais();
                 atualizarTabelaTurmas();
                 atualizarSelectsTurmas();
@@ -1215,11 +1069,8 @@
                 const nome = document.getElementById('m-a-nome').value.trim();
                 const turma = document.getElementById('m-a-turma').value;
                 if(!nome) { alert("Insira o nome do aluno."); return; }
-                if(modalIdEditando !== null) {
-                    alunos[modalIdEditando] = { nome, turma };
-                } else {
-                    alunos.push({ nome, turma });
-                }
+                if(modalIdEditando !== null) { alunos[modalIdEditando] = { nome, turma }; }
+                else { alunos.push({ nome, turma }); }
                 salvarDadosLocais();
                 atualizarTabelaAlunos();
             } else if(modalModo === 'jogo') {
@@ -1229,11 +1080,8 @@
                 const materiais = document.getElementById('m-j-mat').value.trim();
                 const regras = document.getElementById('m-j-reg').value.trim();
                 if(!titulo) { alert("Insira o título do jogo."); return; }
-                if(modalIdEditando !== null) {
-                    bancoJogos[modalIdEditando] = { id: bancoJogos[modalIdEditando].id, titulo, categoria, objetivo, materiais, regras };
-                } else {
-                    bancoJogos.push({ id: Date.now(), titulo, categoria, objetivo, materiais, regras });
-                }
+                if(modalIdEditando !== null) { bancoJogos[modalIdEditando] = { id: bancoJogos[modalIdEditando].id, titulo, categoria, objetivo, materiais, regras }; }
+                else { bancoJogos.push({ id: Date.now(), titulo, categoria, objetivo, materiais, regras }); }
                 salvarDadosLocais();
                 renderizarBancoJogos();
             }
@@ -1303,9 +1151,7 @@
             `).join('');
         }
 
-        function formatarEditorWord(cmd) {
-            document.execCommand(cmd, false, null);
-        }
+        function formatarEditorWord(cmd) { document.execCommand(cmd, false, null); }
 
         function inserirQuestaoQuizWord() {
             const area = document.getElementById('editor-word-area');
@@ -1345,7 +1191,6 @@
         function salvarDocumentoWordComoPDF() {
             const titulo = document.getElementById('doc-word-titulo').value.trim() || 'Atividade Pedagógica';
             const conteudoHtml = document.getElementById('editor-word-area').innerHTML;
-            
             const htmlCompleto = `<!DOCTYPE html><html lang="pt-PT"><head><meta charset="UTF-8"><title>${titulo}</title><style>body{font-family:Arial,sans-serif;padding:30px;color:#111;line-height:1.6;}h1{font-size:20px;border-bottom:2px solid #0ea5e9;padding-bottom:10px;margin-bottom:20px;}</style></head><body><h1>${titulo}</h1><div>${conteudoHtml}</div></body></html>`;
             const blob = new Blob([htmlCompleto], { type: 'text/html;charset=utf-8' });
             
@@ -1361,7 +1206,7 @@
                 salvarDadosLocais();
                 renderizarListaPDFs();
                 atualizarEstatisticas();
-                alert(`✅ Atividade "${titulo}" convertida e salva com sucesso no Gestor de Documentos PDF!`);
+                alert(`✅ Atividade "${titulo}" salva com sucesso no Gestor de Documentos!`);
             };
             reader.readAsDataURL(blob);
         }
@@ -1459,7 +1304,7 @@
                 salvarDadosLocais();
                 renderizarListaPDFs();
                 atualizarEstatisticas();
-                alert(`✅ O ficheiro "${file.name}" foi enviado e salvo com sucesso no Gestor!`);
+                alert(`✅ O ficheiro "${file.name}" foi enviado com sucesso!`);
             };
             reader.readAsDataURL(file);
             e.target.value = '';
@@ -1472,7 +1317,6 @@
                 if (pdf.data.startsWith('data:application/pdf')) {
                     win.document.write(`<iframe src="${pdf.data}" frameborder="0" style="border:0;width:100%;height:100%;"></iframe>`);
                 } else {
-                    // Para documentos HTML gerados pelo editor
                     win.document.write(atob(pdf.data.split(',')[1]) || pdf.data);
                 }
             } else {
@@ -1498,7 +1342,7 @@
         function renderizarListaPDFs() {
             const container = document.getElementById('lista-provas-cards');
             if(!container) return;
-            container.innerHTML = documentosPDF.length === 0 ? `<p class="text-xs text-slate-400 col-span-2">Nenhum documento registado. Clique no botão "+ Enviar Ficheiro PDF" acima ou salve diretamente do Editor de Atividades.</p>` : documentosPDF.map((p, idx) => `
+            container.innerHTML = documentosPDF.length === 0 ? `<p class="text-xs text-slate-400 col-span-2">Nenhum documento registado.</p>` : documentosPDF.map((p, idx) => `
                 <div class="bg-white border border-slate-200/80 p-5 rounded-3xl flex justify-between items-center shadow-xs hover:shadow-md transition-shadow">
                     <div class="space-y-1 max-w-[60%]">
                         <span class="text-xs font-extrabold text-slate-800 block truncate">${p.nome}</span>
@@ -1521,7 +1365,7 @@
         }
 
         function descarregarBackupJSON() {
-            const dadosBackup = { versao: "8.7", turmas, alunos, bancoJogos, documentosWord, documentosPDF, planoGestao: planoGestaoDados, agenda: agendaHojeDados, config: configApp };
+            const dadosBackup = { versao: "10.0", turmas, alunos, bancoJogos, documentosWord, documentosPDF, planoGestao: planoGestaoDados, agenda: agendaHojeDados, config: configApp };
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dadosBackup, null, 2));
             const downloadAnchor = document.createElement('a');
             downloadAnchor.setAttribute("href", dataStr);
@@ -1547,21 +1391,18 @@
                     if(backup.agenda) agendaHojeDados = backup.agenda;
                     if(backup.config) configApp = backup.config;
                     salvarDadosLocais();
-                    alert("✅ Backup restaurado com sucesso! Os seus dados foram carregados.");
+                    alert("✅ Backup restaurado com sucesso!");
                     carregarTudoNaTela();
                 } catch(err) {
-                    alert("❌ Ocorreu um erro ao carregar o ficheiro de backup. Certifique-se de usar um ficheiro JSON válido.");
+                    alert("❌ Erro ao carregar o ficheiro de backup.");
                 }
             };
             reader.readAsText(file);
             e.target.value = '';
         }
 
-        if (usuarioLogado) {
-            switchView('dashboard');
-        } else {
-            switchView('login');
-        }
+        // Inicia diretamente a aplicação na dashboard
+        carregarTudoNaTela();
     </script>
 </body>
 </html>

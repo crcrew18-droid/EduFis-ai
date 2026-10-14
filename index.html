@@ -4,11 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%230EA5E9'/><path d='M30 35 v30 M70 35 v30 M20 40 v20 M80 40 v20 M30 50 h40' stroke='white' stroke-width='8' stroke-linecap='round'/></svg>">
-    <title>EduFís Pro v8.8 - Plataforma de Gestão Pedagógica</title>
+    <title>EduFís Pro v8.7 - Plataforma de Gestão Pedagógica</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
         body { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+
+        @media print {
+            body * { visibility: hidden !important; }
+            #tab-gestao, #tab-gestao * { visibility: visible !important; }
+            #tab-gestao {
+                position: absolute !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            header, aside, button, .no-print, #view-login, #sidebar-overlay, #modal-app { display: none !important; }
+            body, main { background: white !important; padding: 0 !important; margin: 0 !important; box-shadow: none !important; width: 100% !important; }
+            input, textarea, select { border: none !important; background: transparent !important; resize: none !important; color: black !important; padding: 0 !important; box-shadow: none !important; }
+            .bncc-item-wrapper:not(.checked-item) { display: none !important; }
+            .bncc-item-wrapper { border: none !important; background: transparent !important; padding: 4px 0 !important; margin-bottom: 6px !important; }
+            .bncc-check { display: none !important; }
+        }
     </style>
 </head>
 <body class="bg-slate-900/5 text-slate-800 min-h-screen flex flex-col antialiased selection:bg-sky-500 selection:text-white">
@@ -16,23 +35,62 @@
     <script>
         let usuarios = JSON.parse(localStorage.getItem('edufis_usuarios_v8')) || [];
         let usuarioLogado = JSON.parse(localStorage.getItem('edufis_sessao_v8')) || null;
+
+        let turmas = JSON.parse(localStorage.getItem('edufis_turmas_v8')) || [];
+        let alunos = JSON.parse(localStorage.getItem('edufis_alunos_v8')) || [];
         let documentosWord = JSON.parse(localStorage.getItem('edufis_word_v8')) || [];
         let documentosPDF = JSON.parse(localStorage.getItem('edufis_pdf_v8')) || [];
+        let planoGestaoDados = JSON.parse(localStorage.getItem('edufis_plano_v8')) || {};
+        let agendaHojeDados = JSON.parse(localStorage.getItem('edufis_agenda_v8')) || { turma: '', conteudo: '' };
+        
+        let bancoJogos = JSON.parse(localStorage.getItem('edufis_jogos_v8')) || [
+            { id: 1, titulo: "Queimada Cooperativa", categoria: "Jogos Tradicionais", objetivo: "Estimular a agilidade, mira e cooperação em equipa.", materiais: "1 Bola de borracha, cones.", regras: "Quem for queimado vai para a 'cadeia' adversária." }
+        ];
+
+        let configApp = JSON.parse(localStorage.getItem('edufis_config_v8')) || {
+            temaCor: 'sky',
+            nomeProf: '',
+            cargoProf: 'Professor(a) de Educação Física',
+            nomeEscola: '',
+            municipioEscola: '',
+            anoLetivo: '2026',
+            duracaoAula: '50',
+            periodoPadrao: '1º Bimestre',
+            segmentoPadrao: 'Ensino Fundamental II',
+            geminiKey: ''
+        };
+
+        const baseAnatomia = [
+            { id: "m1", nome: "Quadríceps Femoral", tipo: "Músculo", regiao: "Inferiores", acao: "Extensão do joelho e flexão do quadril.", exercicios: "Agachamento, Avanço, Salto." },
+            { id: "m2", nome: "Isquiotibiais", tipo: "Músculo", regiao: "Inferiores", acao: "Flexão do joelho e extensão do quadril.", exercicios: "Sprints, Stiff." },
+            { id: "m3", nome: "Tríceps Sural", tipo: "Músculo", regiao: "Inferiores", acao: "Flexão plantar.", exercicios: "Elevação de calcanhar, Saltos." }
+        ];
+
+        const baseBNCC = [
+            { codigo: "EF67EF01", tema: "Esportes", desc: "Experimentar e fruir diferentes esportes de marca, precisão, invasão e técnico-combinatórios." },
+            { codigo: "EF89EF07", tema: "Esportes", desc: "Formular e propor estratégias para a resolução de desafios em jogos desportivos." }
+        ];
 
         function salvarDadosLocais() {
             try {
                 localStorage.setItem('edufis_usuarios_v8', JSON.stringify(usuarios));
                 localStorage.setItem('edufis_sessao_v8', JSON.stringify(usuarioLogado));
+                localStorage.setItem('edufis_turmas_v8', JSON.stringify(turmas));
+                localStorage.setItem('edufis_alunos_v8', JSON.stringify(alunos));
                 localStorage.setItem('edufis_word_v8', JSON.stringify(documentosWord));
                 localStorage.setItem('edufis_pdf_v8', JSON.stringify(documentosPDF));
+                localStorage.setItem('edufis_plano_v8', JSON.stringify(planoGestaoDados));
+                localStorage.setItem('edufis_agenda_v8', JSON.stringify(agendaHojeDados));
+                localStorage.setItem('edufis_jogos_v8', JSON.stringify(bancoJogos));
+                localStorage.setItem('edufis_config_v8', JSON.stringify(configApp));
             } catch (e) {
-                alert("⚠️ Armazenamento cheio no navegador. Apague alguns ficheiros antigos.");
+                alert("⚠️ O armazenamento local (LocalStorage) está cheio! Tente apagar alguns PDFs grandes.");
             }
         }
     </script>
 
-    <!-- TELA DE LOGIN -->
-    <div id="view-login" class="flex flex-col items-center justify-center flex-1 p-4 bg-gradient-to-br from-slate-900 via-slate-800 to-sky-950 min-h-screen">
+    <!-- TELA DE LOGIN & REGISTRO -->
+    <div id="view-login" class="flex flex-col items-center justify-center flex-1 p-4 bg-gradient-to-br from-slate-900 via-slate-800 to-sky-950 no-print min-h-screen">
         <div class="w-full max-w-md bg-white/95 backdrop-blur-xl border border-white/20 rounded-3xl p-8 shadow-2xl space-y-6">
             <div class="text-center space-y-3">
                 <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">EduFís Pro</h1>
@@ -55,33 +113,38 @@
 
     <!-- DASHBOARD PRINCIPAL -->
     <div id="view-dashboard" class="hidden flex flex-col flex-1 min-h-screen bg-slate-50">
-        <header class="bg-white/80 backdrop-blur-md border-b border-slate-200 px-4 sm:px-8 py-3.5 flex items-center justify-between sticky top-0 z-40 shadow-xs">
-            <div>
-                <span class="text-base font-extrabold text-slate-900 leading-none tracking-tight block">EduFís</span>
-                <span class="text-[10px] uppercase tracking-widest text-sky-600 font-extrabold mt-0.5 block">Pro v8.8</span>
+        <header class="bg-white/80 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-8 py-3.5 flex items-center justify-between sticky top-0 z-40 shadow-xs no-print">
+            <div class="flex items-center gap-3">
+                <div>
+                    <span class="text-base font-extrabold text-slate-900 leading-none tracking-tight block">EduFís</span>
+                    <span class="text-[10px] uppercase tracking-widest text-sky-600 font-extrabold mt-0.5 block">Pro v8.7</span>
+                </div>
             </div>
             <div class="flex items-center gap-4">
                 <span class="text-xs font-bold text-slate-700" id="header-user-nome">👤 Professor(a)</span>
+                <!-- BOTÃO SAIR CORRIGIDO -->
                 <button onclick="logout()" class="text-xs bg-rose-50 text-rose-600 border border-rose-200 px-3.5 py-2 rounded-2xl font-bold hover:bg-rose-100 transition-all cursor-pointer">Sair</button>
             </div>
         </header>
 
         <div class="flex flex-1 relative">
-            <aside class="w-72 bg-white border-r border-slate-200 p-5 flex flex-col justify-between z-40 hidden lg:flex">
+            <aside class="w-72 bg-white border-r border-slate-200 p-5 flex flex-col justify-between z-40 hidden lg:flex no-print">
                 <div class="space-y-1.5">
                     <button onclick="changeTab('home')" class="w-full text-left px-3.5 py-3 rounded-2xl text-xs font-bold text-slate-700 hover:bg-sky-50 hover:text-sky-600">🏠 Visão Geral</button>
+                    <button onclick="changeTab('turmas')" class="w-full text-left px-3.5 py-3 rounded-2xl text-xs font-bold text-slate-700 hover:bg-sky-50 hover:text-sky-600">🏫 Turmas</button>
                     <button onclick="changeTab('editor-word')" class="w-full text-left px-3.5 py-3 rounded-2xl text-xs font-bold text-slate-700 hover:bg-sky-50 hover:text-sky-600">📝 Editor de Atividades</button>
                     <button onclick="changeTab('documentos')" class="w-full text-left px-3.5 py-3 rounded-2xl text-xs font-bold text-slate-700 hover:bg-sky-50 hover:text-sky-600">📄 Gestor de Documentos</button>
+                    <button onclick="changeTab('config')" class="w-full text-left px-3.5 py-3 rounded-2xl text-xs font-bold text-slate-700 hover:bg-sky-50 hover:text-sky-600">⚙️ Configurações</button>
                 </div>
             </aside>
 
             <main class="flex-1 p-4 sm:p-8 overflow-y-auto max-w-6xl mx-auto w-full">
                 
-                <!-- ABA HOME -->
+                <!-- ABA VISÃO GERAL -->
                 <div id="tab-home" class="space-y-6">
                     <div class="bg-slate-900 text-white p-6 rounded-3xl shadow-xl space-y-2">
                         <h2 class="text-2xl font-extrabold">Bem-vindo ao EduFís Pro 🏋️</h2>
-                        <p class="text-slate-300 text-xs">Sistema pedagógico rápido e otimizado.</p>
+                        <p class="text-slate-300 text-xs">Plataforma pedagógica rápida e otimizada.</p>
                     </div>
                 </div>
 
@@ -90,48 +153,38 @@
                     <div class="flex justify-between items-center flex-wrap gap-3">
                         <h2 class="text-2xl font-black text-slate-900">Editor de Atividades 📝</h2>
                         <div class="flex gap-2">
-                            <button onclick="salvarDocumentoWordComoPDF()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-md cursor-pointer">📄 Guardar no Gestor de Documentos</button>
-                            <button onclick="salvarDocumentoWord()" class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-md cursor-pointer">💾 Guardar Atividade</button>
+                            <button onclick="salvarDocumentoWordComoPDF()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-md cursor-pointer">📄 Salvar no Gestor de PDF</button>
+                            <button onclick="salvarDocumentoWord()" class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-md cursor-pointer">💾 Guardar Texto</button>
                         </div>
                     </div>
-                    <div class="bg-white border border-slate-200 p-6 rounded-3xl space-y-4 shadow-xs">
-                        <input type="text" id="doc-word-titulo" placeholder="Título da Atividade / Ficha..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs font-bold">
-                        <div id="editor-word-area" contenteditable="true" class="w-full min-h-[250px] p-4 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none">Escreva sua atividade aqui...</div>
+                    <div class="bg-white border border-slate-200 p-6 rounded-3xl space-y-4">
+                        <input type="text" id="doc-word-titulo" placeholder="Título da Atividade..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs font-bold">
+                        <div id="editor-word-area" contenteditable="true" class="w-full min-h-[250px] p-4 bg-slate-50 border border-slate-200 rounded-xl text-xs">Escreva sua atividade aqui...</div>
                     </div>
                 </div>
 
                 <!-- ABA GESTOR DE DOCUMENTOS -->
                 <div id="tab-documentos" class="hidden space-y-6">
                     <div class="flex justify-between items-center flex-wrap gap-3">
-                        <h2 class="text-2xl font-black text-slate-900">Gestor de Documentos 📄</h2>
-                        <div>
-                            <input type="file" id="input-upload-pdf-file" accept="application/pdf" class="hidden" onchange="processarUploadPDF(event)">
-                            <button onclick="document.getElementById('input-upload-pdf-file').click()" class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold cursor-pointer">📤 Enviar Ficheiro PDF</button>
-                        </div>
+                        <h2 class="text-2xl font-black text-slate-900">Gestor de Documentos PDF 📄</h2>
+                        <input type="file" id="input-upload-pdf-file" accept="application/pdf" class="hidden" onchange="processarUploadPDF(event)">
+                        <button onclick="document.getElementById('input-upload-pdf-file').click()" class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold cursor-pointer">📤 Enviar Ficheiro PDF</button>
                     </div>
                     <div id="lista-provas-cards" class="grid grid-cols-1 sm:grid-cols-2 gap-5"></div>
+                </div>
+
+                <!-- ABA CONFIGURAÇÕES -->
+                <div id="tab-config" class="hidden space-y-6">
+                    <h2 class="text-2xl font-black text-slate-900">Configurações ⚙️</h2>
                 </div>
 
             </main>
         </div>
     </div>
 
-    <!-- MODAL DE VISUALIZAÇÃO DE DOCUMENTOS -->
-    <div id="modal-visualizador" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 z-50">
-        <div class="bg-white border border-slate-200 rounded-3xl w-full max-w-2xl flex flex-col overflow-hidden shadow-2xl max-h-[85vh]">
-            <div class="bg-slate-900 text-white p-4 flex justify-between items-center">
-                <h3 id="modal-doc-titulo" class="text-xs font-extrabold">Visualizar Documento</h3>
-                <button onclick="fecharModalVisualizador()" class="text-slate-400 hover:text-white text-sm font-bold cursor-pointer">✕</button>
-            </div>
-            <div id="modal-doc-conteudo" class="p-6 overflow-y-auto flex-1 text-xs leading-relaxed space-y-4 bg-slate-50"></div>
-            <div class="p-4 bg-white border-t border-slate-200 flex justify-end gap-2">
-                <button onclick="window.print()" class="bg-slate-800 text-white px-4 py-2 rounded-xl text-xs font-bold cursor-pointer">🖨️ Imprimir / Guardar PDF</button>
-                <button onclick="fecharModalVisualizador()" class="bg-slate-100 text-slate-700 px-4 py-2 rounded-xl text-xs font-bold cursor-pointer">Fechar</button>
-            </div>
-        </div>
-    </div>
-
     <script>
+        let documentoAtualId = null;
+
         function logout() {
             usuarioLogado = null;
             localStorage.removeItem('edufis_sessao_v8');
@@ -149,7 +202,7 @@
         }
 
         function changeTab(tabId) {
-            ['home', 'editor-word', 'documentos'].forEach(t => {
+            ['home', 'editor-word', 'documentos', 'config'].forEach(t => {
                 const el = document.getElementById(`tab-${t}`);
                 if(el) el.classList.add('hidden');
             });
@@ -166,27 +219,27 @@
             switchView('dashboard');
         }
 
-        function salvarDocumentoWord() {
-            alert("✅ Atividade guardada no editor com sucesso!");
-        }
-
-        // SALVA COM SEGURANÇA NO GESTOR DE DOCUMENTOS SEM ERRO DE URL
         function salvarDocumentoWordComoPDF() {
             const titulo = document.getElementById('doc-word-titulo').value.trim() || 'Atividade Pedagógica';
             const conteudoHtml = document.getElementById('editor-word-area').innerHTML;
             
-            documentosPDF.push({
-                id: Date.now(),
-                tipo: 'html',
-                nome: titulo,
-                tamanho: 'Criado no Editor',
-                conteudoHtml: conteudoHtml,
-                dataCriacao: new Date().toLocaleDateString('pt-PT')
-            });
-
-            salvarDadosLocais();
-            renderizarListaPDFs();
-            alert(`✅ Atividade "${titulo}" guardada com sucesso no Gestor de Documentos!`);
+            const htmlCompleto = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${titulo}</title></head><body style="font-family:Arial;padding:20px;"><h1>${titulo}</h1>${conteudoHtml}</body></html>`;
+            const blob = new Blob([htmlCompleto], { type: 'text/html;charset=utf-8' });
+            
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                documentosPDF.push({
+                    id: Date.now(),
+                    nome: `${titulo}.html`,
+                    tamanho: `Gerado pelo Editor`,
+                    data: evt.target.result,
+                    dataCriacao: new Date().toLocaleDateString('pt-PT')
+                });
+                salvarDadosLocais();
+                renderizarListaPDFs();
+                alert(`✅ Atividade guardada com sucesso no Gestor de Documentos!`);
+            };
+            reader.readAsDataURL(blob);
         }
 
         function processarUploadPDF(e) {
@@ -196,7 +249,6 @@
             reader.onload = function(evt) {
                 documentosPDF.push({ 
                     id: Date.now(), 
-                    tipo: 'pdf',
                     nome: file.name,
                     tamanho: `${(file.size / 1024).toFixed(1)} KB`,
                     data: evt.target.result,
@@ -210,36 +262,26 @@
             e.target.value = '';
         }
 
-        function abrirDocumento(id) {
-            const doc = documentosPDF.find(p => p.id === id);
-            if (!doc) return;
-
-            if (doc.tipo === 'pdf') {
+        function visualizarPDF(id) {
+            const pdf = documentosPDF.find(p => p.id === id);
+            if (pdf && pdf.data) {
                 const win = window.open();
-                win.document.write(`<iframe src="${doc.data}" frameborder="0" style="width:100%;height:100%;border:0;"></iframe>`);
-            } else {
-                document.getElementById('modal-doc-titulo').textContent = doc.nome;
-                document.getElementById('modal-doc-conteudo').innerHTML = `<div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs">${doc.conteudoHtml}</div>`;
-                document.getElementById('modal-visualizador').classList.remove('hidden');
+                win.document.write(`<iframe src="${pdf.data}" frameborder="0" style="width:100%;height:100%;border:0;"></iframe>`);
             }
-        }
-
-        function fecharModalVisualizador() {
-            document.getElementById('modal-visualizador').classList.add('hidden');
         }
 
         function renderizarListaPDFs() {
             const container = document.getElementById('lista-provas-cards');
             if(!container) return;
-            container.innerHTML = documentosPDF.length === 0 ? `<p class="text-xs text-slate-400 col-span-2">Nenhum documento guardado.</p>` : documentosPDF.map((p, idx) => `
+            container.innerHTML = documentosPDF.length === 0 ? `<p class="text-xs text-slate-400 col-span-2">Nenhum documento PDF guardado.</p>` : documentosPDF.map((p, idx) => `
                 <div class="bg-white border border-slate-200 p-5 rounded-3xl flex justify-between items-center shadow-xs">
                     <div>
-                        <span class="text-xs font-bold text-slate-800 block">📄 ${p.nome}</span>
+                        <span class="text-xs font-bold text-slate-800 block">${p.nome}</span>
                         <span class="text-[10px] text-slate-400">${p.tamanho} • ${p.dataCriacao}</span>
                     </div>
                     <div class="flex gap-3">
-                        <button onclick="abrirDocumento(${p.id})" class="text-xs text-sky-600 font-bold cursor-pointer hover:underline">Abrir</button>
-                        <button onclick="documentosPDF.splice(${idx},1);salvarDadosLocais();renderizarListaPDFs();" class="text-xs text-rose-600 font-bold cursor-pointer hover:underline">Excluir</button>
+                        <button onclick="visualizarPDF(${p.id})" class="text-xs text-sky-600 font-bold cursor-pointer">Abrir</button>
+                        <button onclick="documentosPDF.splice(${idx},1);salvarDadosLocais();renderizarListaPDFs();" class="text-xs text-rose-600 font-bold cursor-pointer">Excluir</button>
                     </div>
                 </div>
             `).join('');

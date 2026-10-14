@@ -433,9 +433,10 @@
                             <h2 class="text-2xl font-black text-slate-900 tracking-tight">Editor de Atividades 📝</h2>
                             <p class="text-slate-500 text-xs sm:text-sm">Crie fichas de trabalho e testes formativos.</p>
                         </div>
-                        <div class="flex gap-2">
+                        <div class="flex gap-2 flex-wrap">
                             <button onclick="novoDocumentoWord()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2.5 rounded-2xl text-xs font-bold cursor-pointer transition-colors">Novo</button>
-                            <button onclick="salvarDocumentoWordComoPDF()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-md shadow-emerald-600/20 cursor-pointer transition-all flex items-center gap-1.5">📄 Salvar no Gestor de PDF</button>
+                            <button onclick="imprimirEditorWord()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-md shadow-indigo-600/20 cursor-pointer transition-all flex items-center gap-1.5">🖨️ Imprimir Ficha</button>
+                            <button onclick="salvarDocumentoWordComoPDF()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-md shadow-emerald-600/20 cursor-pointer transition-all flex items-center gap-1.5">📄 Salvar no Gestor</button>
                             <button onclick="salvarDocumentoWord()" class="btn-primary-theme bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-md shadow-sky-600/20 cursor-pointer transition-all">💾 Guardar Texto</button>
                         </div>
                     </div>
@@ -1317,6 +1318,14 @@
             documentosWordIdAtual = null;
         }
 
+        function imprimirEditorWord() {
+            const titulo = document.getElementById('doc-word-titulo').value.trim() || 'Atividade Pedagógica';
+            const conteudo = document.getElementById('editor-word-area').innerHTML;
+            const win = window.open('', '_blank');
+            win.document.write(`<!DOCTYPE html><html lang="pt-PT"><head><meta charset="UTF-8"><title>${titulo}</title><style>body{font-family:Arial,sans-serif;padding:40px;color:#111;line-height:1.6;}h1{font-size:22px;border-bottom:2px solid #0ea5e9;padding-bottom:10px;margin-bottom:20px;}</style></head><body><h1>${titulo}</h1><div>${conteudo}</div><script>window.onload = function() { window.print(); window.close(); }</script></body></html>`);
+            win.document.close();
+        }
+
         let documentosWordIdAtual = null;
         function salvarDocumentoWord() {
             const titulo = document.getElementById('doc-word-titulo').value.trim() || 'Atividade Sem Título';
@@ -1338,7 +1347,7 @@
             const conteudoHtml = document.getElementById('editor-word-area').innerHTML;
             
             const htmlCompleto = `<!DOCTYPE html><html lang="pt-PT"><head><meta charset="UTF-8"><title>${titulo}</title><style>body{font-family:Arial,sans-serif;padding:30px;color:#111;line-height:1.6;}h1{font-size:20px;border-bottom:2px solid #0ea5e9;padding-bottom:10px;margin-bottom:20px;}</style></head><body><h1>${titulo}</h1><div>${conteudoHtml}</div></body></html>`;
-            const blob = new Blob([htmlCompleto], { type: 'application/pdf;charset=utf-8' });
+            const blob = new Blob([htmlCompleto], { type: 'text/html;charset=utf-8' });
             
             const reader = new FileReader();
             reader.onload = function(evt) {
@@ -1450,7 +1459,7 @@
                 salvarDadosLocais();
                 renderizarListaPDFs();
                 atualizarEstatisticas();
-                alert(`✅ O PDF "${file.name}" foi enviado e salvo com sucesso no Gestor de Documentos!`);
+                alert(`✅ O ficheiro "${file.name}" foi enviado e salvo com sucesso no Gestor!`);
             };
             reader.readAsDataURL(file);
             e.target.value = '';
@@ -1460,23 +1469,44 @@
             const pdf = documentosPDF.find(p => p.id === id);
             if(pdf && pdf.data) {
                 const win = window.open();
-                win.document.write(`<iframe src="${pdf.data}" frameborder="0" style="border:0;width:100%;height:100%;"></iframe>`);
+                if (pdf.data.startsWith('data:application/pdf')) {
+                    win.document.write(`<iframe src="${pdf.data}" frameborder="0" style="border:0;width:100%;height:100%;"></iframe>`);
+                } else {
+                    // Para documentos HTML gerados pelo editor
+                    win.document.write(atob(pdf.data.split(',')[1]) || pdf.data);
+                }
             } else {
-                alert("Não foi possível visualizar este PDF.");
+                alert("Não foi possível abrir este documento.");
+            }
+        }
+
+        function imprimirPDF(id) {
+            const pdf = documentosPDF.find(p => p.id === id);
+            if(pdf && pdf.data) {
+                const win = window.open();
+                if (pdf.data.startsWith('data:application/pdf')) {
+                    win.document.write(`<iframe src="${pdf.data}" frameborder="0" style="border:0;width:100%;height:100%;"></iframe><script>setTimeout(() => { window.print(); }, 1000);<\/script>`);
+                } else {
+                    const htmlContent = atob(pdf.data.split(',')[1]);
+                    win.document.write(htmlContent + `<script>window.onload = function() { window.print(); }</script>`);
+                }
+            } else {
+                alert("Não foi possível imprimir este documento.");
             }
         }
 
         function renderizarListaPDFs() {
             const container = document.getElementById('lista-provas-cards');
             if(!container) return;
-            container.innerHTML = documentosPDF.length === 0 ? `<p class="text-xs text-slate-400 col-span-2">Nenhum documento PDF registado. Clique no botão "+ Enviar Ficheiro PDF" acima ou salve diretamente do Editor de Atividades.</p>` : documentosPDF.map((p, idx) => `
+            container.innerHTML = documentosPDF.length === 0 ? `<p class="text-xs text-slate-400 col-span-2">Nenhum documento registado. Clique no botão "+ Enviar Ficheiro PDF" acima ou salve diretamente do Editor de Atividades.</p>` : documentosPDF.map((p, idx) => `
                 <div class="bg-white border border-slate-200/80 p-5 rounded-3xl flex justify-between items-center shadow-xs hover:shadow-md transition-shadow">
-                    <div class="space-y-1 max-w-[70%]">
+                    <div class="space-y-1 max-w-[60%]">
                         <span class="text-xs font-extrabold text-slate-800 block truncate">${p.nome}</span>
                         <span class="text-[10px] text-slate-400 font-semibold block">${p.tamanho || 'Tamanho desconhecido'} ${p.dataCriacao ? '• ' + p.dataCriacao : ''}</span>
                     </div>
-                    <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-2.5">
                         ${p.data ? `<button onclick="visualizarPDF(${p.id})" class="text-xs text-sky-600 font-extrabold hover:underline cursor-pointer">Abrir</button>` : ''}
+                        ${p.data ? `<button onclick="imprimirPDF(${p.id})" class="text-xs text-indigo-600 font-extrabold hover:underline cursor-pointer">Imprimir</button>` : ''}
                         <button onclick="documentosPDF.splice(${idx}, 1); salvarDadosLocais(); renderizarListaPDFs(); atualizarEstatisticas();" class="text-xs text-rose-600 font-bold cursor-pointer hover:underline">Excluir</button>
                     </div>
                 </div>

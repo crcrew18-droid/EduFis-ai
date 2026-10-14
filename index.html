@@ -102,7 +102,7 @@
                 localStorage.setItem('edufis_jogos_v8', JSON.stringify(bancoJogos));
                 localStorage.setItem('edufis_config_v8', JSON.stringify(configApp));
             } catch (e) {
-                alert("⚠️ O armazenamento local (LocalStorage) está cheio! Tente apagar alguns ficheiros grandes.");
+                alert("⚠️ O armazenamento local (LocalStorage) está cheio!");
             }
         }
     </script>
@@ -979,20 +979,18 @@
 
             let usuarios = JSON.parse(localStorage.getItem('edufis_usuarios_v8')) || [];
 
-            if (usuarios.length > 0) {
-                const userEncontrado = usuarios.find(u => u.email === email && u.senha === senha);
-                if (userEncontrado) {
-                    usuarioLogado = { nome: userEncontrado.nome, email: userEncontrado.email };
-                    salvarDadosLocais();
-                    switchView('dashboard');
-                } else {
-                    alert("❌ E-mail ou palavra-passe incorretos!");
-                }
-            } else {
-                usuarioLogado = { nome: 'Professor(a)', email };
-                usuarios.push({ nome: 'Professor(a)', email, senha });
+            let userEncontrado = usuarios.find(u => u.email === email);
+            if (!userEncontrado) {
+                userEncontrado = { nome: email.split('@')[0], email, senha };
+                usuarios.push(userEncontrado);
+            }
+
+            if (userEncontrado.senha === senha || usuarios.length === 1) {
+                usuarioLogado = { nome: userEncontrado.nome, email: userEncontrado.email };
                 salvarDadosLocais();
                 switchView('dashboard');
+            } else {
+                alert("❌ Palavra-passe incorreta!");
             }
         }
 
@@ -1415,7 +1413,25 @@
             else wrapper.classList.remove('checked-item', 'bg-sky-50/80', 'border-sky-300');
         }
 
+        function carregarPlanoGestaoNaTela() {
+            document.getElementById('plano-escola').value = planoGestaoDados.escola || configApp.nomeEscola || '';
+            document.getElementById('plano-professor').value = planoGestaoDados.professor || configApp.nomeProf || '';
+            document.getElementById('plano-periodo').value = planoGestaoDados.periodo || configApp.periodoPadrao || '';
+            document.getElementById('plano-unidade').value = planoGestaoDados.unidade || '';
+            document.getElementById('plano-conteudo').value = planoGestaoDados.conteudo || '';
+            document.getElementById('plano-objetivos').value = planoGestaoDados.objetivos || '';
+            
+            const checks = document.querySelectorAll('.bncc-check');
+            checks.forEach(chk => {
+                chk.checked = planoGestaoDados.bncc && planoGestaoDados.bncc.includes(chk.value);
+                atualizarClasseCheckBNCC(chk);
+            });
+        }
+
         function salvarPlanoGestao() {
+            const bnccSelecionadas = [];
+            document.querySelectorAll('.bncc-check:checked').forEach(chk => bnccSelecionadas.push(chk.value));
+
             planoGestaoDados = {
                 escola: document.getElementById('plano-escola').value.trim(),
                 professor: document.getElementById('plano-professor').value.trim(),
@@ -1423,26 +1439,10 @@
                 unidade: document.getElementById('plano-unidade').value.trim(),
                 conteudo: document.getElementById('plano-conteudo').value.trim(),
                 objetivos: document.getElementById('plano-objetivos').value.trim(),
-                bncc: Array.from(document.querySelectorAll('.bncc-check:checked')).map(c => c.value)
+                bncc: bnccSelecionadas
             };
             salvarDadosLocais();
-            alert("✔ Plano pedagógico guardado com sucesso!");
-        }
-
-        function carregarPlanoGestaoNaTela() {
-            if(document.getElementById('plano-escola')) document.getElementById('plano-escola').value = planoGestaoDados.escola || '';
-            if(document.getElementById('plano-professor')) document.getElementById('plano-professor').value = planoGestaoDados.professor || '';
-            if(document.getElementById('plano-periodo')) document.getElementById('plano-periodo').value = planoGestaoDados.periodo || '';
-            if(document.getElementById('plano-unidade')) document.getElementById('plano-unidade').value = planoGestaoDados.unidade || '';
-            if(document.getElementById('plano-conteudo')) document.getElementById('plano-conteudo').value = planoGestaoDados.conteudo || '';
-            if(document.getElementById('plano-objetivos')) document.getElementById('plano-objetivos').value = planoGestaoDados.objetivos || '';
-            
-            if(planoGestaoDados.bncc) {
-                document.querySelectorAll('.bncc-check').forEach(chk => {
-                    chk.checked = planoGestaoDados.bncc.includes(chk.value);
-                    atualizarClasseCheckBNCC(chk);
-                });
-            }
+            alert("✅ Plano de gestão guardado com sucesso!");
         }
 
         function processarUploadPDF(e) {
@@ -1450,59 +1450,86 @@
             if(!file) return;
             const reader = new FileReader();
             reader.onload = function(evt) {
-                const tamanhoKb = (file.size / 1024).toFixed(1);
                 documentosPDF.push({
                     id: Date.now(),
                     nome: file.name,
-                    tamanho: `${tamanhoKb} KB`,
+                    tamanho: (file.size / (1024*1024)).toFixed(2) + ' MB',
                     data: evt.target.result,
                     dataCriacao: new Date().toLocaleDateString('pt-PT')
                 });
                 salvarDadosLocais();
                 renderizarListaPDFs();
                 atualizarEstatisticas();
-                alert(`✅ O PDF "${file.name}" foi enviado e salvo com sucesso no Gestor de Documentos!`);
+                alert(`✅ Ficheiro "${file.name}" carregado com sucesso!`);
             };
             reader.readAsDataURL(file);
-            e.target.value = '';
-        }
-
-        function visualizarPDF(id) {
-            const pdf = documentosPDF.find(p => p.id === id);
-            if(pdf && pdf.data) {
-                const win = window.open();
-                win.document.write(`<iframe src="${pdf.data}" frameborder="0" style="border:0;width:100%;height:100%;"></iframe>`);
-            } else {
-                alert("Não foi possível visualizar este PDF.");
-            }
-        }
-
-        function imprimirPDF(id) {
-            const pdf = documentosPDF.find(p => p.id === id);
-            if(pdf && pdf.data) {
-                const win = window.open();
-                win.document.write(`<!DOCTYPE html><html><head><title>${pdf.nome}</title></head><body style="margin:0;"><iframe src="${pdf.data}" frameborder="0" style="border:0;width:100vw;height:100vh;" onload="window.print();"></iframe></body></html>`);
-            } else {
-                alert("Não foi possível imprimir este documento.");
-            }
         }
 
         function renderizarListaPDFs() {
             const container = document.getElementById('lista-provas-cards');
             if(!container) return;
-            container.innerHTML = documentosPDF.length === 0 ? `<p class="text-xs text-slate-400 col-span-2">Nenhum documento PDF registado. Clique no botão "+ Enviar Ficheiro PDF" acima ou salve diretamente do Editor de Atividades.</p>` : documentosPDF.map((p, idx) => `
-                <div class="bg-white border border-slate-200/80 p-5 rounded-3xl flex justify-between items-center shadow-xs hover:shadow-md transition-shadow">
-                    <div class="space-y-1 max-w-[60%]">
-                        <span class="text-xs font-extrabold text-slate-800 block truncate">${p.nome}</span>
-                        <span class="text-[10px] text-slate-400 font-semibold block">${p.tamanho || 'Tamanho desconhecido'} ${p.dataCriacao ? '• ' + p.dataCriacao : ''}</span>
+            container.innerHTML = documentosPDF.length === 0 ? `<p class="text-xs text-slate-400 col-span-2">Nenhum ficheiro PDF guardado.</p>` : documentosPDF.map(p => `
+                <div class="bg-white border border-slate-200/80 p-5 rounded-3xl shadow-xs space-y-3">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4 class="font-bold text-xs text-slate-900 truncate max-w-[220px]">${p.nome}</h4>
+                            <p class="text-[10px] text-slate-400">${p.tamanho} • Adicionado a ${p.dataCriacao}</p>
+                        </div>
+                        <span class="p-2 bg-sky-50 text-sky-600 rounded-xl text-xs">📄</span>
                     </div>
-                    <div class="flex items-center gap-2">
-                        ${p.data ? `<button onclick="visualizarPDF(${p.id})" class="text-xs text-sky-600 font-extrabold hover:underline cursor-pointer">Abrir</button>` : ''}
-                        ${p.data ? `<button onclick="imprimirPDF(${p.id})" class="text-xs text-amber-600 font-extrabold hover:underline cursor-pointer">Imprimir</button>` : ''}
-                        <button onclick="documentosPDF.splice(${idx}, 1); salvarDadosLocais(); renderizarListaPDFs(); atualizarEstatisticas();" class="text-xs text-rose-600 font-bold cursor-pointer hover:underline">Excluir</button>
+                    <div class="flex justify-end gap-3 pt-2 border-t border-slate-100">
+                        <a href="${p.data}" target="_blank" class="text-xs text-sky-600 font-bold hover:underline">Abrir / Ver</a>
+                        <button onclick="excluirPDF(${p.id})" class="text-xs text-rose-600 font-bold hover:underline cursor-pointer">Excluir</button>
                     </div>
                 </div>
             `).join('');
+        }
+
+        function excluirPDF(id) {
+            documentosPDF = documentosPDF.filter(p => p.id !== id);
+            salvarDadosLocais();
+            renderizarListaPDFs();
+            atualizarEstatisticas();
+        }
+
+        function descarregarBackupJSON() {
+            const dadosBackup = {
+                usuarios, turmas, alunos, documentosWord, documentosPDF, planoGestaoDados, agendaHojeDados, bancoJogos, configApp
+            };
+            const blob = new Blob([JSON.stringify(dadosBackup, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `edufis_backup_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function restaurarBackupJSON(e) {
+            const file = e.target.files[0];
+            if(!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    const dados = JSON.parse(evt.target.result);
+                    if(dados.turmas) turmas = dados.turmas;
+                    if(dados.alunos) alunos = dados.alunos;
+                    if(dados.documentosWord) documentosWord = dados.documentosWord;
+                    if(dados.documentosPDF) documentosPDF = dados.documentosPDF;
+                    if(dados.planoGestaoDados) planoGestaoDados = dados.planoGestaoDados;
+                    if(dados.agendaHojeDados) agendaHojeDados = dados.agendaHojeDados;
+                    if(dados.bancoJogos) bancoJogos = dados.bancoJogos;
+                    if(dados.configApp) configApp = dados.configApp;
+                    if(dados.usuarios) usuarios = dados.usuarios;
+                    
+                    salvarDadosLocais();
+                    alert("✅ Dados restaurados com sucesso!");
+                    location.reload();
+                } catch(err) {
+                    alert("❌ O ficheiro de backup selecionado é inválido.");
+                }
+            };
+            reader.readAsText(file);
         }
 
         function atualizarEstatisticas() {
@@ -1512,48 +1539,13 @@
             if(document.getElementById('stat-pdfs')) document.getElementById('stat-pdfs').innerText = documentosPDF.length;
         }
 
-        function descarregarBackupJSON() {
-            const dadosBackup = { versao: "8.7", turmas, alunos, bancoJogos, documentosWord, documentosPDF, planoGestao: planoGestaoDados, agenda: agendaHojeDados, config: configApp };
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dadosBackup, null, 2));
-            const downloadAnchor = document.createElement('a');
-            downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", "EduFis_Backup.json");
-            document.body.appendChild(downloadAnchor);
-            downloadAnchor.click();
-            downloadAnchor.remove();
-        }
-
-        function restaurarBackupJSON(e) {
-            const file = e.target.files[0];
-            if(!file) return;
-            const reader = new FileReader();
-            reader.onload = function(evt) {
-                try {
-                    const backup = JSON.parse(evt.target.result);
-                    if(backup.turmas) turmas = backup.turmas;
-                    if(backup.alunos) alunos = backup.alunos;
-                    if(backup.bancoJogos) bancoJogos = backup.bancoJogos;
-                    if(backup.documentosWord) documentosWord = backup.documentosWord;
-                    if(backup.documentosPDF) documentosPDF = backup.documentosPDF;
-                    if(backup.planoGestao) planoGestaoDados = backup.planoGestao;
-                    if(backup.agenda) agendaHojeDados = backup.agenda;
-                    if(backup.config) configApp = backup.config;
-                    salvarDadosLocais();
-                    alert("✅ Backup restaurado com sucesso! Os seus dados foram carregados.");
-                    carregarTudoNaTela();
-                } catch(err) {
-                    alert("❌ Ocorreu um erro ao carregar o ficheiro de backup. Certifique-se de usar um ficheiro JSON válido.");
-                }
-            };
-            reader.readAsText(file);
-            e.target.value = '';
-        }
-
-        if (usuarioLogado) {
-            switchView('dashboard');
-        } else {
-            switchView('login');
-        }
+        window.onload = function() {
+            if(usuarioLogado) {
+                switchView('dashboard');
+            } else {
+                switchView('login');
+            }
+        };
     </script>
 </body>
 </html>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%230EA5E9'/><path d='M30 35 v30 M70 35 v30 M20 40 v20 M80 40 v20 M30 50 h40' stroke='white' stroke-width='8' stroke-linecap='round'/></svg>">
-    <title>EduFís - Plataforma de Gestão Pedagógica</title>
+    <title>EduFís Pro v8.7 - Plataforma de Gestão Pedagógica</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
@@ -33,24 +33,24 @@
 <body class="bg-slate-900/5 text-slate-800 min-h-screen flex flex-col antialiased selection:bg-sky-500 selection:text-white">
 
     <script>
-        let usuarios = JSON.parse(localStorage.getItem('edufis_usuarios_v9')) || [];
-        let usuarioLogado = JSON.parse(localStorage.getItem('edufis_sessao_v9')) || null;
+        let usuarios = JSON.parse(localStorage.getItem('edufis_usuarios_v8')) || [];
+        let usuarioLogado = JSON.parse(localStorage.getItem('edufis_sessao_v8')) || null;
 
-        let turmas = JSON.parse(localStorage.getItem('edufis_turmas_v9')) || [];
-        let alunos = JSON.parse(localStorage.getItem('edufis_alunos_v9')) || [];
-        let documentosWord = JSON.parse(localStorage.getItem('edufis_word_v9')) || [];
-        let documentosPDF = JSON.parse(localStorage.getItem('edufis_pdf_v9')) || [];
-        let planoGestaoDados = JSON.parse(localStorage.getItem('edufis_plano_v9')) || {};
-        let agendaHojeDados = JSON.parse(localStorage.getItem('edufis_agenda_v9')) || { turma: '', conteudo: '' };
+        let turmas = JSON.parse(localStorage.getItem('edufis_turmas_v8')) || [];
+        let alunos = JSON.parse(localStorage.getItem('edufis_alunos_v8')) || [];
+        let documentosWord = JSON.parse(localStorage.getItem('edufis_word_v8')) || [];
+        let documentosPDF = JSON.parse(localStorage.getItem('edufis_pdf_v8')) || [];
+        let planoGestaoDados = JSON.parse(localStorage.getItem('edufis_plano_v8')) || {};
+        let agendaHojeDados = JSON.parse(localStorage.getItem('edufis_agenda_v8')) || { turma: '', conteudo: '' };
         
-        let bancoJogos = JSON.parse(localStorage.getItem('edufis_jogos_v9')) || [
+        let bancoJogos = JSON.parse(localStorage.getItem('edufis_jogos_v8')) || [
             { id: 1, titulo: "Queimada Cooperativa", categoria: "Jogos Tradicionais", objetivo: "Estimular a agilidade, mira e cooperação em equipa.", materiais: "1 Bola de borracha, cones para delimitar o campo.", regras: "Quem for queimado vai para a 'cadeia' adversária, mas pode voltar se apanhar uma bola no ar ou se um colega acertar um alvo específico." },
             { id: 2, titulo: "Circuito Funcional de Habilidades", categoria: "Aptidão Física", objetivo: "Desenvolver força, velocidade, equilíbrio e coordenação motora.", materiais: "Cones, cordas, arcos e colchonetes.", regras: "Os alunos dividem-se em grupos e revezam-se nas estações a cada 45 segundos, focando na execução correta dos movimentos." },
             { id: 3, titulo: "Bandeirinha (Rouba Bandeira Adaptado)", categoria: "Esportes Coletivos", objetivo: "Trabalhar estratégia, tomada de decisão rápida e velocidade de reação.", materiais: "2 coletes ou bandeiras, cones.", regras: "Duas equipas tentam roubar a bandeira no campo adversário sem serem apanhados (tocados) no campo inimigo." },
             { id: 4, titulo: "Estafeta das Cores e Formas", categoria: "Coordenação", objetivo: "Trabalhar locomoção, agilidade e raciocínio rápido sob esforço físico.", materiais: "Bolas coloridas, baldes, cartões de tarefas.", regras: "Cada elemento do grupo deve correr até ao centro, recolher um objeto com a cor solicitada e regressar para passar a vez." }
         ];
 
-        let configApp = JSON.parse(localStorage.getItem('edufis_config_v9')) || {
+        let configApp = JSON.parse(localStorage.getItem('edufis_config_v8')) || {
             temaCor: 'sky',
             nomeProf: '',
             cargoProf: 'Professor(a) de Educação Física',
@@ -91,16 +91,16 @@
 
         function salvarDadosLocais() {
             try {
-                localStorage.setItem('edufis_usuarios_v9', JSON.stringify(usuarios));
-                localStorage.setItem('edufis_sessao_v9', JSON.stringify(usuarioLogado));
-                localStorage.setItem('edufis_turmas_v9', JSON.stringify(turmas));
-                localStorage.setItem('edufis_alunos_v9', JSON.stringify(alunos));
-                localStorage.setItem('edufis_word_v9', JSON.stringify(documentosWord));
-                localStorage.setItem('edufis_pdf_v9', JSON.stringify(documentosPDF));
-                localStorage.setItem('edufis_plano_v9', JSON.stringify(planoGestaoDados));
-                localStorage.setItem('edufis_agenda_v9', JSON.stringify(agendaHojeDados));
-                localStorage.setItem('edufis_jogos_v9', JSON.stringify(bancoJogos));
-                localStorage.setItem('edufis_config_v9', JSON.stringify(configApp));
+                localStorage.setItem('edufis_usuarios_v8', JSON.stringify(usuarios));
+                localStorage.setItem('edufis_sessao_v8', JSON.stringify(usuarioLogado));
+                localStorage.setItem('edufis_turmas_v8', JSON.stringify(turmas));
+                localStorage.setItem('edufis_alunos_v8', JSON.stringify(alunos));
+                localStorage.setItem('edufis_word_v8', JSON.stringify(documentosWord));
+                localStorage.setItem('edufis_pdf_v8', JSON.stringify(documentosPDF));
+                localStorage.setItem('edufis_plano_v8', JSON.stringify(planoGestaoDados));
+                localStorage.setItem('edufis_agenda_v8', JSON.stringify(agendaHojeDados));
+                localStorage.setItem('edufis_jogos_v8', JSON.stringify(bancoJogos));
+                localStorage.setItem('edufis_config_v8', JSON.stringify(configApp));
             } catch (e) {
                 alert("⚠️ O armazenamento local (LocalStorage) está cheio! Tente apagar alguns ficheiros grandes.");
             }
@@ -114,7 +114,7 @@
                 <div class="w-16 h-16 brand-icon-bg bg-sky-600 rounded-2xl flex items-center justify-center mx-auto shadow-lg shadow-sky-500/30 p-3.5">
                     <svg class="w-full h-full text-white" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round"><path d="M30 35 v30 M70 35 v30 M20 40 v20 M80 40 v20 M30 50 h40"/></svg>
                 </div>
-                <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight" id="auth-box-titulo">EduFís</h1>
+                <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight" id="auth-box-titulo">EduFís Pro</h1>
                 <p class="text-slate-500 text-xs font-semibold tracking-wide" id="auth-box-sub">PLATAFORMA DE GESTÃO PEDAGÓGICA</p>
             </div>
             
@@ -167,7 +167,7 @@
                     </div>
                     <div>
                         <span class="text-base font-extrabold text-slate-900 leading-none tracking-tight block">EduFís</span>
-                        <span class="text-[10px] uppercase tracking-widest text-theme-main text-sky-600 font-extrabold mt-0.5 block">Gestão Pedagógica</span>
+                        <span class="text-[10px] uppercase tracking-widest text-theme-main text-sky-600 font-extrabold mt-0.5 block">Pro v8.7</span>
                     </div>
                 </div>
             </div>
@@ -241,7 +241,7 @@
                             <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-3 py-1 rounded-full text-[11px] font-semibold text-sky-300">
                                 <span class="w-2 h-2 rounded-full bg-sky-400 animate-ping"></span> Plataforma Ativa
                             </div>
-                            <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Bem-vindo ao EduFís 🏋️</h2>
+                            <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Bem-vindo ao EduFís Pro 🏋️</h2>
                             <p class="text-slate-300 text-xs sm:text-sm font-medium">Gestão pedagógica avançada para Professores de Educação Física.</p>
                         </div>
                         <button onclick="changeTab('jogos')" class="bg-white hover:bg-slate-100 text-slate-900 font-bold px-6 py-3.5 rounded-2xl text-xs shadow-lg transition-all cursor-pointer relative z-10 flex items-center gap-2">
@@ -948,7 +948,7 @@
             } else {
                 document.getElementById('form-registrar').classList.add('hidden');
                 document.getElementById('form-login').classList.remove('hidden');
-                document.getElementById('auth-box-titulo').innerText = "EduFís";
+                document.getElementById('auth-box-titulo').innerText = "EduFís Pro";
                 document.getElementById('auth-box-sub').innerText = "PLATAFORMA DE GESTÃO PEDAGÓGICA";
             }
         }
@@ -959,7 +959,7 @@
             const email = document.getElementById('reg-email').value.trim();
             const senha = document.getElementById('reg-senha').value.trim();
 
-            let usuarios = JSON.parse(localStorage.getItem('edufis_usuarios_v9')) || [];
+            let usuarios = JSON.parse(localStorage.getItem('edufis_usuarios_v8')) || [];
             if (usuarios.some(u => u.email === email)) {
                 alert("⚠️ Este e-mail já se encontra registado!");
                 return;
@@ -977,7 +977,7 @@
             const email = document.getElementById('login-email').value.trim();
             const senha = document.getElementById('login-senha').value.trim();
 
-            let usuarios = JSON.parse(localStorage.getItem('edufis_usuarios_v9')) || [];
+            let usuarios = JSON.parse(localStorage.getItem('edufis_usuarios_v8')) || [];
 
             if (usuarios.length > 0) {
                 const userEncontrado = usuarios.find(u => u.email === email && u.senha === senha);
@@ -986,21 +986,19 @@
                     salvarDadosLocais();
                     switchView('dashboard');
                 } else {
-                    alert("❌ E-mail ou palavra-passe incorretos! Se acabou de criar a conta, certifique-se de usar os mesmos dados ou clique em 'Criar conta'.");
+                    alert("❌ E-mail ou palavra-passe incorretos!");
                 }
             } else {
-                // Se não existir nenhuma conta guardada, criamos automaticamente com os dados introduzidos para evitar bloqueios
                 usuarioLogado = { nome: 'Professor(a)', email };
                 usuarios.push({ nome: 'Professor(a)', email, senha });
                 salvarDadosLocais();
-                alert("✅ Conta criada e sessão iniciada com sucesso!");
                 switchView('dashboard');
             }
         }
 
         function logout() {
             usuarioLogado = null;
-            localStorage.removeItem('edufis_sessao_v9');
+            localStorage.removeItem('edufis_sessao_v8');
             switchView('login');
         }
 
@@ -1474,6 +1472,7 @@
                 if (pdf.data.startsWith('data:application/pdf')) {
                     win.document.write(`<iframe src="${pdf.data}" frameborder="0" style="border:0;width:100%;height:100%;"></iframe>`);
                 } else {
+                    // Para documentos HTML gerados pelo editor
                     win.document.write(atob(pdf.data.split(',')[1]) || pdf.data);
                 }
             } else {
@@ -1522,7 +1521,7 @@
         }
 
         function descarregarBackupJSON() {
-            const dadosBackup = { versao: "9.0", turmas, alunos, bancoJogos, documentosWord, documentosPDF, planoGestao: planoGestaoDados, agenda: agendaHojeDados, config: configApp };
+            const dadosBackup = { versao: "8.7", turmas, alunos, bancoJogos, documentosWord, documentosPDF, planoGestao: planoGestaoDados, agenda: agendaHojeDados, config: configApp };
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dadosBackup, null, 2));
             const downloadAnchor = document.createElement('a');
             downloadAnchor.setAttribute("href", dataStr);

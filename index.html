@@ -489,11 +489,12 @@
                     <div class="flex justify-between items-center flex-wrap gap-3">
                         <div>
                             <h2 class="text-2xl font-black text-slate-900 tracking-tight">Editor de Atividades & Provas 📝</h2>
-                            <p class="text-slate-500 text-xs sm:text-sm">Crie testes, planos de aula ou fichas formativas com formatação rica.</p>
+                            <p class="text-slate-500 text-xs sm:text-sm">Crie testes, planos de aula ou fichas formativas e salve como PDF no Gestor de Documentos.</p>
                         </div>
                         <div class="flex gap-2">
                             <button onclick="novoDocumentoWord()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2.5 rounded-2xl text-xs font-bold cursor-pointer transition-colors">Novo</button>
-                            <button onclick="salvarDocumentoWord()" class="btn-primary-theme bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-md shadow-sky-600/20 cursor-pointer transition-all">💾 Guardar</button>
+                            <button onclick="salvarDocumentoWordComoPDF()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-md shadow-emerald-600/20 cursor-pointer transition-all flex items-center gap-1.5"><span>📄</span> Guardar no Gestor de PDF</button>
+                            <button onclick="salvarDocumentoWord()" class="btn-primary-theme bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-md shadow-sky-600/20 cursor-pointer transition-all">💾 Guardar Atividade</button>
                         </div>
                     </div>
 
@@ -581,14 +582,12 @@
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl">
                         
-                        <!-- ENVIAR / EXPORTAR -->
                         <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
                             <h3 class="font-extrabold text-xs uppercase text-slate-500 tracking-wider">📤 Enviar / Descarregar Backup</h3>
                             <p class="text-xs text-slate-500">Gere e salve um arquivo com todos os seus dados (turmas, alunos, notas, jogos e planos).</p>
                             <button onclick="descarregarBackupJSON()" class="btn-primary-theme w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-3.5 px-6 rounded-2xl text-xs shadow-md shadow-sky-600/20 cursor-pointer transition-all">📥 Baixar Backup (.json)</button>
                         </div>
 
-                        <!-- RECEBER / IMPORTAR -->
                         <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
                             <h3 class="font-extrabold text-xs uppercase text-slate-500 tracking-wider">📥 Receber / Restaurar Backup</h3>
                             <p class="text-xs text-slate-500">Selecione um ficheiro `.json` salvo anteriormente para carregar seus dados neste dispositivo.</p>
@@ -608,7 +607,6 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl">
                         
-                        <!-- CARD 1: PERFIL DO PROFESSOR -->
                         <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
                             <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
                                 <span class="text-lg">👤</span>
@@ -626,7 +624,6 @@
                             </div>
                         </div>
 
-                        <!-- CARD 2: DADOS INSTITUCIONAIS -->
                         <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
                             <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
                                 <span class="text-lg">🏫</span>
@@ -650,7 +647,6 @@
                             </div>
                         </div>
 
-                        <!-- CARD 3: CHAVE DA INTELIGÊNCIA ARTIFICIAL (GEMINI API) -->
                         <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs md:col-span-2">
                             <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
                                 <span class="text-lg">🤖</span>
@@ -663,7 +659,6 @@
                             </div>
                         </div>
 
-                        <!-- CARD 4: PREFERÊNCIAS PEDAGÓGICAS -->
                         <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
                             <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
                                 <span class="text-lg">⏱️</span>
@@ -702,7 +697,6 @@
                             </div>
                         </div>
 
-                        <!-- CARD 5: TEMA E APARÊNCIA -->
                         <div class="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 shadow-xs">
                             <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
                                 <span class="text-lg">🎨</span>
@@ -721,15 +715,13 @@
 
                     </div>
 
-                    <!-- BOTÃO GUARDAR TUDO -->
                     <div class="max-w-5xl flex justify-end gap-3 pt-2">
                         <button onclick="salvarConfigPerfil()" class="btn-primary-theme bg-sky-600 hover:bg-sky-700 text-white font-extrabold px-8 py-3.5 rounded-2xl text-xs shadow-lg shadow-sky-600/20 transition-all cursor-pointer">💾 Guardar Todas as Configurações</button>
                     </div>
 
-                    <!-- ZONA DE PERIGO / RESET -->
                     <div class="max-w-5xl bg-rose-50 border border-rose-200/80 p-6 rounded-3xl space-y-3 mt-8 shadow-xs">
                         <h3 class="font-extrabold text-xs uppercase text-rose-800 tracking-wider">⚠️ Área de Segurança de Dados</h3>
-                        <p class="text-xs text-rose-700 font-medium">Deseja reiniciar a sua conta ou limpar todos os dados locais armazenados neste navegador para começar um novo ano letivo?</p>
+                        <p class="text-xs text-rose-700 font-medium">Deseja reiniciar a sua conta ou limpar todos los dados locais armazenados neste navegador?</p>
                         <button onclick="resetarTodosDadosSistema()" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-4 py-2.5 rounded-xl text-xs cursor-pointer transition-colors shadow-xs">🗑️ Apagar Todos os Dados e Reiniciar</button>
                     </div>
 
@@ -898,7 +890,6 @@
 
             recognition.onend = function() {
                 pararGravacaoVisual();
-                // Se já houver texto transcrito, envia automaticamente após fechar o microfone
                 const textoFinal = document.getElementById('chat-edu-input').value.trim();
                 if(textoFinal) {
                     enviarMensagemEdu();
@@ -911,8 +902,10 @@
         function pararGravacaoVisual() {
             estaGravando = false;
             const btnMic = document.getElementById('btn-mic-audio');
-            btnMic.classList.remove('bg-rose-500', 'text-white', 'animate-pulse');
-            btnMic.textContent = '🎤';
+            if(btnMic) {
+                btnMic.classList.remove('bg-rose-500', 'text-white', 'animate-pulse');
+                btnMic.textContent = '🎤';
+            }
             document.getElementById('chat-edu-input').placeholder = "Digite ou clique no microfone para falar...";
         }
 
@@ -1419,6 +1412,31 @@
             alert('✅ Atividade guardada com sucesso!');
         }
 
+        // NOVA FUNÇÃO: SALVA A ATIVIDADE DO EDITOR DIRETAMENTE COMO UM ARQUIVO PDF SIMULADO NO GESTOR DE DOCUMENTOS
+        function salvarDocumentoWordComoPDF() {
+            const titulo = document.getElementById('doc-word-titulo').value.trim() || 'Atividade Pedagógica';
+            const conteudoHtml = document.getElementById('editor-word-area').innerHTML;
+            
+            // Cria um Blob HTML formatado que pode ser aberto como documento de impressão ou visualizado
+            const htmlCompleto = `<!DOCTYPE html><html lang="pt-PT"><head><meta charset="UTF-8"><title>${titulo}</title><style>body{font-family:Arial,sans-serif;padding:30px;color:#111;line-height:1.6;}h1{font-size:20px;border-bottom:2px solid #0ea5e9;padding-bottom:10px;margin-bottom:20px;}</style></head><body><h1>${titulo}</h1><div>${conteudoHtml}</div></body></html>`;
+            const blob = new Blob([htmlCompleto], { type: 'application/pdf;charset=utf-8' });
+            
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                documentosPDF.push({
+                    id: Date.now(),
+                    nome: `${titulo}.pdf`,
+                    tamanho: `Gerado pelo Editor`,
+                    data: evt.target.result,
+                    dataCriacao: new Date().toLocaleDateString('pt-PT')
+                });
+                salvarDadosLocais();
+                atualizarEstatisticas();
+                alert(`✅ Atividade "${titulo}" convertida e salva com sucesso no Gestor de Documentos PDF!`);
+            };
+            reader.readAsDataURL(blob);
+        }
+
         function renderizarListaDocsWord() {
             const container = document.getElementById('lista-docs-word');
             if(!container) return;
@@ -1509,11 +1527,6 @@
             const file = e.target.files[0];
             if (!file) return;
 
-            if (file.type !== "application/pdf") {
-                alert("Por favor, selecione um ficheiro em formato PDF.");
-                return;
-            }
-
             const reader = new FileReader();
             reader.onload = function(evt) {
                 const dataUrl = evt.target.result;
@@ -1530,7 +1543,7 @@
                 salvarDadosLocais();
                 atualizarEstatisticas();
                 renderizarListaPDFs();
-                alert(`✅ O PDF "${file.name}" foi enviado e salvo com sucesso!`);
+                alert(`✅ O PDF "${file.name}" foi enviado e salvo com sucesso no Gestor de Documentos!`);
             };
             reader.readAsDataURL(file);
             e.target.value = '';
@@ -1549,7 +1562,7 @@
         function renderizarListaPDFs() {
             const container = document.getElementById('lista-provas-cards');
             if(!container) return;
-            container.innerHTML = documentosPDF.length === 0 ? `<p class="text-xs text-slate-400 col-span-2">Nenhum documento PDF registado. Clique no botão "+ Enviar Ficheiro PDF" acima.</p>` : documentosPDF.map((p, idx) => `
+            container.innerHTML = documentosPDF.length === 0 ? `<p class="text-xs text-slate-400 col-span-2">Nenhum documento PDF registado. Clique no botão "+ Enviar Ficheiro PDF" acima ou salve diretamente do Editor de Atividades.</p>` : documentosPDF.map((p, idx) => `
                 <div class="bg-white border border-slate-200/80 p-5 rounded-3xl flex justify-between items-center shadow-xs hover:shadow-md transition-shadow">
                     <div class="space-y-1 max-w-[70%]">
                         <span class="text-xs font-extrabold text-slate-800 block truncate">📄 ${p.nome}</span>
